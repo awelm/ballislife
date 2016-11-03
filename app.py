@@ -1,5 +1,6 @@
 #!flask/bin/python
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+import requests
 
 app = Flask(__name__)
 
@@ -13,9 +14,25 @@ test_json_data = [
             }
         ]
 
+def doRequest(endpointUrl, params):
+    finalUrl = endpointUrl
+    for param in params:
+        finalUrl = finalUrl + param + "=" + str(request.args.get(param)) + "&"
+    finalUrl = finalUrl[:-1]
+    print "<<<<<<OUTGOING REQUEST:>>>>>>>"
+    print finalUrl
+    requestJson = requests.get(finalUrl)
+    return jsonify(requestJson.json())
+
 @app.route('/', methods=['GET'])
 def get_tasks():
     return jsonify({'test_json_data': test_json_data})
+
+@app.route('/playerCareerStats', methods=['GET'])
+def get_player_stats():
+    endpointUrl = "http://stats.nba.com/stats/playercareerstats?"
+    params = ["PerMode", "LeagueID", "PlayerID"]
+    return doRequest(endpointUrl, params)
 
 if __name__ == '__main__':
     app.run(debug=True)
