@@ -31,7 +31,7 @@ def get_boxscore(gameid, endperiod=10, endrange=28800, rangetype=0, season="2016
       }
   return use_json_endpoint("boxscoretraditionalv2", params)
 
-def get_shotchart(playerid, season, playerposition='', contextmeasure='FGA', datefrom='', dateto='', gameid='', gamesegment='', lastngames=0, leagueid='00', location='', month=0, opponentteamid=0, outcome='', period=0, position='', rookieyear='', seasontype='Regular Season', teamid=0, vsconference='', vsdivision=''):
+def get_shotchart(playerid, season, playerposition='', contextmeasure='FGA', datefrom='', dateto='', gameid='', gamesegment='', lastngames=0, leagueid='00', location='', month=0, opponentteamid=0, outcome='', period=0, position='', rookieyear='', seasonsegment='', seasontype='Regular Season', teamid=0, vsconference='', vsdivision=''):
   params = {
     'PlayerID' : playerid,
     'PlayerPosition' : playerposition,
@@ -56,4 +56,4 @@ def get_shotchart(playerid, season, playerposition='', contextmeasure='FGA', dat
     'VsConference' : vsconference,
     'VsDivision' : vsdivision
   }
-  return use_json_endpoint("boxscoretraditionalv2", params)                                                                       
+  return use_json_endpoint("shotchartdetail", params)

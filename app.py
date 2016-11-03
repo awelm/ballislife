@@ -2,6 +2,10 @@
 from flask import Flask, jsonify, request
 import requests
 
+import sys
+sys.path.insert(0, './backend')
+import nba_api
+
 app = Flask(__name__)
 
 test_json_data = [
@@ -33,6 +37,13 @@ def get_player_stats():
     endpointUrl = "http://stats.nba.com/stats/playercareerstats?"
     params = ["PerMode", "LeagueID", "PlayerID"]
     return doRequest(endpointUrl, params)
+
+@app.route('/playerShotChart', methods=['GET'])
+def get_player_shot_chart():
+    playerID = request.args.get("PlayerID")
+    season = request.args.get("Season")
+    #return jsonify(nba_api.get_shotchart(2544, "2015-16"))
+    return jsonify(nba_api.get_shotchart(playerID, season))
 
 if __name__ == '__main__':
     app.run(debug=True)
