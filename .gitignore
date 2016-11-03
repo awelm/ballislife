@@ -37,3 +37,7 @@ coverage.xml
 
 # virtualenv
 venv/
+
+# react
+node_modules
+npm-debug.log

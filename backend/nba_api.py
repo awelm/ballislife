@@ -12,6 +12,14 @@ def use_json_endpoint(endpoint, params):
   ret.raise_for_status()
   return ret.json()
 
+def get_player_career_stats(perMode, leagueID, playerID):
+    params = {
+        "PerMode": perMode,
+        "LeagueID": leagueID,
+        "PlayerID": playerID
+        }
+    return use_json_endpoint("playercareerstats", params)
+
 def get_boxscore_summary(gameid):
   params = {
       "GameID":gameid
@@ -56,7 +64,7 @@ def get_shotchart(playerid, season, playerposition='', contextmeasure='FGA', dat
     'VsConference' : vsconference,
     'VsDivision' : vsdivision
   }
-  data = use_json_endpoint("shotchartdetail", params)   
+  data = use_json_endpoint("shotchartdetail", params)
   player_shots = data['resultSets'][0]['rowSet']
   return [{'x':row[-4], 'y':row[-3], 'made':row[-1]} for row in player_shots]
 
