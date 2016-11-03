@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router";
 
-import Footer from "./Footer";
-import Sidebar from "./Sidebar";
+import Nav from "./layout/Nav";
+import Footer from "./layout/Footer";
 
 export default class Layout extends React.Component {
   constructor() {
@@ -18,7 +19,10 @@ export default class Layout extends React.Component {
   render() {
     return (
       <div>
-        <Sidebar changeTitle={this.changeTitle.bind(this)} title={this.state.title} />
+        <Nav />
+        <div className="container">
+          { this.props.children }
+        </div>
         <Footer />
       </div>
     );
