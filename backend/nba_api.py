@@ -59,3 +59,21 @@ def get_shotchart(playerid, season, playerposition='', contextmeasure='FGA', dat
   data = use_json_endpoint("shotchartdetail", params)   
   player_shots = data['resultSets'][0]['rowSet']
   return [{'x':row[-4], 'y':row[-3], 'made':row[-1]} for row in player_shots]
+
+
+def get_allplayers():
+  params = {
+    'LeagueID' : '00',
+    'Season' : '2016-17', # choose most recent season for most inclusive list
+    'IsOnlyCurrentSeason' : 0 # players from all seasons up to and including the specified one
+  }
+  data = use_json_endpoint('commonallplayers', params)
+  player_profiles = data['resultSets'][0]['rowSet']
+  return [{'id' : row[0], 'name': row[2]} for row in player_profiles]
+
+def get_playerinfo(playerid):
+  params = {
+    'PlayerID' : playerid
+  }
+  return use_json_endpoint('commonplayerinfo', params)
+
