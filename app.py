@@ -38,7 +38,7 @@ def get_player_stats():
     params = ["PerMode", "LeagueID", "PlayerID"]
     return doRequest(endpointUrl, params)
 
-@app.route('/playerShotChart', methods=['GET'])
+@app.route('/shotchartdetail', methods=['GET'])
 def get_player_shot_chart():
     playerID = request.args.get("PlayerID")
     season = request.args.get("Season")
