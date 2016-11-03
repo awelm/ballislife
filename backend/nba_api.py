@@ -56,4 +56,6 @@ def get_shotchart(playerid, season, playerposition='', contextmeasure='FGA', dat
     'VsConference' : vsconference,
     'VsDivision' : vsdivision
   }
-  return use_json_endpoint("shotchartdetail", params)
+  data = use_json_endpoint("shotchartdetail", params)   
+  player_shots = data['resultSets'][0]['rowSet']
+  return [{'x':row[-4], 'y':row[-3], 'made':row[-1]} for row in player_shots]
