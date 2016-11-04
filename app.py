@@ -132,6 +132,7 @@ def get_tasks():
     return jsonify({'test_json_data': test_json_data})
 
 @app.route('/playercareerstats', methods=['GET'])
+@crossdomain(origin='*')
 def get_player_stats():
     endpointUrl = "http://stats.nba.com/stats/playercareerstats?"
     perMode = request.args.get("PerMode")
@@ -140,6 +141,7 @@ def get_player_stats():
     return jsonify(nba_api.get_player_career_stats(perMode, leagueID, playerID))
 
 @app.route('/shotchartdetail', methods=['GET'])
+@crossdomain(origin='*')
 def get_player_shot_chart():
     playerID = request.args.get("PlayerID")
     season = request.args.get("Season")
@@ -151,6 +153,7 @@ def get_all_players():
     return jsonify(nba_api.get_allplayers())
 
 @app.route('/commonplayerinfo', methods=['GET'])
+@crossdomain(origin='*')
 def get_player_info():
     playerID = request.args.get("PlayerID")
     return jsonify(nba_api.get_playerinfo(playerID))
