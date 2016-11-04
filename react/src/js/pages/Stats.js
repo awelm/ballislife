@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Chartist from 'chartist';
-// import Chartist from 'react-chartist';
 
 export default class Stats extends Component {
   componentDidMount() {
