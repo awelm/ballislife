@@ -3,7 +3,19 @@ import React from "react";
 export default class Players extends React.Component {
   render() {
     const { params } = this.props;
+    var myHeaders = new Headers();
 
+    var myInit = { method: 'GET',
+                   headers: myHeaders,
+                   mode: 'cors',
+                   cache: 'default' };
+
+    var myRequest = new Request('http://localhost:5000/commonallplayers', myInit);
+
+    fetch(myRequest)
+    .then(function(response) {
+      console.log(response.json());
+    });
     return (
       <div className="row">
         <div className="col-sm-12">
