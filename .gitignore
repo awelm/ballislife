@@ -37,6 +37,7 @@ coverage.xml
 
 # virtualenv
 venv/
+flask/
 
 # react
 node_modules

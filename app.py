@@ -1,10 +1,55 @@
 #!flask/bin/python
-from flask import Flask, jsonify, request
+from datetime import timedelta
+from flask import Flask, jsonify, make_response, request, current_app
+from functools import update_wrapper
+
 import requests
 
 import sys
 sys.path.insert(0, './backend')
 import nba_api
+
+# For Cors
+def crossdomain(origin=None, methods=None, headers=None,
+                max_age=21600, attach_to_all=True,
+                automatic_options=True):
+    if methods is not None:
+        methods = ', '.join(sorted(x.upper() for x in methods))
+    if headers is not None and not isinstance(headers, basestring):
+        headers = ', '.join(x.upper() for x in headers)
+    if not isinstance(origin, basestring):
+        origin = ', '.join(origin)
+    if isinstance(max_age, timedelta):
+        max_age = max_age.total_seconds()
+
+    def get_methods():
+        if methods is not None:
+            return methods
+
+        options_resp = current_app.make_default_options_response()
+        return options_resp.headers['allow']
+
+    def decorator(f):
+        def wrapped_function(*args, **kwargs):
+            if automatic_options and request.method == 'OPTIONS':
+                resp = current_app.make_default_options_response()
+            else:
+                resp = make_response(f(*args, **kwargs))
+            if not attach_to_all and request.method != 'OPTIONS':
+                return resp
+
+            h = resp.headers
+
+            h['Access-Control-Allow-Origin'] = origin
+            h['Access-Control-Allow-Methods'] = get_methods()
+            h['Access-Control-Max-Age'] = str(max_age)
+            if headers is not None:
+                h['Access-Control-Allow-Headers'] = headers
+            return resp
+
+        f.provide_automatic_options = False
+        return update_wrapper(wrapped_function, f)
+    return decorator
 
 app = Flask(__name__)
 
@@ -18,7 +63,61 @@ test_json_data = [
             }
         ]
 
+def crossdomain(origin=None, methods=None, headers=None,
+                max_age=21600, attach_to_all=True,
+                automatic_options=True):
+    if methods is not None:
+        methods = ', '.join(sorted(x.upper() for x in methods))
+    if headers is not None and not isinstance(headers, basestring):
+        headers = ', '.join(x.upper() for x in headers)
+    if not isinstance(origin, basestring):
+        origin = ', '.join(origin)
+    if isinstance(max_age, timedelta):
+        max_age = max_age.total_seconds()
+
+    def get_methods():
+        if methods is not None:
+            return methods
+
+        options_resp = current_app.make_default_options_response()
+        return options_resp.headers['allow']
+
+    def decorator(f):
+        def wrapped_function(*args, **kwargs):
+            if automatic_options and request.method == 'OPTIONS':
+                resp = current_app.make_default_options_response()
+            else:
+                resp = make_response(f(*args, **kwargs))
+            if not attach_to_all and request.method != 'OPTIONS':
+                return resp
+
+            h = resp.headers
+
+            h['Access-Control-Allow-Origin'] = origin
+            h['Access-Control-Allow-Methods'] = get_methods()
+            h['Access-Control-Max-Age'] = str(max_age)
+            if headers is not None:
+                h['Access-Control-Allow-Headers'] = headers
+            return resp
+
+        f.provide_automatic_options = False
+        return update_wrapper(wrapped_function, f)
+    return decorator
+
 def doRequest(endpointUrl, params):
+    """
+    General purpose function which takes the endpoint URL and a list of different
+    parameter fields which we will be using in the request. The parameter values
+    will be obtained from the 'requests' module.
+
+    @type endpointUrl: string
+    @param endpointUrl: URL endpoint of the request
+    @type params: List[string]
+    @param params: List of parameters which will be passed to the request
+
+    @rtype: jsonObject
+    @return: the JSON object resulting from the request
+    """
     finalUrl = endpointUrl
     for param in params:
         finalUrl = finalUrl + param + "=" + str(request.args.get(param)) + "&"
@@ -33,6 +132,7 @@ def get_tasks():
     return jsonify({'test_json_data': test_json_data})
 
 @app.route('/playercareerstats', methods=['GET'])
+@crossdomain(origin='*')
 def get_player_stats():
     endpointUrl = "http://stats.nba.com/stats/playercareerstats?"
     perMode = request.args.get("PerMode")
@@ -41,6 +141,7 @@ def get_player_stats():
     return jsonify(nba_api.get_player_career_stats(perMode, leagueID, playerID))
 
 @app.route('/shotchartdetail', methods=['GET'])
+@crossdomain(origin='*')
 def get_player_shot_chart():
     playerID = request.args.get("PlayerID")
     season = request.args.get("Season")
@@ -53,10 +154,12 @@ def get_player_radar():
     return jsonify(nba_api.get_playerradar(playerID, season))
 
 @app.route('/commonallplayers', methods=['GET'])
+@crossdomain(origin='*')
 def get_all_players():
     return jsonify(nba_api.get_allplayers())
 
 @app.route('/commonplayerinfo', methods=['GET'])
+@crossdomain(origin='*')
 def get_player_info():
     playerID = request.args.get("PlayerID")
     return jsonify(nba_api.get_playerinfo(playerID))
