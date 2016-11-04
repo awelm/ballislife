@@ -19,6 +19,19 @@ test_json_data = [
         ]
 
 def doRequest(endpointUrl, params):
+    """
+    General purpose function which takes the endpoint URL and a list of different
+    parameter fields which we will be using in the request. The parameter values
+    will be obtained from the 'requests' module.
+
+    @type endpointUrl: string
+    @param endpointUrl: URL endpoint of the request
+    @type params: List[string]
+    @param params: List of parameters which will be passed to the request
+
+    @rtype: jsonObject
+    @return: the JSON object resulting from the request
+    """
     finalUrl = endpointUrl
     for param in params:
         finalUrl = finalUrl + param + "=" + str(request.args.get(param)) + "&"
