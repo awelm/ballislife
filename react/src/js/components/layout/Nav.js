@@ -1,10 +1,9 @@
 import React from "react";
 import { Link, IndexLink } from "react-router";
 
-
 export default class Nav extends React.Component {
   render() {
-
+    
     return (
       <nav className="navbar navbar-default">
         <div className="container-fluid">
@@ -15,7 +14,7 @@ export default class Nav extends React.Component {
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <a className="navbar-brand" href="#">Ball Is Life</a>
+            <IndexLink to="/" activeClassName="active" className="navbar-brand">Ball Is Life</IndexLink>
           </div>
 
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

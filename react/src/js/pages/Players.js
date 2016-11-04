@@ -13,12 +13,12 @@ export default class Players extends React.Component {
            <div className="well">
               <h2 className="player-name">Player Name</h2>
               <div className="form-group">
-                <label className="control-label" for="inputDefault">Player</label>
-                <input type="text" className="form-control" id="inputDefault" />
+                <label className="control-label" htmlFor="playerName">Player</label>
+                <input type="text" className="form-control" id="playerName" />
               </div>
               <div className="form-group">
-                <label className="control-label" for="inputDefault">Season</label>
-                <select className="form-control" id="select">
+                <label className="control-label" htmlFor="season">Season</label>
+                <select className="form-control" id="season">
                    <option>1</option>
                    <option>2</option>
                    <option>3</option>
@@ -27,30 +27,30 @@ export default class Players extends React.Component {
                 </select>
               </div>
               <div className="form-group">
-                 <label className="control-label" for="inputDefault">Chart Type</label>
+                 <label className="control-label" htmlFor="chartType">Chart Type</label>
                  <div className="radio">
                     <label>
-                       <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="" />
+                       <input type="radio" name="optionsRadios" id="hexagonal" value="hexagonal" checked="" />
                        Hexagonal
                     </label>
                  </div>
                  <div className="radio">
                    <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" />
+                    <input type="radio" name="optionsRadios" id="scatter" value="scatter" />
                     Scatter
                    </label>
                  </div>
                  <div className="radio">
                    <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" />
+                    <input type="radio" name="optionsRadios" id="heatMap" value="heatMap" />
                     Heat Map
                    </label>
                  </div>
               </div>
               <legend>Filters</legend>
               <div className="form-group">
-                <label className="control-label" for="inputDefault">Shot Zone</label>
-                <select className="form-control" id="select">
+                <label className="control-label" htmlFor="shotZone">Shot Zone</label>
+                <select className="form-control" id="shotZone">
                    <option>1</option>
                    <option>2</option>
                    <option>3</option>
@@ -59,8 +59,8 @@ export default class Players extends React.Component {
                 </select>
               </div>
               <div className="form-group">
-                <label className="control-label" for="inputDefault">Shot Angles</label>
-                <select className="form-control" id="select">
+                <label className="control-label" htmlFor="shotAngles">Shot Angles</label>
+                <select className="form-control" id="shotAngles">
                    <option>1</option>
                    <option>2</option>
                    <option>3</option>
@@ -69,8 +69,8 @@ export default class Players extends React.Component {
                 </select>
               </div>
               <div className="form-group">
-                <label className="control-label" for="inputDefault">Shot Distance</label>
-                <select className="form-control" id="select">
+                <label className="control-label" htmlFor="shotDistance">Shot Distance</label>
+                <select className="form-control" id="shotDistance">
                    <option>1</option>
                    <option>2</option>
                    <option>3</option>
@@ -79,8 +79,8 @@ export default class Players extends React.Component {
                 </select>
               </div>
               <div className="form-group">
-                <label className="control-label" for="inputDefault">FG Made/Missed</label>
-                <select className="form-control" id="select">
+                <label className="control-label" htmlFor="fg">FG Made/Missed</label>
+                <select className="form-control" id="fg">
                    <option>1</option>
                    <option>2</option>
                    <option>3</option>

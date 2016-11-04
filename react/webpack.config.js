@@ -5,10 +5,6 @@ var path = require('path');
 var config = {
    entry: './src/js/main.js',
 
-   output: {
-      path:'./',
-      filename: 'index.min.js',
-   },
 
    devServer: {
       inline: true,
@@ -20,14 +16,20 @@ var config = {
          {
             test: /\.jsx?$/,
             exclude: /node_modules/,
-            loader: 'babel',
+            loader: 'babel-loader',
 
             query: {
-               presets: ['es2015', 'react']
+                presets: ['react', 'es2015', 'stage-0']
             }
          }
       ]
    },
+
+   output: {
+      path: './',
+      filename: 'index.min.js',
+   },
+
    plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
