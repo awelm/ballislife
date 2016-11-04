@@ -44,8 +44,16 @@ def get_player_stats():
 def get_player_shot_chart():
     playerID = request.args.get("PlayerID")
     season = request.args.get("Season")
-    #return jsonify(nba_api.get_shotchart(2544, "2015-16"))
     return jsonify(nba_api.get_shotchart(playerID, season))
+
+@app.route('/commonallplayers', methods=['GET'])
+def get_all_players():
+    return jsonify(nba_api.get_allplayers())
+
+@app.route('/commonplayerinfo', methods=['GET'])
+def get_player_info():
+    playerID = request.args.get("PlayerID")
+    return jsonify(nba_api.get_playerinfo(playerID))
 
 if __name__ == '__main__':
     app.run(debug=True)
