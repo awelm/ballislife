@@ -3,13 +3,18 @@
 Ballislife
 
 ## Installation
-
-Install npm here: https://www.tutorialspoint.com/reactjs/reactjs_environment_setup.htm
+macOS
+```
+brew install node
+```
+Others:
+Install [node/npm here](https://nodejs.org/en/)
 
 ## Running locally
 
 ```
 cd react
+npm i
 npm start
 ```
 

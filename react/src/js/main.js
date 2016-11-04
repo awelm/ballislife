@@ -22,4 +22,5 @@ ReactDOM.render(
       <Route path="top-stories" component={TopStories}></Route>
     </Route>
   </Router>,
-app);
+  app
+);
