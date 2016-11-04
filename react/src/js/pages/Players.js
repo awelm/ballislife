@@ -1,10 +1,10 @@
 import React from "react";
 
-export default function Players({ props }) {
+export default function Players({ player }) {
   return (
     <div className="row">
       <div className="col-sm-12">
-        <h1>Players ({ params.player })</h1>
+        <h1>Players ({ player })</h1>
       </div>
       <div className="col-md-3">
          <div className="well">
