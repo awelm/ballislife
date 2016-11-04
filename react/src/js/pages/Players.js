@@ -76,16 +76,6 @@ export default class Players extends React.Component {
     // ].map((obj) => <option key={obj.id} value={obj.id}>{ obj.name }</option>);
     //
     // console.log(playerList);
-=======
-    var myHeaders = new Headers();
-
-    var myInit = { method: 'GET',
-                   headers: myHeaders,
-                   mode: 'cors',
-                   cache: 'default' };
->>>>>>> f1f4b30f8ed46d573629bbf54fa8f6cb6174731d
-
-    var myRequest = new Request('http://localhost:5000/commonallplayers', myInit);
 
     fetch(myRequest)
     .then(function(response) {
