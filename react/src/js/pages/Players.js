@@ -28,6 +28,7 @@ export default class Players extends React.Component {
         players: PlayerStore.getAll(),
       })
     })
+    PlayerActions.getAllPlayers();
   };
 
   getPlayers() {
@@ -92,7 +93,6 @@ export default class Players extends React.Component {
     });
     return (
       <div className="row">
-        <button onClick={this.getPlayers.bind(this)}>Reload!</button>
         <div className="col-sm-12">
           <h1>Players</h1>
         </div>
