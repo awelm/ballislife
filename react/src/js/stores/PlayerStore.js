@@ -126,7 +126,8 @@ class PlayerStore extends EventEmitter {
       }
     ]
   },
-    this.curPlayerShotChart = []
+    this.curPlayerShotChart = [],
+    this.curPlayerRadar = []
   }
 
   getAll() {
@@ -149,6 +150,10 @@ class PlayerStore extends EventEmitter {
     return this.curPlayerShotChart;
   }
 
+  getCurPlayerRadar() {
+    return this.curPlayerRadar;
+  }
+
   handleActions(action) {
   switch(action.type) {
     case "RECIEVE_PLAYERS": {
@@ -159,11 +164,16 @@ class PlayerStore extends EventEmitter {
     case "RECIEVE_PLAYER_INFO": {
       this.curPlayer = action.playerInfo[1];
       this.curPlayerInfo = action.playerInfo[0];
-      this.emit("change");
+      // this.emit("change");
       break;
     }
     case "RECIEVE_SHOT_CHART": {
       this.curPlayerShotChart = action.shotChart;
+      // this.emit("change");
+      break;
+    }
+    case "RECIEVE_RADAR": {
+      this.curPlayerRadar = action.radar;
       this.emit("change");
       break;
     }

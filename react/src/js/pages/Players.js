@@ -3,7 +3,7 @@ import React from 'react';
 let ReactHeatmap = require('react-heatmap');
 var RadarChart = require("react-chartjs-2").Radar;
 
-let data = [{ x: 10, y: 15, value: 5}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}];
+// let data = [{ x: 10, y: 15, value: 5}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}];
 
 const heatMapDiv = {
     height: '521px',
@@ -11,39 +11,22 @@ const heatMapDiv = {
     backgroundImage: 'url("./src/images/shot_chart.jpg")',
 };
 
-var radarData = {
-    labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
-    datasets: [
-        {
-            label: "My First dataset",
-            backgroundColor: "rgba(179,181,198,0.2)",
-            borderColor: "rgba(179,181,198,1)",
-            pointBackgroundColor: "rgba(179,181,198,1)",
-            pointBorderColor: "#fff",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(179,181,198,1)",
-            data: [65, 59, 90, 81, 56, 55, 40]
-        },
-        {
-            label: "My Second dataset",
-            backgroundColor: "rgba(255,99,132,0.2)",
-            borderColor: "rgba(255,99,132,1)",
-            pointBackgroundColor: "rgba(255,99,132,1)",
-            pointBorderColor: "#fff",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(255,99,132,1)",
-            data: [28, 48, 40, 19, 96, 27, 100]
-        }
-    ]
-};
-
-var radarOptions = {
+const radarOptions = {
     scale: {
-                reverse: true,
+      xAxes: [{
+        display: false
+      }],
+      yAxes: [{
+        display: false
+      }],
+                reverse: false,
                 ticks: {
-                    beginAtZero: true
-                }
-            }
+                    beginAtZero: false
+                },
+            },
+    scaleShowLabels : false,
+    showTooltips: false,
+    scaleStartValue: 0
 }
 
 const titleDiv = {
@@ -62,7 +45,8 @@ export default class Players extends React.Component {
       curPlayer: PlayerStore.getCurPlayer(),
       curPlayerInfo: PlayerStore.getCurPlayerInfo(),
       curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
-      curPlayerShotChart: PlayerStore.getCurPlayerShotChart()
+      curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
+      curPlayerRadar: PlayerStore.getCurPlayerRadar(),
     };
   }
 
@@ -74,6 +58,7 @@ export default class Players extends React.Component {
         curPlayerInfo: PlayerStore.getCurPlayerInfo(),
         curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
         curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
+        curPlayerRadar: PlayerStore.getCurPlayerRadar(),
       })
     })
     PlayerActions.getAllPlayers();
@@ -87,11 +72,13 @@ export default class Players extends React.Component {
     console.log(event.target.value);
     PlayerActions.getPlayerInfo(event.target.value);
     PlayerActions.getShotChart(event.target.value);
+    PlayerActions.getRadar(event.target.value);
     this.setState({
       curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
       curPlayer: event.target.value,
       curPlayerInfo: PlayerStore.getCurPlayerInfo(),
       curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
+      curPlayerRadar: PlayerStore.getCurPlayerRadar(),
      });
     console.log(this.state.curPlayerHighlights);
     console.log(PlayerStore.getCurPlayerHighlights());
@@ -99,8 +86,10 @@ export default class Players extends React.Component {
 
   render() {
     const { params } = this.props;
-    const { players, curPlayer, curPlayerInfo, curPlayerShotChart } = this.state;
+    const { players, curPlayer, curPlayerInfo, curPlayerShotChart, curPlayerRadar } = this.state;
+    const playerHighlights = curPlayerInfo['resultSets'][1]['rowSet'][0];
     console.log(curPlayerShotChart);
+
     const updatedShotChart = curPlayerShotChart.map((obj) => {
       obj.x += 300;
       obj.x /= 6;
@@ -123,8 +112,29 @@ export default class Players extends React.Component {
         value: 1
       }
     });
+
+    const radarInput = curPlayerRadar.map((num) => {
+      return 10*num;
+    });
+    console.log(radarInput);
+
+    var radarData = {
+        labels: ["Bball IQ", "Efficiency", "Interior D", "Interior Scoring", "Outside Scoring", "Perimeter D", "Rebounds", "Stamina"],
+        datasets: [
+            {
+                label: playerHighlights[1],
+                backgroundColor: "rgba(179,181,198,0.2)",
+                borderColor: "rgba(179,181,198,1)",
+                pointBackgroundColor: "rgba(179,181,198,1)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(179,181,198,1)",
+                data: radarInput
+            },
+        ]
+    };
+
     console.log(updatedShotChart);
-    const playerHighlights = curPlayerInfo['resultSets'][1]['rowSet'][0];
 
     const playerList = players.map((player) => {
       return <option key={player.id} value={player.id}>{ player.name }</option>;
@@ -244,87 +254,6 @@ export default class Players extends React.Component {
       </div>
       <div className="col-md-9">
         <RadarChart data={radarData} options={radarOptions} />
-      </div>
-      <div className="col-md-9">
-        <h3>2016-2017 Summary Stats</h3>
-        <table className="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>Zone</th>
-              <th>FGM</th>
-              <th>FGA</th>
-              <th>FG%</th>
-              <th>Lg FG%</th>
-              <th>Pts/Shot</th>
-              <th>Lg Pts/Shot</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-            </tr>
-            <tr>
-              <td>7</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-              <td>Column content</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   );

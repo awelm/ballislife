@@ -48,3 +48,18 @@ export function getShotChart(id) {
       console.error(error);
     });
 }
+
+export function getRadar(id) {
+  dispatcher.dispatch({type: "FETCH_RADAR"});
+  var myRequest = new Request('http://localhost:5000/playerradar?Season=2015-16&PlayerID=' + id);
+  fetch(myRequest)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson);
+      dispatcher.dispatch({type: "RECIEVE_RADAR", radar: responseJson });
+    })
+    .catch((error) => {
+      dispatcher.dispatch({type: "RECIEVE_RADAR_ERROR"});
+      console.error(error);
+    });
+}
