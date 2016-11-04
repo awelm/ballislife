@@ -1,7 +1,7 @@
 import React from 'react';
 
 let ReactHeatmap = require('react-heatmap');
-
+var RadarChart = require("react-chartjs-2").Radar;
 
 let data = [{ x: 10, y: 15, value: 5}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}];
 
@@ -10,6 +10,41 @@ const heatMapDiv = {
     width: '808px',
     backgroundImage: 'url("./src/images/shot_chart.jpg")',
 };
+
+var radarData = {
+    labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+    datasets: [
+        {
+            label: "My First dataset",
+            backgroundColor: "rgba(179,181,198,0.2)",
+            borderColor: "rgba(179,181,198,1)",
+            pointBackgroundColor: "rgba(179,181,198,1)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(179,181,198,1)",
+            data: [65, 59, 90, 81, 56, 55, 40]
+        },
+        {
+            label: "My Second dataset",
+            backgroundColor: "rgba(255,99,132,0.2)",
+            borderColor: "rgba(255,99,132,1)",
+            pointBackgroundColor: "rgba(255,99,132,1)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(255,99,132,1)",
+            data: [28, 48, 40, 19, 96, 27, 100]
+        }
+    ]
+};
+
+var radarOptions = {
+    scale: {
+                reverse: true,
+                ticks: {
+                    beginAtZero: true
+                }
+            }
+}
 
 import * as PlayerActions from "../actions/PlayerActions";
 import PlayerStore from "../stores/PlayerStore";
@@ -37,50 +72,12 @@ export default class Players extends React.Component {
 
   render() {
     const { params } = this.props;
-<<<<<<< HEAD
     const { players } = this.state;
 
     const playerList = players.map((player) => {
       return <option key={player.id} value={player.id}>{ player.name }</option>;
     });
 
-    // var myURL = myRequest.url;
-    // var myMethod = myRequest.method; // GET
-    // var myMode = myRequest.mode;
-    // console.log(myMode);
-
-    // function getAllPlayers() {
-    //   var myRequest = new Request('http://localhost:5000/commonallplayers');
-    //   return fetch(myRequest)
-    //     .then((response) => response.json())
-    //     .then((responseJson) => {
-    //       // console.log(responseJson);
-    //       // console.log(playerList);
-    //       return responseJson;
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    // }
-    //
-    //
-    // const testList = getAllPlayers().then(function(results){
-    //   console.log(results);
-    //   return results;
-    // });
-
-    // const playerList = [
-    //   {name: 'test name', id: '123'},
-    //   {name: 'test name', id: '1'},
-    //   {name: 'test name', id: '12'}
-    // ].map((obj) => <option key={obj.id} value={obj.id}>{ obj.name }</option>);
-    //
-    // console.log(playerList);
-
-    fetch(myRequest)
-    .then(function(response) {
-      console.log(response.json());
-    });
     return (
       <div className="row">
         <div className="col-sm-12">
@@ -115,8 +112,8 @@ export default class Players extends React.Component {
                  </div>
                  <div className="radio">
                    <label>
-                    <input type="radio" name="optionsRadios" id="scatter" value="scatter" />
-                    Scatter
+                    <input type="radio" name="optionsRadios" id="radar" value="radar" />
+                    Radar
                    </label>
                  </div>
                  <div className="radio">
@@ -171,6 +168,9 @@ export default class Players extends React.Component {
         </div>
       <div className="col-md-9" style={heatMapDiv}>
         <ReactHeatmap max={5} data={data} />
+      </div>
+      <div className="col-md-9">
+        <RadarChart data={radarData} options={radarOptions} />
       </div>
       <div className="col-md-9">
         <h3>2016-2017 Summary Stats</h3>

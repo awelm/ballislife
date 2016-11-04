@@ -17,11 +17,8 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
-<<<<<<< HEAD
     "flux": "^3.1.0",
-=======
     "chart.js": "^2.3.0",
->>>>>>> f1f4b30f8ed46d573629bbf54fa8f6cb6174731d
     "history": "^4.4.0",
     "react": "^15.3.2",
     "react-chartjs-2": "^1.5.0",
