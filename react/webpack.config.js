@@ -1,29 +1,28 @@
-var debug = process.env.NODE_ENV !== "production";
-var webpack = require('webpack');
-var path = require('path');
+const debug = process.env.NODE_ENV !== 'production';
+const webpack = require('webpack');
+const path = require('path');
 
-var config = {
-   entry: './src/js/main.js',
+const config = {
+  entry: './src/js/main.js',
 
+  devServer: {
+    inline: true,
+    port: 8080
+  },
 
-   devServer: {
-      inline: true,
-      port: 8080
-   },
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel',
 
-   module: {
-      loaders: [
-         {
-            test: /\.jsx?$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-
-            query: {
-                presets: ['react', 'es2015', 'stage-0']
-            }
-         }
-      ]
-   },
+        query: {
+          presets: ['es2015', 'react']
+        }
+      }
+    ]
+  },
 
    output: {
       path: './',
@@ -34,7 +33,7 @@ var config = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-   ],
+  ],
 }
 
 module.exports = config;

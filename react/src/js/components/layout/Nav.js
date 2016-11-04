@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, IndexLink } from "react-router";
+import React from 'react';
+import { Link, IndexLink } from 'react-router';
 
 export default class Nav extends React.Component {
   render() {
@@ -25,8 +25,8 @@ export default class Nav extends React.Component {
               <li><Link to="teams" activeClassName="active">Teams</Link></li>
             </ul>
           </div>
-        </div>
-      </nav>
-    );
-  }
+      </div>
+    </nav>
+  );
+}
 }

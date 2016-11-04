@@ -1,4 +1,15 @@
-import React from "react";
+import React from 'react';
+
+let ReactHeatmap = require('react-heatmap');
+
+
+let data = [{ x: 10, y: 15, value: 5}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}];
+
+const heatMapDiv = {
+    height: '521px',
+    width: '808px',
+    backgroundImage: 'url("./src/images/shot_chart.jpg")',
+};
 
 import * as PlayerActions from "../actions/PlayerActions";
 import PlayerStore from "../stores/PlayerStore";
@@ -25,6 +36,7 @@ export default class Players extends React.Component {
 
   render() {
     const { params } = this.props;
+<<<<<<< HEAD
     const { players } = this.state;
 
     const playerList = players.map((player) => {
@@ -63,7 +75,21 @@ export default class Players extends React.Component {
     // ].map((obj) => <option key={obj.id} value={obj.id}>{ obj.name }</option>);
     //
     // console.log(playerList);
+=======
+    var myHeaders = new Headers();
 
+    var myInit = { method: 'GET',
+                   headers: myHeaders,
+                   mode: 'cors',
+                   cache: 'default' };
+>>>>>>> f1f4b30f8ed46d573629bbf54fa8f6cb6174731d
+
+    var myRequest = new Request('http://localhost:5000/commonallplayers', myInit);
+
+    fetch(myRequest)
+    .then(function(response) {
+      console.log(response.json());
+    });
     return (
       <div className="row">
         <button onClick={this.getPlayers.bind(this)}>Reload!</button>
@@ -153,88 +179,91 @@ export default class Players extends React.Component {
               </div>
            </div>
         </div>
-        <div className="col-md-9">
-           <h3>2016-2017 Summary Stats</h3>
-           <table className="table table-striped table-hover ">
-             <thead>
-               <tr>
-                 <th>Zone</th>
-                 <th>FGM</th>
-                 <th>FGA</th>
-                 <th>FG%</th>
-                 <th>Lg FG%</th>
-                 <th>Pts/Shot</th>
-                 <th>Lg Pts/Shot</th>
-               </tr>
-             </thead>
-             <tbody>
-               <tr>
-                 <td>1</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-               </tr>
-               <tr>
-                 <td>2</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-               </tr>
-               <tr>
-                 <td>3</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-               </tr>
-               <tr>
-                 <td>4</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-               </tr>
-               <tr>
-                 <td>5</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-               </tr>
-               <tr>
-                 <td>6</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-               </tr>
-               <tr>
-                 <td>7</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-                 <td>Column content</td>
-               </tr>
-             </tbody>
-           </table>
-        </div>
+      <div className="col-md-9" style={heatMapDiv}>
+        <ReactHeatmap max={5} data={data} />
       </div>
-    );
-  }
+      <div className="col-md-9">
+        <h3>2016-2017 Summary Stats</h3>
+        <table className="table table-striped table-hover ">
+          <thead>
+            <tr>
+              <th>Zone</th>
+              <th>FGM</th>
+              <th>FGA</th>
+              <th>FG%</th>
+              <th>Lg FG%</th>
+              <th>Pts/Shot</th>
+              <th>Lg Pts/Shot</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+              <td>Column content</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
 }
