@@ -46,13 +46,70 @@ var radarOptions = {
             }
 }
 
-export default class Players extends React.Component {
+import * as PlayerActions from "../actions/PlayerActions";
+import PlayerStore from "../stores/PlayerStore";
 
-  onRadarClick() function() {
-    
+export default class Players extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      players: PlayerStore.getAll(),
+    };
   }
+
+  componentWillMount() {
+    PlayerStore.on("change", () => {
+      this.setState({
+        players: PlayerStore.getAll(),
+      })
+    })
+    PlayerActions.getAllPlayers();
+  };
+
+  getPlayers() {
+    PlayerActions.getAllPlayers();
+  }
+
   render() {
     const { params } = this.props;
+    const { players } = this.state;
+
+    const playerList = players.map((player) => {
+      return <option key={player.id} value={player.id}>{ player.name }</option>;
+    });
+
+    // var myURL = myRequest.url;
+    // var myMethod = myRequest.method; // GET
+    // var myMode = myRequest.mode;
+    // console.log(myMode);
+
+    // function getAllPlayers() {
+    //   var myRequest = new Request('http://localhost:5000/commonallplayers');
+    //   return fetch(myRequest)
+    //     .then((response) => response.json())
+    //     .then((responseJson) => {
+    //       // console.log(responseJson);
+    //       // console.log(playerList);
+    //       return responseJson;
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    // }
+    //
+    //
+    // const testList = getAllPlayers().then(function(results){
+    //   console.log(results);
+    //   return results;
+    // });
+
+    // const playerList = [
+    //   {name: 'test name', id: '123'},
+    //   {name: 'test name', id: '1'},
+    //   {name: 'test name', id: '12'}
+    // ].map((obj) => <option key={obj.id} value={obj.id}>{ obj.name }</option>);
+    //
+    // console.log(playerList);
     var myHeaders = new Headers();
 
     var myInit = { method: 'GET',
@@ -69,14 +126,16 @@ export default class Players extends React.Component {
     return (
       <div className="row">
         <div className="col-sm-12">
-          <h1>Players ({ params.player })</h1>
+          <h1>Players</h1>
         </div>
         <div className="col-md-3">
            <div className="well">
               <h2 className="player-name">Player Name</h2>
               <div className="form-group">
                 <label className="control-label" htmlFor="playerName">Player</label>
-                <input type="text" className="form-control" id="playerName" />
+                  <select className="form-control" id="playerName">
+                    { playerList }
+                  </select>
               </div>
               <div className="form-group">
                 <label className="control-label" htmlFor="season">Season</label>
