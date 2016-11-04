@@ -4,11 +4,6 @@ const webpack = require('webpack');
 const config = {
   entry: './src/js/main.js',
 
-  output: {
-    path: './',
-    filename: 'index.min.js'
-  },
-
   devServer: {
     inline: true,
     port: 8080
@@ -35,6 +30,28 @@ const config = {
     ]
   },
   plugins: debug ? [] : [
+=======
+   module: {
+      loaders: [
+         {
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+
+            query: {
+                presets: ['react', 'es2015', 'stage-0']
+            }
+         }
+      ]
+   },
+
+   output: {
+      path: './',
+      filename: 'index.min.js',
+   },
+
+   plugins: debug ? [] : [
+>>>>>>> master
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({

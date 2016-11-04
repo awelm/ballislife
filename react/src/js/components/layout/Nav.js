@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, IndexLink } from 'react-router';
 
 export default function Nav() {
   return (
@@ -18,7 +18,13 @@ export default function Nav() {
             <span className="icon-bar" />
             <span className="icon-bar" />
           </button>
-          <a className="navbar-brand" href="/">Ball Is Life</a>
+          <IndexLink
+            to="/"
+            activeClassName="active"
+            className="navbar-brand"
+          >
+            Ball Is Life
+          </IndexLink>
         </div>
 
         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
