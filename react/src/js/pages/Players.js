@@ -37,7 +37,6 @@ export default class Players extends React.Component {
 
   render() {
     const { params } = this.props;
-<<<<<<< HEAD
     const { players } = this.state;
 
     const playerList = players.map((player) => {
@@ -76,11 +75,7 @@ export default class Players extends React.Component {
     // ].map((obj) => <option key={obj.id} value={obj.id}>{ obj.name }</option>);
     //
     // console.log(playerList);
-
-    fetch(myRequest)
-    .then(function(response) {
-      console.log(response.json());
-    });
+    
     return (
       <div className="row">
         <div className="col-sm-12">
