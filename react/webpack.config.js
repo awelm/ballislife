@@ -1,13 +1,12 @@
 const debug = process.env.NODE_ENV !== 'production';
 const webpack = require('webpack');
-const path = require('path');
 
 const config = {
   entry: './src/js/main.js',
 
   output: {
-    path:'./',
-    filename: 'index.min.js',
+    path: './',
+    filename: 'index.min.js'
   },
 
   devServer: {
@@ -38,8 +37,11 @@ const config = {
   plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-  ],
-}
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: false,
+      sourcemap: true
+    })
+  ]
+};
 
 module.exports = config;

@@ -1,5 +1,5 @@
+/* eslint react/prop-types: 0 */
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 
 import Nav from './layout/Nav';
 import Footer from './layout/Footer';

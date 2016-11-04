@@ -41,3 +41,4 @@ venv/
 # react
 node_modules
 npm-debug.log
+./react/.eslintcache

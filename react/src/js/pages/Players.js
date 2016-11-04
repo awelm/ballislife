@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 export default function Players({ player }) {
   return (
@@ -27,21 +27,37 @@ export default function Players({ player }) {
             <label className="control-label" htmlFor="inputDefault">Chart Type</label>
             <div className="radio">
               <label>
-                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="" />
-                     Hexagonal
-                  </label>
+                <input
+                  type="radio"
+                  name="optionsRadios"
+                  id="optionsRadios1"
+                  value="option1"
+                  checked=""
+                />
+                Hexagonal
+              </label>
             </div>
             <div className="radio">
               <label>
-                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" />
-                  Scatter
-                 </label>
+                <input
+                  type="radio"
+                  name="optionsRadios"
+                  id="optionsRadios2"
+                  value="option2"
+                />
+                Scatter
+              </label>
             </div>
             <div className="radio">
               <label>
-                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" />
-                  Heat Map
-                 </label>
+                <input
+                  type="radio"
+                  name="optionsRadios"
+                  id="optionsRadios2"
+                  value="option2"
+                />
+                Heat Map
+              </label>
             </div>
           </div>
           <legend>Filters</legend>
@@ -171,3 +187,7 @@ export default function Players({ player }) {
     </div>
   );
 }
+
+Players.propTypes = {
+  player: PropTypes.string
+};
