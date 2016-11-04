@@ -5,6 +5,7 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import Layout from './components/Layout';
 
 import Games from './pages/Games';
+import Home from './pages/Home';
 import Players from './pages/Players';
 import Stats from './pages/Stats';
 import Teams from './pages/Teams';
@@ -20,6 +21,7 @@ ReactDOM.render(
       <Route path="stats" component={Stats} />
       <Route path="teams" component={Teams} />
       <Route path="top-stories" component={TopStories} />
+      <IndexRoute component={Home}/>
     </Route>
   </Router>,
   app

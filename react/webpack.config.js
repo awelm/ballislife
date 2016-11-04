@@ -5,24 +5,12 @@ const path = require('path');
 const config = {
   entry: './src/js/main.js',
 
-  output: {
-    path:'./',
-    filename: 'index.min.js',
-  },
-
   devServer: {
     inline: true,
     port: 8080
   },
 
   module: {
-    preLoaders: [
-      {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/
-      }
-    ],
     loaders: [
       {
         test: /\.jsx?$/,
@@ -35,7 +23,13 @@ const config = {
       }
     ]
   },
-  plugins: debug ? [] : [
+
+   output: {
+      path: './',
+      filename: 'index.min.js',
+   },
+
+   plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
