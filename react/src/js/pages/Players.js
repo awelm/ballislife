@@ -1,6 +1,19 @@
 import React, { PropTypes } from 'react';
 
 export default function Players({ player }) {
+  const headers = new Headers();
+  const request = new Request('http://localhost:5000/commonallplayers', {
+    headers,
+    method: 'GET',
+    mode: 'cors',
+    cache: 'default'
+  });
+
+  fetch(request)
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+
   return (
     <div className="row">
       <div className="col-sm-12">
