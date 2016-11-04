@@ -46,6 +46,12 @@ def get_player_shot_chart():
     season = request.args.get("Season")
     return jsonify(nba_api.get_shotchart(playerID, season))
 
+@app.route('/playerradar', methods=['GET'])
+def get_player_radar():
+    playerID = request.args.get("PlayerID")
+    season = request.args.get("Season")
+    return jsonify(nba_api.get_playerradar(playerID, season))
+
 @app.route('/commonallplayers', methods=['GET'])
 def get_all_players():
     return jsonify(nba_api.get_allplayers())
