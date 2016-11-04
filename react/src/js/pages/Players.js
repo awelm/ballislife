@@ -44,6 +44,9 @@ var radarOptions = {
                     beginAtZero: true
                 }
             }
+            
+const titleDiv = {
+  marginTop: '0px',
 }
 
 import * as PlayerActions from "../actions/PlayerActions";
@@ -52,8 +55,12 @@ import PlayerStore from "../stores/PlayerStore";
 export default class Players extends React.Component {
   constructor() {
     super();
+    this.changePlayer = this.changePlayer.bind(this);
     this.state = {
       players: PlayerStore.getAll(),
+      curPlayer: PlayerStore.getCurPlayer(),
+      curPlayerInfo: PlayerStore.getCurPlayerInfo(),
+      curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
     };
   }
 
@@ -70,9 +77,22 @@ export default class Players extends React.Component {
     PlayerActions.getAllPlayers();
   }
 
+  changePlayer(event) {
+    console.log(event.target.value);
+    PlayerActions.getPlayerInfo(event.target.value);
+    this.setState({
+      curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
+      curPlayer: event.target.value,
+      curPlayerInfo: PlayerStore.getCurPlayerInfo(),
+     });
+    console.log(this.state.curPlayerHighlights);
+    console.log(PlayerStore.getCurPlayerHighlights());
+  }
+
   render() {
     const { params } = this.props;
-    const { players } = this.state;
+    const { players, curPlayer, curPlayerInfo } = this.state;
+    const playerHighlights = curPlayerInfo['resultSets'][1]['rowSet'][0];
 
     const playerList = players.map((player) => {
       return <option key={player.id} value={player.id}>{ player.name }</option>;
@@ -85,10 +105,10 @@ export default class Players extends React.Component {
         </div>
         <div className="col-md-3">
            <div className="well">
-              <h2 className="player-name">Player Name</h2>
+              <h2 className="player-name">{ playerHighlights[1] }</h2>
               <div className="form-group">
                 <label className="control-label" htmlFor="playerName">Player</label>
-                  <select className="form-control" id="playerName">
+                  <select className="form-control" id="playerName" value={this.state.curPlayer}  onChange={this.changePlayer}>
                     { playerList }
                   </select>
               </div>
@@ -166,6 +186,27 @@ export default class Players extends React.Component {
               </div>
            </div>
         </div>
+      <div className="col-md-9">
+        <h3 style={titleDiv}>Career Average</h3>
+        <table className="table table-striped">
+          <thead>
+            <tr className="info">
+              <th>Points</th>
+              <th>Assists</th>
+              <th>Rebounds</th>
+              <th>All Star Appearances</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{ playerHighlights[3] }</td>
+              <td>{ playerHighlights[4] }</td>
+              <td>{ playerHighlights[5] }</td>
+              <td>{ playerHighlights[6] }</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div className="col-md-9" style={heatMapDiv}>
         <ReactHeatmap max={5} data={data} />
       </div>
@@ -174,7 +215,7 @@ export default class Players extends React.Component {
       </div>
       <div className="col-md-9">
         <h3>2016-2017 Summary Stats</h3>
-        <table className="table table-striped table-hover ">
+        <table className="table table-striped table-hover">
           <thead>
             <tr>
               <th>Zone</th>
