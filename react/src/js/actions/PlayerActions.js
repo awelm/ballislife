@@ -33,3 +33,18 @@ export function getPlayerInfo(id) {
       console.error(error);
     });
 }
+
+export function getShotChart(id) {
+  dispatcher.dispatch({type: "FETCH_SHOT_CHART"});
+  var myRequest = new Request('http://localhost:5000/shotchartdetail?PlayerID=' + id);
+  fetch(myRequest)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson);
+      dispatcher.dispatch({type: "RECIEVE_SHOT_CHART", shotChart: responseJson });
+    })
+    .catch((error) => {
+      dispatcher.dispatch({type: "RECIEVE_CHART_ERROR"});
+      console.error(error);
+    });
+}

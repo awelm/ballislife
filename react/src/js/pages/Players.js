@@ -44,7 +44,8 @@ var radarOptions = {
                     beginAtZero: true
                 }
             }
-            
+}
+
 const titleDiv = {
   marginTop: '0px',
 }
@@ -61,6 +62,7 @@ export default class Players extends React.Component {
       curPlayer: PlayerStore.getCurPlayer(),
       curPlayerInfo: PlayerStore.getCurPlayerInfo(),
       curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
+      curPlayerShotChart: PlayerStore.getCurPlayerShotChart()
     };
   }
 
@@ -68,6 +70,10 @@ export default class Players extends React.Component {
     PlayerStore.on("change", () => {
       this.setState({
         players: PlayerStore.getAll(),
+        curPlayer: PlayerStore.getCurPlayer(),
+        curPlayerInfo: PlayerStore.getCurPlayerInfo(),
+        curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
+        curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
       })
     })
     PlayerActions.getAllPlayers();
@@ -80,10 +86,12 @@ export default class Players extends React.Component {
   changePlayer(event) {
     console.log(event.target.value);
     PlayerActions.getPlayerInfo(event.target.value);
+    PlayerActions.getShotChart(event.target.value);
     this.setState({
       curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
       curPlayer: event.target.value,
       curPlayerInfo: PlayerStore.getCurPlayerInfo(),
+      curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
      });
     console.log(this.state.curPlayerHighlights);
     console.log(PlayerStore.getCurPlayerHighlights());
@@ -91,7 +99,31 @@ export default class Players extends React.Component {
 
   render() {
     const { params } = this.props;
-    const { players, curPlayer, curPlayerInfo } = this.state;
+    const { players, curPlayer, curPlayerInfo, curPlayerShotChart } = this.state;
+    console.log(curPlayerShotChart);
+    const updatedShotChart = curPlayerShotChart.map((obj) => {
+      obj.x += 300;
+      obj.x /= 6;
+      obj.y /= 4;
+
+      var x = obj.x;
+      if (obj.x < 30) {
+        x = obj.x-10;
+      }
+      else if (obj.x > 70) {
+        x = obj.x+10;
+      }
+      else {
+        x = obj.x;
+      }
+
+      return {
+        x: x,
+        y: (100-obj.y-25)/.8,
+        value: 1
+      }
+    });
+    console.log(updatedShotChart);
     const playerHighlights = curPlayerInfo['resultSets'][1]['rowSet'][0];
 
     const playerList = players.map((player) => {
@@ -208,7 +240,7 @@ export default class Players extends React.Component {
         </table>
       </div>
       <div className="col-md-9" style={heatMapDiv}>
-        <ReactHeatmap max={5} data={data} />
+        <ReactHeatmap max={100} data={updatedShotChart} />
       </div>
       <div className="col-md-9">
         <RadarChart data={radarData} options={radarOptions} />
