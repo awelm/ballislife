@@ -1,0 +1,18 @@
+sudo: false
+
+language: node_js
+
+node_js:
+  - 6
+  - 4
+
+cache:
+  directories:
+    - react/node_modules
+
+script:
+  - node --version
+  - npm --version
+  - cd react
+  - npm i
+  - npm run test

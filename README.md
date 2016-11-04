@@ -17,6 +17,15 @@ npm i
 npm start
 ```
 
+## Linting
+```
+cd react
+npm run lint
+
+# auto-fix all possible eslint rules
+npm run lint -- --fix
+```
+
 ## Contributing
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`

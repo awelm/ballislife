@@ -1,16 +1,36 @@
-var debug = process.env.NODE_ENV !== "production";
-var webpack = require('webpack');
-var path = require('path');
+const debug = process.env.NODE_ENV !== 'production';
+const webpack = require('webpack');
 
-var config = {
-   entry: './src/js/main.js',
+const config = {
+  entry: './src/js/main.js',
 
+  devServer: {
+    inline: true,
+    port: 8080
+  },
 
-   devServer: {
-      inline: true,
-      port: 8080
-   },
+  module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      }
+    ],
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel',
 
+        query: {
+          presets: ['es2015', 'react']
+        }
+      }
+    ]
+  },
+  plugins: debug ? [] : [
+=======
    module: {
       loaders: [
          {
@@ -31,10 +51,14 @@ var config = {
    },
 
    plugins: debug ? [] : [
+>>>>>>> master
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-   ],
-}
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: false,
+      sourcemap: true
+    })
+  ]
+};
 
 module.exports = config;
