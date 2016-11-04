@@ -1,5 +1,16 @@
 import React from 'react';
 
+let ReactHeatmap = require('react-heatmap');
+
+
+let data = [{ x: 10, y: 15, value: 5}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}];
+
+const heatMapDiv = {
+    height: '521px',
+    width: '808px',
+    backgroundImage: 'url("./src/images/shot_chart.jpg")',
+};
+
 export default function Players({ player }) {
   return (
     <div className="row">
@@ -86,6 +97,9 @@ export default function Players({ player }) {
             </select>
           </div>
         </div>
+      </div>
+      <div className="col-md-9" style={heatMapDiv}>
+        <ReactHeatmap max={5} data={data} />
       </div>
       <div className="col-md-9">
         <h3>2016-2017 Summary Stats</h3>
