@@ -18,7 +18,7 @@ ReactDOM.render(
     <Route path="/" component={Layout}>
       <IndexRoute component={Home}/>
       <Route path="games" name="games" component={Games}></Route>
-      <Route path="players(/:player)" name="players" component={Players}></Route>
+      <Route path="players" name="players" component={Players}></Route>
       <Route path="stats" name="stats" component={Stats}></Route>
       <Route path="teams" name="teams" component={Teams}></Route>
       <Route path="top-stories" name="topStories" component={TopStories}></Route>
