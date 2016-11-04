@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
 
-import Nav from "./layout/Nav";
-import Footer from "./layout/Footer";
+import Nav from './layout/Nav';
+import Footer from './layout/Footer';
 
 export default class Layout extends Component {
   constructor() {
     super();
     this.state = {
-      title: "Welcome"
+      title: 'Welcome'
     };
   }
 

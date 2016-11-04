@@ -1,4 +1,4 @@
-const debug = process.env.NODE_ENV !== "production";
+const debug = process.env.NODE_ENV !== 'production';
 const webpack = require('webpack');
 const path = require('path');
 
@@ -16,6 +16,13 @@ const config = {
   },
 
   module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      }
+    ],
     loaders: [
       {
         test: /\.jsx?$/,

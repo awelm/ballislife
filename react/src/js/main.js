@@ -15,11 +15,11 @@ const app = document.getElementById('app');
 ReactDOM.render(
   <Router history={hashHistory}>
     <Route path="/" component={Layout}>
-      <Route path="games" component={Games}></Route>
-      <Route path="players(/:player)" component={Players}></Route>
-      <Route path="stats" component={Stats}></Route>
-      <Route path="teams" component={Teams}></Route>
-      <Route path="top-stories" component={TopStories}></Route>
+      <Route path="games" component={Games} />
+      <Route path="players(/:player)" component={Players} />
+      <Route path="stats" component={Stats} />
+      <Route path="teams" component={Teams} />
+      <Route path="top-stories" component={TopStories} />
     </Route>
   </Router>,
   app
