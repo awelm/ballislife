@@ -5,6 +5,38 @@ HEADERS = {'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleW
 
 # map player names to IDs so front end can query just based on name
 player_name2id = {}
+team_name2id = {
+  'hawks': 1610612737,
+  'celtics':  1610612738,
+  'nets': 1610612751,
+  'hornets': 1610612766,
+  'bulls': 1610612741,
+  'cavaliers': 1610612739,
+  'mavericks':  1610612742,
+  'nuggets':  1610612743,
+  'pistons': 1610612765,
+  'warriors': 1610612744,
+  'rockets': 1610612745,
+  'pacers':  1610612754,
+  'clippers':  1610612746,
+  'lakers':  1610612747,
+  'grizzlies': 1610612763,
+  'heat':  1610612748,
+  'bucks': 1610612749,
+  'timberwolves':  1610612750,
+  'pelicans':  1610612740,
+  'knicks': 1610612752,
+  'thunder': 1610612760,
+  'magic': 1610612753,
+  '76ers':  1610612755,
+  'suns':  1610612756,
+  'trailblazers':  1610612757,
+  'kings':  1610612758,
+  'spurs': 1610612759,
+  'raptors': 1610612761,
+  'jazz': 1610612762,
+  'wizards':  1610612764
+}
 
 # TODO: stop relying on constant indices and index based on header info returned from API calls
 # ^this is because the NBA api changes often
@@ -244,7 +276,8 @@ def get_playerradar(player, season):
 
   return radar
 
-def get_teaminfo(season, teamid, seasontype, leagueid="00"):
+def get_teaminfo(season, team, seasontype, leagueid="00"):
+  teamid = team_name2id[team]
   params = {
     'Season': season,
     'TeamID': teamid,

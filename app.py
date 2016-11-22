@@ -160,7 +160,7 @@ def get_player_radar():
 @app.route('/commonallplayers', methods=['GET'])
 @crossdomain(origin='*')
 def get_all_players():
-    season = request.args.get("Season")
+    season = request.args.get("Season") or "2016-17"
     leagueID = request.args.get("LeagueID") or "00"
     return jsonify(nba_api.get_allplayers(season, leagueID))
 
@@ -174,9 +174,9 @@ def get_player_info():
 @crossdomain(origin='*')
 def get_team_info():
     season = request.args.get("Season")
-    teamid = request.args.get("TeamID")
+    team = request.args.get("Team")
     seasontype = request.args.get("SeasonType") or "Regular Season"
-    return jsonify(nba_api.get_teaminfo(season, teamid, seasontype))
+    return jsonify(nba_api.get_teaminfo(season, team, seasontype))
 
 @app.route('/follow_new_entity', methods=['POST'])
 @crossdomain(origin='*')
