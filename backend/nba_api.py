@@ -114,8 +114,7 @@ def get_shotchart(player, season, playerposition='', contextmeasure='FGA', datef
 
   return [{'x':row[loc_x], 'y':row[loc_y], 'made':row[shot_made]} for row in player_shots]
 
-
-def get_allplayers():
+def initialize_id_map():
   params = {
     'LeagueID' : '00',
     'Season' : '2016-17', # choose most recent season for most inclusive list
@@ -125,6 +124,16 @@ def get_allplayers():
   player_profiles = data['resultSets'][0]['rowSet']
   global player_name2id
   player_name2id = {row[2]: row[0] for row in player_profiles}
+
+def get_allplayers(season, leagueid="00"):
+  params = {
+    'LeagueID' : '00',
+    'Season' : season,
+    'IsOnlyCurrentSeason' : 1 # only current season
+  }
+  data = use_json_endpoint('commonallplayers', params)
+  player_profiles = data['resultSets'][0]['rowSet']
+  return [row[2] for row in player_profiles]
 
 def get_playerprofile(player, permode='PerGame'):
   playerid = player_name2id[player]
@@ -165,3 +174,12 @@ def get_playerradar(player, season):
   ]
 
   return radar
+
+def get_teaminfo(season, teamid, seasontype, leagueid="00"):
+  params = {
+    'Season': season,
+    'TeamID': teamid,
+    'LeagueID': leagueid,
+    'SeasonType': seasontype
+  }
+  return use_json_endpoint('teaminfocommon', params)
