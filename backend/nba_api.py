@@ -38,6 +38,9 @@ team_name2id = {
   'wizards':  1610612764
 }
 
+# cache computed results for players in a season
+players_season = {}
+
 # TODO: stop relying on constant indices and index based on header info returned from API calls
 # ^this is because the NBA api changes often
 
@@ -215,6 +218,7 @@ def get_shotchart(player, season, shottype=None, shotzone=None, shotarea=None, s
 
   # return [{'x':row[loc_x], 'y':row[loc_y], 'made':row[shot_made]} for row in player_shots]
 
+# intialize mapping of player name to id
 def initialize_id_map():
   params = {
     'LeagueID' : '00',
@@ -226,16 +230,20 @@ def initialize_id_map():
   global player_name2id
   player_name2id = {row[2]: row[0] for row in player_profiles}
 
-def get_allplayers(season, leagueid="00"):
-  params = {
-    'LeagueID' : '00',
-    'Season' : season,
-    'IsOnlyCurrentSeason' : 1 # only current season
-  }
-  data = use_json_endpoint('commonallplayers', params)
-  player_profiles = data['resultSets'][0]['rowSet']
-  return [row[2] for row in player_profiles]
+# return all players that ever played in the NBA
+# specifcally returns mapping of name to id
+def get_allplayers():
+  # params = {
+  #   'LeagueID' : '00',
+  #   'Season' : season,
+  #   'IsOnlyCurrentSeason' : 1 # only current season
+  # }
+  # data = use_json_endpoint('commonallplayers', params)
+  # player_profiles = data['resultSets'][0]['rowSet']
+  # return [row[2] for row in player_profiles]
+  return player_name2id
 
+# returns player averages for each season
 def get_playerprofile(player, permode='PerGame'):
   playerid = player_name2id[player]
   params = {
@@ -244,6 +252,8 @@ def get_playerprofile(player, permode='PerGame'):
   }
   return use_json_endpoint('playerprofilev2', params)
 
+# returns player metadata
+# e.g. what college, height, weight, etc
 def get_playerinfo(player):
   playerid = player_name2id[player]
   params = {
@@ -251,6 +261,7 @@ def get_playerinfo(player):
   }
   return use_json_endpoint('commonplayerinfo', params)
 
+# returns radar for player for a particular season
 def get_playerradar(player, season):
   raw_data = get_playerprofile(player)
   data = raw_data['resultSets'][8]
@@ -276,6 +287,9 @@ def get_playerradar(player, season):
 
   return radar
 
+# returns general team info
+# WL record, division, division/conf rank, stats per game
+# points score against teams, points scored on team <- on average
 def get_teaminfo(season, team, seasontype, leagueid="00"):
   teamid = team_name2id[team]
   params = {
@@ -285,3 +299,33 @@ def get_teaminfo(season, team, seasontype, leagueid="00"):
     'SeasonType': seasontype
   }
   return use_json_endpoint('teaminfocommon', params)
+
+# returns roster for team for a season
+# includes coaches
+def get_teamroster(season, team):
+  teamid = team_name2id[team]
+  params = {
+    'Season': season,
+    'TeamID': teamid
+  }
+  return use_json_endpoint('commonteamroster', params)
+
+# get all players for a specific season
+def get_playersseason(season):
+  global players_season
+  if season in players_season:
+    return players_season[season]
+
+  temp_arr = []
+  for team in team_name2id:
+    info = get_teamroster(season, team)
+    meta_data = info['resultSets'][0]['headers']
+    name_index = meta_data.index("PLAYER")
+
+    roster = info['resultSets'][0]['rowSet']
+    for p in roster:
+      temp_arr.append(p[name_index])
+
+  players_season[season] = temp_arr
+  return temp_arr
+
