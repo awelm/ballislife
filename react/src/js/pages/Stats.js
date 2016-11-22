@@ -1,32 +1,26 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
+import Image from "../components/Image";
+
 export default class Stats extends React.Component {
   constructor() {
     super(); 
     /* Add props, state here */ 
   }
   render() {
-    const widthStyle = {
-      width: "100%"
-    };
+    /* Const values for now */ 
+    const Images = [
+      "http://thesource.com/wp-content/uploads/2015/03/James-Harden1.jpg",
+      "http://www.knbr.com/wp-content/uploads/sites/82/2015/11/CURRY-PROF.jpg",
+      "http://nutsandboltssports.com/wp-content/uploads/2016/10/westbrook.jpg"
+    ].map((img_url, i) => <Image key={i} img_url={img_url} />);
     return (
       <div>
-        
-        <div class="container-fluid">
+        <h1> Top Performers Today </h1> 
           <div class="row">
-            <div class="col-md-4">
-              <img src="http://thesource.com/wp-content/uploads/2015/03/James-Harden1.jpg" alt="James Harden" />
-            </div> 
-            <div class="col-md-4" >
-              <img src="http://www.knbr.com/wp-content/uploads/sites/82/2015/11/CURRY-PROF.jpg" alt="Stephen Curry" />
-            </div>
-            <div class="col-md-4">
-              <img src="http://nutsandboltssports.com/wp-content/uploads/2016/10/westbrook.jpg" alt="Russell Westbrook" />
-            </div> 
-
+            {Images}
           </div> 
-        </div>
       </div> 
       );
   }

@@ -22,8 +22,7 @@ export default class TopStories extends React.Component {
 
 	    return (
 	      <div>
-	        <h1>Archives</h1>
-	        article: {article}, date: {date}, filter: {filter}
+	        <h1>Top Stories</h1>
 	        <div class="row">{Articles}</div>
 	      </div>
 	    );
