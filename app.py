@@ -5,6 +5,9 @@ from functools import update_wrapper
 import requests
 import sys
 import MySQLdb
+import feedparser
+from bson import json_util
+import json
 
 sys.path.insert(0, './backend')
 import nba_api
@@ -205,6 +208,15 @@ def get_followings():
     except:
         print "Error querying the followings data"
         return jsonify("{status: failed}")
+
+@app.route('/get_news', methods=['GET'])
+@crossdomain(origin='*')
+def get_news():
+    team = request.args.get('team')
+    rss_link = 'http://www.nba.com/' + team.lower() + '/rss.xml'
+    team_news = feedparser.parse(rss_link)
+    team_news_string = str(team_news)
+    return jsonify(team_news_string)
 
 if __name__ == '__main__':
     app.run(debug=True)
