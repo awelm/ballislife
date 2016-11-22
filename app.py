@@ -10,9 +10,9 @@ sys.path.insert(0, './backend')
 import nba_api
 
 app = Flask(__name__)
-
 #database connection
 con = MySQLdb.connect('localhost', 'root', '', 'nba')
+nba_api.initialize_id_map()
 
 # For Cors
 def crossdomain(origin=None, methods=None, headers=None,
@@ -130,35 +130,45 @@ def get_tasks():
 @crossdomain(origin='*')
 def get_player_stats():
     endpointUrl = "http://stats.nba.com/stats/playercareerstats?"
-    perMode = request.args.get("PerMode")
-    leagueID = request.args.get("LeagueID")
-    playerID = request.args.get("PlayerID")
-    return jsonify(nba_api.get_player_career_stats(perMode, leagueID, playerID))
+    perMode = request.args.get("PerMode") or "PerGame"
+    leagueID = request.args.get("LeagueID") or "00"
+    player = request.args.get("Player")
+    return jsonify(nba_api.get_player_career_stats(player, leagueID, perMode))
 
 @app.route('/shotchartdetail', methods=['GET'])
 @crossdomain(origin='*')
 def get_player_shot_chart():
-    playerID = request.args.get("PlayerID")
+    player = request.args.get("Player")
     season = request.args.get("Season")
-    return jsonify(nba_api.get_shotchart(playerID, season))
+    return jsonify(nba_api.get_shotchart(player, season))
 
 @app.route('/playerradar', methods=['GET'])
 @crossdomain(origin='*')
 def get_player_radar():
-    playerID = request.args.get("PlayerID")
+    player = request.args.get("Player")
     season = request.args.get("Season")
-    return jsonify(nba_api.get_playerradar(playerID, season))
+    return jsonify(nba_api.get_playerradar(player, season))
 
 @app.route('/commonallplayers', methods=['GET'])
 @crossdomain(origin='*')
 def get_all_players():
-    return jsonify(nba_api.get_allplayers())
+    season = request.args.get("Season")
+    leagueID = request.args.get("LeagueID") or "00"
+    return jsonify(nba_api.get_allplayers(season, leagueID))
 
 @app.route('/commonplayerinfo', methods=['GET'])
 @crossdomain(origin='*')
 def get_player_info():
-    playerID = request.args.get("PlayerID")
-    return jsonify(nba_api.get_playerinfo(playerID))
+    player = request.args.get("Player")
+    return jsonify(nba_api.get_playerinfo(player))
+
+@app.route('/teaminfocommon', methods=['GET'])
+@crossdomain(origin='*')
+def get_team_info():
+    season = request.args.get("Season")
+    teamid = request.args.get("TeamID")
+    seasontype = request.args.get("SeasonType") or "Regular Season"
+    return jsonify(nba_api.get_teaminfo(season, teamid, seasontype))
 
 @app.route('/follow_new_entity', methods=['POST'])
 @crossdomain(origin='*')

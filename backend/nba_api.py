@@ -3,6 +3,12 @@ import requests
 NBA_STATS_URL = 'http://stats.nba.com/stats/{endpoint}'
 HEADERS = {'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"}
 
+# map player names to IDs so front end can query just based on name
+player_name2id = {}
+
+# TODO: stop relying on constant indices and index based on header info returned from API calls
+# ^this is because the NBA api changes often
+
 def use_json_endpoint(endpoint, params):
   """
     sends get request to endpoint with params
@@ -12,7 +18,8 @@ def use_json_endpoint(endpoint, params):
   ret.raise_for_status()
   return ret.json()
 
-def get_player_career_stats(perMode, leagueID, playerID):
+def get_player_career_stats(player, leagueID="00", perMode="PerGame"):
+    playerID = player_name2id[player]
     params = {
         "PerMode": perMode,
         "LeagueID": leagueID,
@@ -69,7 +76,8 @@ def get_league_shotavg(season, playerposition='', contextmeasure='FGA', datefrom
   return league_shots
   #return [{'x':row[-4], 'y':row[-3], 'made':row[-1]} for row in player_shots]
 
-def get_shotchart(playerid, season, playerposition='', contextmeasure='FGA', datefrom='', dateto='', gameid='', gamesegment='', lastngames=0, leagueid='00', location='', month=0, opponentteamid=0, outcome='', period=0, position='', rookieyear='', seasonsegment='', seasontype='Regular Season', teamid=0, vsconference='', vsdivision=''):
+def get_shotchart(player, season, playerposition='', contextmeasure='FGA', datefrom='', dateto='', gameid='', gamesegment='', lastngames=0, leagueid='00', location='', month=0, opponentteamid=0, outcome='', period=0, position='', rookieyear='', seasonsegment='', seasontype='Regular Season', teamid=0, vsconference='', vsdivision=''):
+  playerid = player_name2id[player]
   params = {
     'PlayerID' : playerid,
     'PlayerPosition' : playerposition,
@@ -96,10 +104,17 @@ def get_shotchart(playerid, season, playerposition='', contextmeasure='FGA', dat
   }
   data = use_json_endpoint("shotchartdetail", params)
   player_shots = data['resultSets'][0]['rowSet']
-  return [{'x':row[-4], 'y':row[-3], 'made':row[-1]} for row in player_shots]
+  meta_data =  data['resultSets'][0]['headers']
 
+  # we grab the indices from the meta data instead of having constant indices because
+  # the nba api changes a lot but keeps the names of these fields consistent
+  loc_x = meta_data.index('LOC_X')
+  loc_y = meta_data.index('LOC_Y')
+  shot_made = meta_data.index('SHOT_MADE_FLAG')
 
-def get_allplayers():
+  return [{'x':row[loc_x], 'y':row[loc_y], 'made':row[shot_made]} for row in player_shots]
+
+def initialize_id_map():
   params = {
     'LeagueID' : '00',
     'Season' : '2016-17', # choose most recent season for most inclusive list
@@ -107,23 +122,36 @@ def get_allplayers():
   }
   data = use_json_endpoint('commonallplayers', params)
   player_profiles = data['resultSets'][0]['rowSet']
-  return [{'id' : row[0], 'name': row[2]} for row in player_profiles]
+  global player_name2id
+  player_name2id = {row[2]: row[0] for row in player_profiles}
 
-def get_playerprofile(playerid, permode='PerGame'):
+def get_allplayers(season, leagueid="00"):
+  params = {
+    'LeagueID' : '00',
+    'Season' : season,
+    'IsOnlyCurrentSeason' : 1 # only current season
+  }
+  data = use_json_endpoint('commonallplayers', params)
+  player_profiles = data['resultSets'][0]['rowSet']
+  return [row[2] for row in player_profiles]
+
+def get_playerprofile(player, permode='PerGame'):
+  playerid = player_name2id[player]
   params = {
     'PlayerID' : playerid,
     'PerMode' : permode
   }
   return use_json_endpoint('playerprofilev2', params)
 
-def get_playerinfo(playerid):
+def get_playerinfo(player):
+  playerid = player_name2id[player]
   params = {
     'PlayerID' : playerid
   }
   return use_json_endpoint('commonplayerinfo', params)
 
-def get_playerradar(playerid, season):
-  raw_data = get_playerprofile(playerid)
+def get_playerradar(player, season):
+  raw_data = get_playerprofile(player)
   data = raw_data['resultSets'][8]
   rows = data['rowSet']
 
@@ -146,3 +174,12 @@ def get_playerradar(playerid, season):
   ]
 
   return radar
+
+def get_teaminfo(season, teamid, seasontype, leagueid="00"):
+  params = {
+    'Season': season,
+    'TeamID': teamid,
+    'LeagueID': leagueid,
+    'SeasonType': seasontype
+  }
+  return use_json_endpoint('teaminfocommon', params)
