@@ -9,7 +9,7 @@ import sys
 sys.path.insert(0, './backend')
 import nba_api
 
-nba_api.get_allplayers()
+nba_api.initialize_id_map()
 
 # For Cors
 def crossdomain(origin=None, methods=None, headers=None,
@@ -156,16 +156,26 @@ def get_player_radar():
     season = request.args.get("Season")
     return jsonify(nba_api.get_playerradar(player, season))
 
-# @app.route('/commonallplayers', methods=['GET'])
-# @crossdomain(origin='*')
-# def get_all_players():
-#     return jsonify(nba_api.get_allplayers())
+@app.route('/commonallplayers', methods=['GET'])
+@crossdomain(origin='*')
+def get_all_players():
+    season = request.args.get("Season")
+    leagueID = request.args.get("LeagueID") or "00"
+    return jsonify(nba_api.get_allplayers(season, leagueID))
 
 @app.route('/commonplayerinfo', methods=['GET'])
 @crossdomain(origin='*')
 def get_player_info():
     player = request.args.get("Player")
     return jsonify(nba_api.get_playerinfo(player))
+
+@app.route('/teaminfocommon', methods=['GET'])
+@crossdomain(origin='*')
+def get_team_info():
+    season = request.args.get("Season")
+    teamid = request.args.get("TeamID")
+    seasontype = request.args.get("SeasonType") or "Regular Season"
+    return jsonify(nba_api.get_teaminfo(season, teamid, seasontype))
 
 if __name__ == '__main__':
     app.run(debug=True)
