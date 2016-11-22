@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-import Nav from './layout/Nav';
-import Footer from './layout/Footer';
+import Nav from '../components/Layout/Nav';
+import Footer from '../components/Layout/Footer';
 
 export default class Layout extends Component {
   constructor() {
