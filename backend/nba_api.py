@@ -76,7 +76,17 @@ def get_league_shotavg(season, playerposition='', contextmeasure='FGA', datefrom
   return league_shots
   #return [{'x':row[-4], 'y':row[-3], 'made':row[-1]} for row in player_shots]
 
-def get_shotchart(player, season, playerposition='', contextmeasure='FGA', datefrom='', dateto='', gameid='', gamesegment='', lastngames=0, leagueid='00', location='', month=0, opponentteamid=0, outcome='', period=0, position='', rookieyear='', seasonsegment='', seasontype='Regular Season', teamid=0, vsconference='', vsdivision=''):
+# shottype must be one of:
+# u'3PT Field Goal', u'2PT Field Goal'
+#
+# shotzone must be one of:
+# u'Backcourt', u'In The Paint (Non-RA)', u'Right Corner 3', u'Above the Break 3', u'Left Corner 3', u'Restricted Area', u'Mid-Range'
+#
+# shotarea must be one of:
+# u'Center(C)', u'Left Side(L)', u'Right Side Center(RC)', u'Right Side(R)', u'Back Court(BC)', u'Left Side Center(LC)'
+#
+# shotdist must be an integer
+def get_shotchart(player, season, shottype=None, shotzone=None, shotarea=None, shotdist=None, playerposition='', contextmeasure='FGA', datefrom='', dateto='', gameid='', gamesegment='', lastngames=0, leagueid='00', location='', month=0, opponentteamid=0, outcome='', period=0, position='', rookieyear='', seasonsegment='', seasontype='Regular Season', teamid=0, vsconference='', vsdivision=''):
   playerid = player_name2id[player]
   params = {
     'PlayerID' : playerid,
@@ -111,8 +121,67 @@ def get_shotchart(player, season, playerposition='', contextmeasure='FGA', datef
   loc_x = meta_data.index('LOC_X')
   loc_y = meta_data.index('LOC_Y')
   shot_made = meta_data.index('SHOT_MADE_FLAG')
+  shot_type = meta_data.index('SHOT_TYPE')
+  shot_zone_b = meta_data.index('SHOT_ZONE_BASIC')
+  shot_zone_a = meta_data.index('SHOT_ZONE_AREA')
+  shot_dist = meta_data.index('SHOT_DISTANCE')
+  # shot_zone_r = meta_data.index('SHOT_ZONE_RANGE')
+  # action_type = meta_data.index('ACTION_TYPE')
 
-  return [{'x':row[loc_x], 'y':row[loc_y], 'made':row[shot_made]} for row in player_shots]
+  shot_info = []
+  
+  if shotdist is not None:
+    shotdist = int(shotdist)
+
+  for row in player_shots:
+    if (shottype is not None) and (row[shot_type] != shottype):
+      continue
+    if (shotzone is not None) and (row[shot_zone_b] != shotzone):
+      continue
+    if (shotarea is not None) and (row[shot_zone_a] != shotarea):
+      continue
+    if (shotdist is not None) and (row[shot_dist] != shotdist):
+        continue
+    shot_info.append({'x':row[loc_x], 'y':row[loc_y], 'made':row[shot_made]})
+
+  return shot_info
+
+  # actions = set()
+  # shottypes = set()
+  # shotzoneb = set()
+  # shotzonea = set()
+  # shotzoner = set()
+  # shotdist = set()
+  # for row in player_shots:
+  #   actions.add(row[action_type])
+  #   shottypes.add(row[shot_type])
+  #   shotzoneb.add(row[shot_zone_b])
+  #   shotzonea.add(row[shot_zone_a])
+  #   shotzoner.add(row[shot_zone_r])
+  #   shotdist.add(row[shot_dist])
+
+  # print "actions"
+  # print actions
+  # print "\nshot types"
+  # print shottypes
+  # print "\nshot zone basic"
+  # print shotzoneb
+  # print "\nshot zone area"
+  # print shotzonea
+  # print "\nshot zone range"
+  # print shotzoner
+  # print "\nshot distance"
+  # print shotdist
+
+
+
+  # [u'GRID_TYPE', u'GAME_ID', u'GAME_EVENT_ID', u'PLAYER_ID', u'PLAYER_NAME', u'TEAM_ID',
+  #  u'TEAM_NAME', u'PERIOD', u'MINUTES_REMAINING', u'SECONDS_REMAINING', u'EVENT_TYPE',
+  #  u'ACTION_TYPE', u'SHOT_TYPE', u'SHOT_ZONE_BASIC', u'SHOT_ZONE_AREA', u'SHOT_ZONE_RANGE',
+  #  u'SHOT_DISTANCE', u'LOC_X', u'LOC_Y', u'SHOT_ATTEMPTED_FLAG', u'SHOT_MADE_FLAG', u'GAME_DATE',
+  #  u'HTM', u'VTM']
+
+  # return [{'x':row[loc_x], 'y':row[loc_y], 'made':row[shot_made]} for row in player_shots]
 
 def initialize_id_map():
   params = {

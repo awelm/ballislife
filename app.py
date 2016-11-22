@@ -143,7 +143,12 @@ def get_player_stats():
 def get_player_shot_chart():
     player = request.args.get("Player")
     season = request.args.get("Season")
-    return jsonify(nba_api.get_shotchart(player, season))
+    # filters
+    shottype = request.args.get("ShotType")
+    shotzone = request.args.get("ShotZone")
+    shotarea = request.args.get("ShotArea")
+    shotdist = request.args.get("ShotDist")
+    return jsonify(nba_api.get_shotchart(player, season, shottype, shotzone, shotarea, shotdist))
 
 @app.route('/playerradar', methods=['GET'])
 @crossdomain(origin='*')
