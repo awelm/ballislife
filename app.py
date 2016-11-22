@@ -1,14 +1,17 @@
-#!flask/bin/python
 from datetime import timedelta
 from flask import Flask, jsonify, make_response, request, current_app
 from functools import update_wrapper
 
 import requests
-
 import sys
+import MySQLdb
+
 sys.path.insert(0, './backend')
 import nba_api
 
+app = Flask(__name__)
+#database connection
+con = MySQLdb.connect('localhost', 'root', '', 'nba')
 nba_api.initialize_id_map()
 
 # For Cors
@@ -54,16 +57,6 @@ def crossdomain(origin=None, methods=None, headers=None,
     return decorator
 
 app = Flask(__name__)
-
-test_json_data = [
-            {
-                'test': 'hello',
-            },
-            {
-                'sample_json_key': 10,
-                'bs_array': [12,3,4,2]
-            }
-        ]
 
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
@@ -181,6 +174,42 @@ def get_team_info():
     teamid = request.args.get("TeamID")
     seasontype = request.args.get("SeasonType") or "Regular Season"
     return jsonify(nba_api.get_teaminfo(season, teamid, seasontype))
+
+@app.route('/follow_new_entity', methods=['POST'])
+@crossdomain(origin='*')
+def follow_new_entity():
+    u_id = request.form["u_id"]
+    follow_type = request.form["type"]
+    follow_name = request.form["name"]
+    cursor = con.cursor()
+    query = "INSERT INTO followings ( u_id, type, name) \
+            VALUES ('%s', '%d', '%s')" % \
+            (u_id, int(follow_type), follow_name)
+    try:
+        cursor.execute(query)
+        con.commit()
+        return jsonify("{status: success}")
+    except:
+        con.rollback()
+        print "Error inserting new following into database"
+    return jsonify("{status: failed}")
+
+@app.route('/get_followings', methods=['GET'])
+@crossdomain(origin='*')
+def get_followings():
+    u_id = request.args.get('u_id')
+    cursor = con.cursor()
+    query = "SELECT * FROM followings WHERE \
+            u_id = ('%s')" % \
+            (u_id)
+    try:
+        cursor.execute(query)
+        results = cursor.fetchall()
+        print results
+        return jsonify(results)
+    except:
+        print "Error querying the followings data"
+        return jsonify("{status: failed}")
 
 if __name__ == '__main__':
     app.run(debug=True)
