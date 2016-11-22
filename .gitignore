@@ -44,3 +44,4 @@ node_modules
 npm-debug.log
 
 flash/
+react/.DS_Store
