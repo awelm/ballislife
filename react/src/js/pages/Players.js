@@ -29,9 +29,40 @@ const radarOptions = {
     scaleStartValue: 0
 }
 
+const graphOptions = [
+    "Hexagon", "Radar", "Heatmap"
+]
+
 const titleDiv = {
   marginTop: '0px',
 }
+
+
+var GraphComponent = React.createClass({ 
+    
+  render: function() {
+    var curGraph = this.props.curGraph;
+  if (curGraph == graphOptions[0]) {
+    return (
+      <div>No Graph</div>
+    );
+  }
+  else if (curGraph == graphOptions[1]) {
+    return (      
+      <div className="col-md-9">
+        <RadarChart data={this.props.radarData} options={radarOptions} />
+      </div>
+    );
+  }
+  else {
+    return (  
+      <div className="col-md-9" style={heatMapDiv}>
+        <ReactHeatmap max={100} data={this.props.shotChart} />
+      </div>
+    );
+  }
+  }
+});
 
 import * as PlayerActions from "../actions/PlayerActions";
 import PlayerStore from "../stores/PlayerStore";
@@ -47,8 +78,14 @@ export default class Players extends React.Component {
       curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
       curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
       curPlayerRadar: PlayerStore.getCurPlayerRadar(),
+      curGraph: graphOptions[0]
     };
   }
+
+  setGraphOptions(option) {
+    this.setState( {curGraph: graphOptions[option]});
+  }
+  
 
   componentWillMount() {
     PlayerStore.on("change", () => {
@@ -86,7 +123,7 @@ export default class Players extends React.Component {
 
   render() {
     const { params } = this.props;
-    const { players, curPlayer, curPlayerInfo, curPlayerShotChart, curPlayerRadar } = this.state;
+    const { players, curPlayer, curPlayerInfo, curPlayerShotChart, curPlayerRadar, curGraph } = this.state;
     const playerHighlights = curPlayerInfo['resultSets'][1]['rowSet'][0];
     console.log(curPlayerShotChart);
 
@@ -168,19 +205,19 @@ export default class Players extends React.Component {
                  <label className="control-label" htmlFor="chartType">Chart Type</label>
                  <div className="radio">
                     <label>
-                       <input type="radio" name="optionsRadios" id="hexagonal" value="hexagonal" checked="" />
+                       <input type="radio" name="optionsRadios" id="hexagonal" value="hexagonal" checked="" onClick={() => this.setGraphOptions(0)}/>
                        Hexagonal
                     </label>
                  </div>
                  <div className="radio">
                    <label>
-                    <input type="radio" name="optionsRadios" id="radar" value="radar" />
+                    <input type="radio" name="optionsRadios" id="radar" value="radar" onClick={() => this.setGraphOptions(1)}/>
                     Radar
                    </label>
                  </div>
                  <div className="radio">
                    <label>
-                    <input type="radio" name="optionsRadios" id="heatMap" value="heatMap" />
+                    <input type="radio" name="optionsRadios" id="heatMap" value="heatMap" onClick={() => this.setGraphOptions(2)}/>
                     Heat Map
                    </label>
                  </div>
@@ -249,12 +286,7 @@ export default class Players extends React.Component {
           </tbody>
         </table>
       </div>
-      <div className="col-md-9" style={heatMapDiv}>
-        <ReactHeatmap max={100} data={updatedShotChart} />
-      </div>
-      <div className="col-md-9">
-        <RadarChart data={radarData} options={radarOptions} />
-      </div>
+      <GraphComponent radarData={radarData} shotChart={updatedShotChart} curGraph={curGraph}/>
     </div>
   );
 }
