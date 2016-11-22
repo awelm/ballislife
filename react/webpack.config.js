@@ -24,7 +24,7 @@ const config = {
       },
       {
         test: /\.scss$/,
-        loader: 'style!css!sass'
+        loader: 'style-loader!css-loader!sass-loader'
       }
     ]
   },
