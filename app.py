@@ -233,14 +233,33 @@ def get_followings():
         print "Error querying the followings data"
         return jsonify("{status: failed}")
 
-@app.route('/get_news', methods=['GET'])
+@app.route('/get_team_news', methods=['GET'])
 @crossdomain(origin='*')
-def get_news():
+def get_team_news():
     team = request.args.get('team')
     rss_link = 'http://www.nba.com/' + team.lower() + '/rss.xml'
     team_news = feedparser.parse(rss_link)
     team_news_string = str(team_news)
     return jsonify(team_news_string)
+
+@app.route('/get_player_news', methods=['GET'])
+@crossdomain(origin='*')
+def get_player_news():
+    print request.args.get('player')
+    player = str(request.args.get('player')).lower().replace("_", " ")
+    rss_link = "http://www.rotoworld.com/rss/feed.aspx?sport=nba&ftype=news&count=500&format=rss"
+    all_news = feedparser.parse(rss_link)
+    player_news = []
+    for item in all_news["items"]:
+        print item
+        if player in str(item["title"]).lower():
+            player_news.append({
+                "title": item["title"],
+                "summary": item["summary"],
+                "link": item["link"]
+                })
+    return jsonify({"news": player_news})
+
 
 @app.route('/playerpic', methods=['GET'])
 @crossdomain(origin='*')
