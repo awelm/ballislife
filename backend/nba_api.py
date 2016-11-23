@@ -1,10 +1,46 @@
 import requests
 
 NBA_STATS_URL = 'http://stats.nba.com/stats/{endpoint}'
+NBA_MEDIA_URL = 'http://stats.nba.com/media/players/230x185/'
 HEADERS = {'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"}
 
 # map player names to IDs so front end can query just based on name
 player_name2id = {}
+team_name2id = {
+  'hawks': 1610612737,
+  'celtics':  1610612738,
+  'nets': 1610612751,
+  'hornets': 1610612766,
+  'bulls': 1610612741,
+  'cavaliers': 1610612739,
+  'mavericks':  1610612742,
+  'nuggets':  1610612743,
+  'pistons': 1610612765,
+  'warriors': 1610612744,
+  'rockets': 1610612745,
+  'pacers':  1610612754,
+  'clippers':  1610612746,
+  'lakers':  1610612747,
+  'grizzlies': 1610612763,
+  'heat':  1610612748,
+  'bucks': 1610612749,
+  'timberwolves':  1610612750,
+  'pelicans':  1610612740,
+  'knicks': 1610612752,
+  'thunder': 1610612760,
+  'magic': 1610612753,
+  '76ers':  1610612755,
+  'suns':  1610612756,
+  'trailblazers':  1610612757,
+  'kings':  1610612758,
+  'spurs': 1610612759,
+  'raptors': 1610612761,
+  'jazz': 1610612762,
+  'wizards':  1610612764
+}
+
+# cache computed results for players in a season
+players_season = {}
 
 # TODO: stop relying on constant indices and index based on header info returned from API calls
 # ^this is because the NBA api changes often
@@ -183,6 +219,7 @@ def get_shotchart(player, season, shottype=None, shotzone=None, shotarea=None, s
 
   # return [{'x':row[loc_x], 'y':row[loc_y], 'made':row[shot_made]} for row in player_shots]
 
+# intialize mapping of player name to id
 def initialize_id_map():
   params = {
     'LeagueID' : '00',
@@ -194,16 +231,20 @@ def initialize_id_map():
   global player_name2id
   player_name2id = {row[2]: row[0] for row in player_profiles}
 
-def get_allplayers(season, leagueid="00"):
-  params = {
-    'LeagueID' : '00',
-    'Season' : season,
-    'IsOnlyCurrentSeason' : 1 # only current season
-  }
-  data = use_json_endpoint('commonallplayers', params)
-  player_profiles = data['resultSets'][0]['rowSet']
-  return [row[2] for row in player_profiles]
+# return all players that ever played in the NBA
+# specifcally returns mapping of name to id
+def get_allplayers():
+  # params = {
+  #   'LeagueID' : '00',
+  #   'Season' : season,
+  #   'IsOnlyCurrentSeason' : 1 # only current season
+  # }
+  # data = use_json_endpoint('commonallplayers', params)
+  # player_profiles = data['resultSets'][0]['rowSet']
+  # return [row[2] for row in player_profiles]
+  return player_name2id
 
+# returns player averages for each season
 def get_playerprofile(player, permode='PerGame'):
   playerid = player_name2id[player]
   params = {
@@ -212,6 +253,8 @@ def get_playerprofile(player, permode='PerGame'):
   }
   return use_json_endpoint('playerprofilev2', params)
 
+# returns player metadata
+# e.g. what college, height, weight, etc
 def get_playerinfo(player):
   playerid = player_name2id[player]
   params = {
@@ -219,6 +262,7 @@ def get_playerinfo(player):
   }
   return use_json_endpoint('commonplayerinfo', params)
 
+# returns radar for player for a particular season
 def get_playerradar(player, season):
   raw_data = get_playerprofile(player)
   data = raw_data['resultSets'][8]
@@ -244,7 +288,11 @@ def get_playerradar(player, season):
 
   return radar
 
-def get_teaminfo(season, teamid, seasontype, leagueid="00"):
+# returns general team info
+# WL record, division, division/conf rank, stats per game
+# points score against teams, points scored on team <- on average
+def get_teaminfo(season, team, seasontype, leagueid="00"):
+  teamid = team_name2id[team]
   params = {
     'Season': season,
     'TeamID': teamid,
@@ -252,3 +300,39 @@ def get_teaminfo(season, teamid, seasontype, leagueid="00"):
     'SeasonType': seasontype
   }
   return use_json_endpoint('teaminfocommon', params)
+
+# returns roster for team for a season
+# includes coaches
+def get_teamroster(season, team):
+  teamid = team_name2id[team]
+  params = {
+    'Season': season,
+    'TeamID': teamid
+  }
+  return use_json_endpoint('commonteamroster', params)
+
+# get all players for a specific season
+def get_playersseason(season):
+  global players_season
+  if season in players_season:
+    return players_season[season]
+
+  temp_arr = []
+  for team in team_name2id:
+    info = get_teamroster(season, team)
+    meta_data = info['resultSets'][0]['headers']
+    name_index = meta_data.index("PLAYER")
+
+    roster = info['resultSets'][0]['rowSet']
+    for p in roster:
+      temp_arr.append(p[name_index])
+
+  players_season[season] = temp_arr
+  return temp_arr
+
+def get_playerpic(player):
+  playerid = player_name2id[player]
+  endpoint = str(playerid) + '.png'
+  image_url = NBA_MEDIA_URL + endpoint
+  return image_url
+

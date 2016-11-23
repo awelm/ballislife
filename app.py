@@ -129,6 +129,7 @@ def doRequest(endpointUrl, params):
 def get_tasks():
     return jsonify({'test_json_data': test_json_data})
 
+# a players career stats
 @app.route('/playercareerstats', methods=['GET'])
 @crossdomain(origin='*')
 def get_player_stats():
@@ -138,6 +139,7 @@ def get_player_stats():
     player = request.args.get("Player")
     return jsonify(nba_api.get_player_career_stats(player, leagueID, perMode))
 
+# shot chart info
 @app.route('/shotchartdetail', methods=['GET'])
 @crossdomain(origin='*')
 def get_player_shot_chart():
@@ -150,6 +152,7 @@ def get_player_shot_chart():
     shotdist = request.args.get("ShotDist")
     return jsonify(nba_api.get_shotchart(player, season, shottype, shotzone, shotarea, shotdist))
 
+# player radar
 @app.route('/playerradar', methods=['GET'])
 @crossdomain(origin='*')
 def get_player_radar():
@@ -157,26 +160,42 @@ def get_player_radar():
     season = request.args.get("Season")
     return jsonify(nba_api.get_playerradar(player, season))
 
+# returns all players ever played in the nba
 @app.route('/commonallplayers', methods=['GET'])
 @crossdomain(origin='*')
 def get_all_players():
-    season = request.args.get("Season")
-    leagueID = request.args.get("LeagueID") or "00"
-    return jsonify(nba_api.get_allplayers(season, leagueID))
+    return jsonify(nba_api.get_allplayers())
 
+# return general info about player: height, weight, etc
 @app.route('/commonplayerinfo', methods=['GET'])
 @crossdomain(origin='*')
 def get_player_info():
     player = request.args.get("Player")
     return jsonify(nba_api.get_playerinfo(player))
 
+# returns general info about team: WL pct, team stats for each category (per game)
 @app.route('/teaminfocommon', methods=['GET'])
 @crossdomain(origin='*')
 def get_team_info():
     season = request.args.get("Season")
-    teamid = request.args.get("TeamID")
+    team = request.args.get("Team")
     seasontype = request.args.get("SeasonType") or "Regular Season"
-    return jsonify(nba_api.get_teaminfo(season, teamid, seasontype))
+    return jsonify(nba_api.get_teaminfo(season, team, seasontype))
+
+# return team roster for a season
+@app.route('/commonteamroster', methods=['GET'])
+@crossdomain(origin='*')
+def get_team_roster():
+    season = request.args.get("Season")
+    team = request.args.get("Team")
+    return jsonify(nba_api.get_teamroster(season, team))
+
+# return all players for a season
+@app.route('/playersseason', methods=['GET'])
+@crossdomain(origin='*')
+def get_players_season():
+    season = request.args.get("Season") or "2016-17"
+    return jsonify(nba_api.get_playersseason(season))
 
 @app.route('/follow_new_entity', methods=['POST'])
 @crossdomain(origin='*')
@@ -241,6 +260,12 @@ def get_player_news():
                 })
     return jsonify({"news": player_news})
 
+
+@app.route('/playerpic', methods=['GET'])
+@crossdomain(origin='*')
+def get_player_pic():
+    player = request.args.get("Player")
+    return nba_api.get_playerpic(player)
 
 if __name__ == '__main__':
     app.run(debug=True)

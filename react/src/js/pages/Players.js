@@ -1,14 +1,14 @@
 import React from 'react';
+import {ScatterplotChart} from 'react-easy-chart';
 
 let ReactHeatmap = require('react-heatmap');
 var RadarChart = require("react-chartjs-2").Radar;
-
-// let data = [{ x: 10, y: 15, value: 5}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}, { x: 50, y: 50, value: 2}];
 
 const heatMapDiv = {
     height: '521px',
     width: '808px',
     backgroundImage: 'url("./src/images/shot_chart.jpg")',
+    marginLeft: '20px',
 };
 
 const radarOptions = {
@@ -44,7 +44,9 @@ var GraphComponent = React.createClass({
     var curGraph = this.props.curGraph;
   if (curGraph == graphOptions[0]) {
     return (
-      <div>No Graph</div>
+      <div className="col-md-9" style={heatMapDiv}>
+        <ScatterplotChart data={this.props.scatterData} height={521} width={808}/>
+      </div>
     );
   }
   else if (curGraph == graphOptions[1]) {
@@ -127,6 +129,60 @@ export default class Players extends React.Component {
     const playerHighlights = curPlayerInfo['resultSets'][1]['rowSet'][0];
     console.log(curPlayerShotChart);
 
+
+    var scatterData = [
+    {
+      type: 'One',
+      x: 1,
+      y: 5
+    },
+    {
+      type: 'Two',
+      x: 3,
+      y: 1
+    },
+    {
+      type: 'Three',
+      x: 0,
+      y: 6
+    },
+    {
+      type: 'Four',
+      x: 5,
+      y: 2
+    },
+    {
+      type: 'Five',
+      x: 4,
+      y: 4
+    },
+    {
+      type: 'Six',
+      x: 5,
+      y: 9
+    },
+    {
+      type: 'Seven',
+      x: 9,
+      y: 1
+    },
+    {
+      type: 'Eight',
+      x: 5,
+      y: 6
+    },
+    {
+      type: 'Nine',
+      x: 3,
+      y: 9
+    },
+    {
+      type: 'Ten',
+      x: 7,
+      y: 9
+    }
+  ];
+    
     const updatedShotChart = curPlayerShotChart.map((obj) => {
       obj.x += 300;
       obj.x /= 6;
@@ -286,7 +342,7 @@ export default class Players extends React.Component {
           </tbody>
         </table>
       </div>
-      <GraphComponent radarData={radarData} shotChart={updatedShotChart} curGraph={curGraph}/>
+      <GraphComponent radarData={radarData} shotChart={updatedShotChart} curGraph={curGraph} scatterData={scatterData}/>
     </div>
   );
 }
