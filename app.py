@@ -236,7 +236,7 @@ def get_followings():
 @app.route('/get_team_news', methods=['GET'])
 @crossdomain(origin='*')
 def get_team_news():
-    team = request.args.get('team')
+    team = request.args.get('Team')
     rss_link = 'http://www.nba.com/' + team.lower() + '/rss.xml'
     team_news = feedparser.parse(rss_link)
     team_news_string = str(team_news)
@@ -245,8 +245,8 @@ def get_team_news():
 @app.route('/get_player_news', methods=['GET'])
 @crossdomain(origin='*')
 def get_player_news():
-    print request.args.get('player')
-    player = str(request.args.get('player')).lower().replace("_", " ")
+    print request.args.get('Player')
+    player = str(request.args.get('Player')).lower().replace("_", " ")
     rss_link = "http://www.rotoworld.com/rss/feed.aspx?sport=nba&ftype=news&count=500&format=rss"
     all_news = feedparser.parse(rss_link)
     player_news = []
