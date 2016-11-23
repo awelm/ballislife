@@ -242,5 +242,11 @@ def get_news():
     team_news_string = str(team_news)
     return jsonify(team_news_string)
 
+@app.route('/playerpic', methods=['GET'])
+@crossdomain(origin='*')
+def get_player_pic():
+    player = request.args.get("Player")
+    return nba_api.get_playerpic(player)
+
 if __name__ == '__main__':
     app.run(debug=True)

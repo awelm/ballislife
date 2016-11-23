@@ -1,6 +1,7 @@
 import requests
 
 NBA_STATS_URL = 'http://stats.nba.com/stats/{endpoint}'
+NBA_MEDIA_URL = 'http://stats.nba.com/media/players/230x185/'
 HEADERS = {'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"}
 
 # map player names to IDs so front end can query just based on name
@@ -328,4 +329,10 @@ def get_playersseason(season):
 
   players_season[season] = temp_arr
   return temp_arr
+
+def get_playerpic(player):
+  playerid = player_name2id[player]
+  endpoint = str(playerid) + '.png'
+  image_url = NBA_MEDIA_URL + endpoint
+  return image_url
 
