@@ -1,7 +1,7 @@
 import requests
 
 NBA_STATS_URL = 'http://stats.nba.com/stats/{endpoint}'
-NBA_MEDIA_URL = 'http://stats.nba.com/media/players/230x185/'
+NBA_MEDIA_URL = 'http://stats.nba.com/media/'
 HEADERS = {'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"}
 
 # map player names to IDs so front end can query just based on name
@@ -31,12 +31,45 @@ team_name2id = {
   'magic': 1610612753,
   '76ers':  1610612755,
   'suns':  1610612756,
-  'trailblazers':  1610612757,
+  'blazers':  1610612757,
   'kings':  1610612758,
   'spurs': 1610612759,
   'raptors': 1610612761,
   'jazz': 1610612762,
   'wizards':  1610612764
+}
+
+team_abrev = {
+  'pistons': 'DET',
+  'grizzlies': 'MEM',
+  'kings': 'SAC',
+  'bucks': 'MIL',
+  'hornets': 'CHA',
+  'knicks': 'NYK',
+  'thunder': 'OKC',
+  'hawks': 'ATL',
+  'wizards': 'WAS',
+  'suns': 'PHX',
+  'nuggets': 'DEN',
+  '76ers': 'PHI',
+  'cavaliers': 'CLE',
+  'jazz': 'UTA',
+  'timberwolves': 'MIN',
+  'clippers': 'LAC',
+  'bulls': 'CHI',
+  'heat': 'MIA',
+  'celtics': 'BOS',
+  'nets': 'BKN',
+  'magic': 'ORL',
+  'mavericks': 'DAL',
+  'pelicans': 'NOP',
+  'blazers': 'POR',
+  'lakers': 'LAL',
+  'pacers': 'IND',
+  'rockets': 'HOU',
+  'warriors': 'GSW',
+  'raptors': 'TOR',
+  'spurs': 'SAS'
 }
 
 # cache computed results for players in a season
@@ -333,6 +366,8 @@ def get_playersseason(season):
 def get_playerpic(player):
   playerid = player_name2id[player]
   endpoint = str(playerid) + '.png'
-  image_url = NBA_MEDIA_URL + endpoint
-  return image_url
+  return NBA_MEDIA_URL + 'players/230x185/' + endpoint
+
+def get_teampic(team):
+  return NBA_MEDIA_URL + 'img/teams/logos/' + team_abrev[team] + '_logo.svg'
 

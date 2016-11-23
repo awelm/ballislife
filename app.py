@@ -248,5 +248,11 @@ def get_player_pic():
     player = request.args.get("Player")
     return nba_api.get_playerpic(player)
 
+@app.route('/teampic', methods=['GET'])
+@crossdomain(origin='*')
+def get_team_pic():
+    team = request.args.get("Team") or None
+    return nba_api.get_teampic(team)
+
 if __name__ == '__main__':
     app.run(debug=True)
