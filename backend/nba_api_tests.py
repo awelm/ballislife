@@ -3,12 +3,15 @@ import nba_api
 
 class testIdMapInit(unittest.TestCase):
     def testOne(self):
-        assert True, "nothing"
+        nba_api.initialize_id_map()
+        assert bool(nba_api.player_name2id), "player name to id map empty"
+        for key, value in nba_api.player_name2id.iteritems():
+            assert type(key) == unicode, "player name " + key + " not unicode"
+            assert type(value) == int, "player id " + str(value) + " for " + key + " not integer"
 
 class testPlayerCareerStats(unittest.TestCase):
     def testOne(self):
         res = nba_api.get_player_career_stats("Stephen Curry")
-        print res;
         assert res["resource"] == "playercareerstats", "Player Career stats are in a different format"
         assert res["resultSets"], "Player career stats are empty"
 
@@ -20,6 +23,8 @@ class testBoxScore(unittest.TestCase):
 
 class testLgShotAvg(unittest.TestCase):
     def testOne(self):
+        res = nba_api.get_league_shotavg("2016-17")
+        print res
         assert True, "nothing"        
 
 class testShotChart(unittest.TestCase):
@@ -63,5 +68,5 @@ class testTeamPic(unittest.TestCase):
         assert True, "nothing"
 
 if __name__ == "__main__":
-    nba_api.initialize_id_map()
+    #nba_api.initialize_id_map()
     unittest.main()

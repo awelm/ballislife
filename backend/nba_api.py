@@ -141,7 +141,7 @@ def get_league_shotavg(season, playerposition='', contextmeasure='FGA', datefrom
     'VsDivision' : vsdivision
   }
   data = use_json_endpoint("shotchartdetail", params)
-  league_shots = data['resultSets'][1]['rowSet']
+  league_shots = data['resultSets'][1]
   return league_shots
   #return [{'x':row[-4], 'y':row[-3], 'made':row[-1]} for row in player_shots]
 

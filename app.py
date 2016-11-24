@@ -273,5 +273,11 @@ def get_team_pic():
     team = request.args.get("Team") or None
     return jsonify({"url":nba_api.get_teampic(team)})
 
+@app.route('/leagueshotavg', methods=['GET'])
+@crossdomain(origin='*')
+def get_league_shotavg():
+    season = request.args.get("Season") or None
+    return jsonify(nba_api.get_league_shotavg(season))
+
 if __name__ == '__main__':
     app.run(debug=True)
