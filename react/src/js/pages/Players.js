@@ -11,6 +11,19 @@ const heatMapDiv = {
     marginLeft: '20px',
 };
 
+const scatterConfig = [
+    {
+      type: 'missed',
+      color: '#FF0000',
+      stroke: 'black'
+    },
+    {
+      type: 'made',
+      color: '#008000',
+      stroke: 'green'
+    },
+]
+
 const radarOptions = {
     scale: {
       xAxes: [{
@@ -37,6 +50,19 @@ const titleDiv = {
   marginTop: '0px',
 }
 
+const redCircle = {
+    width: '20px',
+    height: '20px',
+    borderRadius: '10px',
+    backgroundColor: 'red'
+}
+
+const greenCircle = {
+    width: '20px',
+    height: '20px',
+    borderRadius: '10px',
+    backgroundColor: 'green'
+}
 
 var GraphComponent = React.createClass({ 
     
@@ -45,9 +71,10 @@ var GraphComponent = React.createClass({
   if (curGraph == graphOptions[0]) {
     return (
       <div className="col-md-9" style={heatMapDiv}>
-        <ScatterplotChart data={this.props.scatterData} height={521} width={808}/>
+        <ScatterplotChart data={this.props.scatterData} height={521} width={808} config={scatterConfig} xDomainRange={[-215, 245]} yDomainRange={[-26,260]}/>
       </div>
     );
+
   }
   else if (curGraph == graphOptions[1]) {
     return (      
@@ -59,7 +86,7 @@ var GraphComponent = React.createClass({
   else {
     return (  
       <div className="col-md-9" style={heatMapDiv}>
-        <ReactHeatmap max={100} data={this.props.shotChart} />
+        <ReactHeatmap max={2} data={this.props.shotChart} />
       </div>
     );
   }
@@ -77,11 +104,15 @@ export default class Players extends React.Component {
       players: PlayerStore.getAll(),
       curPlayer: PlayerStore.getCurPlayer(),
       curPlayerInfo: PlayerStore.getCurPlayerInfo(),
-      curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
       curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
       curPlayerRadar: PlayerStore.getCurPlayerRadar(),
-      curGraph: graphOptions[0]
+      curPlayerCareerStats: PlayerStore.getCurPlayerCareerStats(),
+      curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
+      curGraph: graphOptions[0],
+      curSeason: '2016-17',
     };
+    PlayerActions.getShotChart(this.state.curPlayer);
+    PlayerActions.getRadar(this.state.curPlayer);
   }
 
   setGraphOptions(option) {
@@ -95,127 +126,51 @@ export default class Players extends React.Component {
         players: PlayerStore.getAll(),
         curPlayer: PlayerStore.getCurPlayer(),
         curPlayerInfo: PlayerStore.getCurPlayerInfo(),
-        curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
         curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
         curPlayerRadar: PlayerStore.getCurPlayerRadar(),
+        curPlayerCareerStats: PlayerStore.getCurPlayerCareerStats(),
+        curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart() 
       })
     })
-    PlayerActions.getAllPlayers();
+    PlayerActions.getPlayersSeason(this.state.curSeason);
   };
 
-  getPlayers() {
-    PlayerActions.getAllPlayers();
-  }
+  changeSeason(event) {
+    curSeason = event.target.value;
+    PlayerActions.getPlayersSeason(event.target.value); 
+  };
 
   changePlayer(event) {
     console.log(event.target.value);
     PlayerActions.getPlayerInfo(event.target.value);
-    PlayerActions.getShotChart(event.target.value);
-    PlayerActions.getRadar(event.target.value);
+    PlayerActions.getShotChart(event.target.value, this.state.curSeason);
+    PlayerActions.getRadar(event.target.value, this.state.curSeason);
     this.setState({
-      curPlayerHighlights: PlayerStore.getCurPlayerHighlights(),
       curPlayer: event.target.value,
       curPlayerInfo: PlayerStore.getCurPlayerInfo(),
       curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
       curPlayerRadar: PlayerStore.getCurPlayerRadar(),
-     });
-    console.log(this.state.curPlayerHighlights);
-    console.log(PlayerStore.getCurPlayerHighlights());
+      curPlayerCareerStats: PlayerStore.getCurPlayerCareerStats(),
+      curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
+      });
   }
 
   render() {
     const { params } = this.props;
-    const { players, curPlayer, curPlayerInfo, curPlayerShotChart, curPlayerRadar, curGraph } = this.state;
-    const playerHighlights = curPlayerInfo['resultSets'][1]['rowSet'][0];
-    console.log(curPlayerShotChart);
+    const { players, curPlayer, curPlayerInfo, curPlayerShotChart, curPlayerRadar, curGraph, curPlayerCareerStats } = this.state;
 
-
-    var scatterData = [
-    {
-      type: 'One',
-      x: 1,
-      y: 5
-    },
-    {
-      type: 'Two',
-      x: 3,
-      y: 1
-    },
-    {
-      type: 'Three',
-      x: 0,
-      y: 6
-    },
-    {
-      type: 'Four',
-      x: 5,
-      y: 2
-    },
-    {
-      type: 'Five',
-      x: 4,
-      y: 4
-    },
-    {
-      type: 'Six',
-      x: 5,
-      y: 9
-    },
-    {
-      type: 'Seven',
-      x: 9,
-      y: 1
-    },
-    {
-      type: 'Eight',
-      x: 5,
-      y: 6
-    },
-    {
-      type: 'Nine',
-      x: 3,
-      y: 9
-    },
-    {
-      type: 'Ten',
-      x: 7,
-      y: 9
-    }
-  ];
-    
-    const updatedShotChart = curPlayerShotChart.map((obj) => {
-      obj.x += 300;
-      obj.x /= 6;
-      obj.y /= 4;
-
-      var x = obj.x;
-      if (obj.x < 30) {
-        x = obj.x-10;
-      }
-      else if (obj.x > 70) {
-        x = obj.x+10;
-      }
-      else {
-        x = obj.x;
-      }
-
-      return {
-        x: x,
-        y: (100-obj.y-25)/.8,
-        value: 1
-      }
-    });
+    var scatterData = this.state.curPlayerScatterChart;
+    var shotData = this.state.curPlayerShotChart;    
 
     const radarInput = curPlayerRadar.map((num) => {
       return 10*num;
     });
-    console.log(radarInput);
 
     var radarData = {
         labels: ["Bball IQ", "Efficiency", "Interior D", "Interior Scoring", "Outside Scoring", "Perimeter D", "Rebounds", "Stamina"],
         datasets: [
             {
-                label: playerHighlights[1],
+                label: this.state.curPlayer,
                 backgroundColor: "rgba(179,181,198,0.2)",
                 borderColor: "rgba(179,181,198,1)",
                 pointBackgroundColor: "rgba(179,181,198,1)",
@@ -227,12 +182,12 @@ export default class Players extends React.Component {
         ]
     };
 
-    console.log(updatedShotChart);
-
-    const playerList = players.map((player) => {
-      return <option key={player.id} value={player.id}>{ player.name }</option>;
+    
+    const playerList = players.sort().map((player) => {
+      return <option key={player}>{ player }</option>;
     });
 
+    
     return (
       <div className="row">
         <div className="col-sm-12">
@@ -240,7 +195,7 @@ export default class Players extends React.Component {
         </div>
         <div className="col-md-3">
            <div className="well">
-              <h2 className="player-name">{ playerHighlights[1] }</h2>
+              <h2 className="player-name">{ this.state.curPlayer }</h2>
               <div className="form-group">
                 <label className="control-label" htmlFor="playerName">Player</label>
                   <select className="form-control" id="playerName" value={this.state.curPlayer}  onChange={this.changePlayer}>
@@ -249,12 +204,12 @@ export default class Players extends React.Component {
               </div>
               <div className="form-group">
                 <label className="control-label" htmlFor="season">Season</label>
-                <select className="form-control" id="season">
-                   <option>1</option>
-                   <option>2</option>
-                   <option>3</option>
-                   <option>4</option>
-                   <option>5</option>
+                <select className="form-control" id="season" onChange={this.changeSeason}>
+                   <option>2016-17</option>
+                   <option>2015-16</option>
+                   <option>2014-15</option>
+                   <option>2013-14</option>
+                   <option>2012-13</option>
                 </select>
               </div>
               <div className="form-group">
@@ -334,15 +289,15 @@ export default class Players extends React.Component {
           </thead>
           <tbody>
             <tr>
-              <td>{ playerHighlights[3] }</td>
-              <td>{ playerHighlights[4] }</td>
-              <td>{ playerHighlights[5] }</td>
-              <td>{ playerHighlights[6] }</td>
+              <td>{ curPlayerCareerStats[0] }</td>
+              <td>{ curPlayerCareerStats[1] }</td>
+              <td>{ curPlayerCareerStats[2] }</td>
+              <td>{ curPlayerCareerStats[3] }</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <GraphComponent radarData={radarData} shotChart={updatedShotChart} curGraph={curGraph} scatterData={scatterData}/>
+      <GraphComponent radarData={radarData} shotChart={shotData} curGraph={curGraph} scatterData={scatterData}/>
     </div>
   );
 }

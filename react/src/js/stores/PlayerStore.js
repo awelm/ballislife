@@ -6,128 +6,18 @@ class PlayerStore extends EventEmitter {
   constructor() {
     super()
     this.players = [
-      {
-        "id": 76001,
-        "name": "Alaa Abdelnaby"
-      },
-      {
-        "id": 76002,
-        "name": "Zaid Abdul-Aziz"
-      },
-      {
-        "id": 76003,
-        "name": "Kareem Abdul-Jabbar"
-      },
-      {
-        "id": 51,
-        "name": "Mahmoud Abdul-Rauf"
-      },
-      {
-        "id": 1505,
-        "name": "Tariq Abdul-Wahad"
-      },
+        "Alaa Abdelnaby",
+        "Zaid Abdul-Aziz",
+        "Kareem Abdul-Jabbar",
+        "Mahmoud Abdul-Rauf",
+        "Tariq"
     ];
-    this.curPlayer = 76001,
-    this.curPlayerInfo =
-      {
-    "parameters": [
-      {
-        "PlayerID": 76001
-      },
-      {
-        "LeagueID": null
-      }
-    ],
-    "resource": "commonplayerinfo",
-    "resultSets": [
-      {
-        "headers": [
-          "PERSON_ID",
-          "FIRST_NAME",
-          "LAST_NAME",
-          "DISPLAY_FIRST_LAST",
-          "DISPLAY_LAST_COMMA_FIRST",
-          "DISPLAY_FI_LAST",
-          "BIRTHDATE",
-          "SCHOOL",
-          "COUNTRY",
-          "LAST_AFFILIATION",
-          "HEIGHT",
-          "WEIGHT",
-          "SEASON_EXP",
-          "JERSEY",
-          "POSITION",
-          "ROSTERSTATUS",
-          "TEAM_ID",
-          "TEAM_NAME",
-          "TEAM_ABBREVIATION",
-          "TEAM_CODE",
-          "TEAM_CITY",
-          "PLAYERCODE",
-          "FROM_YEAR",
-          "TO_YEAR",
-          "DLEAGUE_FLAG",
-          "GAMES_PLAYED_FLAG"
-        ],
-        "name": "CommonPlayerInfo",
-        "rowSet": [
-          [
-            76001,
-            "Alaa",
-            "Abdelnaby",
-            "Alaa Abdelnaby",
-            "Abdelnaby, Alaa",
-            "A. Abdelnaby",
-            "1968-06-24T00:00:00",
-            "Duke",
-            "USA",
-            "Duke/US",
-            "6-10",
-            "240",
-            4,
-            "30",
-            "Forward",
-            "Active",
-            1610612755,
-            "76ers",
-            "PHL",
-            "sixers",
-            "Philadelphia",
-            "HISTADD_alaa_abdelnaby",
-            1990,
-            1994,
-            "N",
-            "Y"
-          ]
-        ]
-      },
-      {
-        "headers": [
-          "PLAYER_ID",
-          "PLAYER_NAME",
-          "TimeFrame",
-          "PTS",
-          "AST",
-          "REB",
-          "ALL_STAR_APPEARANCES"
-        ],
-        "name": "PlayerHeadlineStats",
-        "rowSet": [
-          [
-            76001,
-            "Alaa Abdelnaby",
-            "career",
-            5.7,
-            0.3,
-            3.3,
-            0
-          ]
-        ]
-      }
-    ]
-  },
+    this.curPlayer = "AJ Hammons",
+    this.curPlayerInfo = [],
     this.curPlayerShotChart = [],
-    this.curPlayerRadar = []
+    this.curPlayerScatterChart = [],
+    this.curPlayerRadar = [],
+    this.curPlayerCareerStats = [0, 0, 0, 0]
   }
 
   getAll() {
@@ -142,16 +32,20 @@ class PlayerStore extends EventEmitter {
     return this.curPlayerInfo;
   }
 
-  getCurPlayerHighlights() {
-    return this.curPlayerInfo['resultSets'][1]['rowSet'][0];
-  }
-
   getCurPlayerShotChart() {
     return this.curPlayerShotChart;
   }
 
   getCurPlayerRadar() {
     return this.curPlayerRadar;
+  }
+    
+  getCurPlayerCareerStats() {
+    return this.curPlayerCareerStats;
+  }
+
+  getCurPlayerScatterChart() {
+    return this.curPlayerScatterChart;
   }
 
   handleActions(action) {
@@ -169,7 +63,8 @@ class PlayerStore extends EventEmitter {
     }
     case "RECIEVE_SHOT_CHART": {
       this.curPlayerShotChart = action.shotChart;
-      // this.emit("change");
+      this.curPlayerScatterChart = action.scatterChart;
+   //   this.emit("change");
       break;
     }
     case "RECIEVE_RADAR": {
