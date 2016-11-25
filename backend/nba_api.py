@@ -215,43 +215,6 @@ def get_shotchart(player, season, shottype=None, shotzone=None, shotarea=None, s
 
   return shot_info
 
-  # actions = set()
-  # shottypes = set()
-  # shotzoneb = set()
-  # shotzonea = set()
-  # shotzoner = set()
-  # shotdist = set()
-  # for row in player_shots:
-  #   actions.add(row[action_type])
-  #   shottypes.add(row[shot_type])
-  #   shotzoneb.add(row[shot_zone_b])
-  #   shotzonea.add(row[shot_zone_a])
-  #   shotzoner.add(row[shot_zone_r])
-  #   shotdist.add(row[shot_dist])
-
-  # print "actions"
-  # print actions
-  # print "\nshot types"
-  # print shottypes
-  # print "\nshot zone basic"
-  # print shotzoneb
-  # print "\nshot zone area"
-  # print shotzonea
-  # print "\nshot zone range"
-  # print shotzoner
-  # print "\nshot distance"
-  # print shotdist
-
-
-
-  # [u'GRID_TYPE', u'GAME_ID', u'GAME_EVENT_ID', u'PLAYER_ID', u'PLAYER_NAME', u'TEAM_ID',
-  #  u'TEAM_NAME', u'PERIOD', u'MINUTES_REMAINING', u'SECONDS_REMAINING', u'EVENT_TYPE',
-  #  u'ACTION_TYPE', u'SHOT_TYPE', u'SHOT_ZONE_BASIC', u'SHOT_ZONE_AREA', u'SHOT_ZONE_RANGE',
-  #  u'SHOT_DISTANCE', u'LOC_X', u'LOC_Y', u'SHOT_ATTEMPTED_FLAG', u'SHOT_MADE_FLAG', u'GAME_DATE',
-  #  u'HTM', u'VTM']
-
-  # return [{'x':row[loc_x], 'y':row[loc_y], 'made':row[shot_made]} for row in player_shots]
-
 # intialize mapping of player name to id
 def initialize_id_map():
   params = {
@@ -267,14 +230,6 @@ def initialize_id_map():
 # return all players that ever played in the NBA
 # specifcally returns mapping of name to id
 def get_allplayers():
-  # params = {
-  #   'LeagueID' : '00',
-  #   'Season' : season,
-  #   'IsOnlyCurrentSeason' : 1 # only current season
-  # }
-  # data = use_json_endpoint('commonallplayers', params)
-  # player_profiles = data['resultSets'][0]['rowSet']
-  # return [row[2] for row in player_profiles]
   return player_name2id
 
 # returns player averages for each season
@@ -324,7 +279,7 @@ def get_playerradar(player, season):
 # returns general team info
 # WL record, division, division/conf rank, stats per game
 # points score against teams, points scored on team <- on average
-def get_teaminfo(season, team, seasontype, leagueid="00"):
+def get_teaminfo(season, team, seasontype="Regular Season", leagueid="00"):
   teamid = team_name2id[team]
   params = {
     'Season': season,
