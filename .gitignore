@@ -45,3 +45,6 @@ npm-debug.log
 
 flash/
 react/.DS_Store
+
+# vim
+*.swp

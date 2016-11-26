@@ -326,3 +326,9 @@ def get_playerpic(player):
 def get_teampic(team):
   return NBA_MEDIA_URL + 'img/teams/logos/' + team_abrev[team] + '_logo.svg'
 
+def supplement_teamroster(teamroster):
+  teamroster["resultSets"][0]["headers"].append("PLAYER_PIC_URL")
+  player_name_index = teamroster["resultSets"][0]["headers"].index("PLAYER")
+  for player in teamroster["resultSets"][0]["rowSet"]:
+    player.append(get_playerpic(player[player_name_index]))
+  return teamroster
