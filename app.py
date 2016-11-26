@@ -188,7 +188,9 @@ def get_team_info():
 def get_team_roster():
     season = request.args.get("Season")
     team = request.args.get("Team")
-    return jsonify(nba_api.get_teamroster(season, team))
+    team_roster = nba_api.get_teamroster(season, team)
+    team_roster_withpics = nba_api.supplement_teamroster(team_roster)
+    return jsonify(team_roster_withpics)
 
 # return all players for a season
 @app.route('/playersseason', methods=['GET'])
