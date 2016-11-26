@@ -8,17 +8,20 @@ export default class Teams extends React.Component {
 		this.handleUserInput = this.handleUserInput.bind(this);
 		this.getNewTeam = this.getNewTeam.bind(this);
 		this.state = {
-			team: "",
+			team: "hawks",
 			team_info: {},
-			team_roster: {},
+			team_roster: [],
 			team_news: {},
 			team_picture: "http://i.ytimg.com/vi/uzPgP3XXDhg/maxresdefault.jpg",
-			roster_pictures: {}
+			roster_pictures: []
 		}
 	}
 
 	componentWillMount() {
 		TeamStore.on("change", this.getNewTeam);
+		TeamActions.getTeamInfo(this.state.team);
+		TeamActions.getTeamPicture(this.state.team);
+		TeamActions.getTeamRoster(this.state.team);
 	}
 
 	componentWillUnmount() {
@@ -73,7 +76,6 @@ class SearchBar extends React.Component {
 			  	<legend> Choose a team: </legend>
 				    <label>
 					    <select value={this.props.team} onChange={this.handleChange} class="form-control" id="team-select">
-					    	<option value =""></option>
 					    	<option value ="hawks">Atlanta Hawks</option>
 							<option value ="celtics">Boston Celtics</option>
 							<option value ="nets">Brooklyn Nets</option>
@@ -177,7 +179,7 @@ class PlayerProfile extends React.Component {
 	render() {
 		const player = this.props.player;
 		const imgStyle = {
-			"border-style": "solid",
+			borderStyle: "solid",
 		};
 		return (
 			<div class="col-md-4">

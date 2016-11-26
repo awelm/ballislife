@@ -6,11 +6,11 @@ class TeamStore extends EventEmitter {
   constructor() {
     super();
     this.team_info = {};
-    this.team_roster = {}; 
+    this.team_roster = []; 
     this.team_news = {};
     this.player_news = {}; 
-    this.team_picture = {}; 
-    this.roster_pictures = {}; 
+    this.team_picture = ""; 
+    this.roster_pictures = []; 
   }
 
   getTeamInfo() {
