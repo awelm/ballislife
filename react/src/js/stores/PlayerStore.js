@@ -17,7 +17,8 @@ class PlayerStore extends EventEmitter {
     this.curPlayerShotChart = [],
     this.curPlayerScatterChart = [],
     this.curPlayerRadar = [],
-    this.curPlayerCareerStats = [0, 0, 0, 0]
+    this.curPlayerCareerStats = [0, 0, 0, 0],
+    this.curPlayerImgUrl = 'http://stats.nba.com/media/players/230x185/1627773.png'
   }
 
   getAll() {
@@ -48,6 +49,10 @@ class PlayerStore extends EventEmitter {
     return this.curPlayerScatterChart;
   }
 
+  getCurPlayerImgUrl() {
+    return this.curPlayerImgUrl
+  }
+
   handleActions(action) {
   switch(action.type) {
     case "RECIEVE_PLAYERS": {
@@ -71,6 +76,10 @@ class PlayerStore extends EventEmitter {
       this.curPlayerRadar = action.radar;
       this.emit("change");
       break;
+    }
+    case "RECIEVE_IMG": {
+      this.curPlayerImgUrl = action.url;
+      break; 
     }
   }
 }

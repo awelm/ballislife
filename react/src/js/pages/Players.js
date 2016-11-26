@@ -11,6 +11,12 @@ const heatMapDiv = {
     marginLeft: '20px',
 };
 
+const playerImgStyle = {
+    height: '185px',
+    width: '230px',
+    marginLeft: '5px'
+}
+
 const scatterConfig = [
     {
       type: 'missed',
@@ -110,9 +116,12 @@ export default class Players extends React.Component {
       curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
       curGraph: graphOptions[0],
       curSeason: '2016-17',
+      curPlayerImgUrl: 'http://stats.nba.com/media/players/230x185/1627773.png',
     };
+    PlayerActions.getPlayersSeason(this.state.curSeason);
     PlayerActions.getShotChart(this.state.curPlayer);
     PlayerActions.getRadar(this.state.curPlayer);
+    PlayerActions.getImg(this.state.curPlayer);
   }
 
   setGraphOptions(option) {
@@ -129,7 +138,8 @@ export default class Players extends React.Component {
         curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
         curPlayerRadar: PlayerStore.getCurPlayerRadar(),
         curPlayerCareerStats: PlayerStore.getCurPlayerCareerStats(),
-        curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart() 
+        curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart() ,
+        curPlayerImgUrl: PlayerStore.getCurPlayerImgUrl()
       })
     })
     PlayerActions.getPlayersSeason(this.state.curSeason);
@@ -143,6 +153,7 @@ export default class Players extends React.Component {
   changePlayer(event) {
     console.log(event.target.value);
     PlayerActions.getPlayerInfo(event.target.value);
+    PlayerActions.getImg(event.target.value);
     PlayerActions.getShotChart(event.target.value, this.state.curSeason);
     PlayerActions.getRadar(event.target.value, this.state.curSeason);
     this.setState({
@@ -152,12 +163,13 @@ export default class Players extends React.Component {
       curPlayerRadar: PlayerStore.getCurPlayerRadar(),
       curPlayerCareerStats: PlayerStore.getCurPlayerCareerStats(),
       curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
+      curPlayerImgUrl: PlayerStore.getCurPlayerImgUrl(),
       });
   }
 
   render() {
     const { params } = this.props;
-    const { players, curPlayer, curPlayerInfo, curPlayerShotChart, curPlayerRadar, curGraph, curPlayerCareerStats } = this.state;
+    const { players, curPlayer, curPlayerInfo, curPlayerShotChart, curPlayerRadar, curGraph, curPlayerCareerStats, curPlayerImgUrl } = this.state;
 
     var scatterData = this.state.curPlayerScatterChart;
     var shotData = this.state.curPlayerShotChart;    
@@ -195,6 +207,7 @@ export default class Players extends React.Component {
         </div>
         <div className="col-md-3">
            <div className="well">
+              <img src={this.state.curPlayerImgUrl} style={playerImgStyle}/>
               <h2 className="player-name">{ this.state.curPlayer }</h2>
               <div className="form-group">
                 <label className="control-label" htmlFor="playerName">Player</label>

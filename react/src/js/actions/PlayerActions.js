@@ -103,3 +103,20 @@ export function getRadar(id, season) {
       console.error(error);
     });
 }
+
+export function getImg(id) {
+  dispatcher.dispatch({type: "FETCH_IMG"});
+  var myRequest = new Request('http://localhost:5000/playerpic?Player=' + id);
+  fetch(myRequest)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson);
+      var url = responseJson['url'];
+      console.log(url);
+      dispatcher.dispatch({type: "RECIEVE_IMG", url: url });
+    })
+    .catch((error) => {
+      dispatcher.dispatch({type: "RECIEVE_IMG_ERROR"});
+      console.error(error);
+    });
+}
