@@ -47,7 +47,6 @@ export default class Teams extends React.Component {
 				<SearchBar pic={this.state.team_picture} onUserInput={this.handleUserInput} team={this.state.team} />
 				<TeamDetails info={this.state.team_info} />
 				<Roster roster={this.state.team_roster} />
-				<TeamNews />
 			</div>
 		);
 	}
@@ -67,16 +66,6 @@ class SearchBar extends React.Component {
 	}
 
 	render() {
-		// console.log(this.props.pic);
-		// TeamActions.getTeamInfo("hawks");
-		/*
-		TeamActions.getTeamInfo();
-		TeamActions.getTeamRoster();
-		TeamActions.getTeamNews();
-		TeamActions.getPlayerNews("Stephen Curry");
-		TeamActions.getTeamPicture();
-		TeamActions.getPlayerPicture("Stephen Curry");
-		*/
 		return (
 			<div className="col-md-3">
 			  <form>
@@ -187,17 +176,26 @@ class PlayerProfile extends React.Component {
 
 	render() {
 		const player = this.props.player;
+		const imgStyle = {
+			"border-style": "solid",
+		};
 		return (
 			<div class="col-md-4">
+				<div style={imgStyle}> 
+					<img src={player['Picture']} /> 
+				</div>
 				<h4>Name: {player['Name']}</h4>
+				<h4>Age: {player['Age']}</h4> 
 				<h4>Position: {player['Position']}</h4>
 				<h4>Height: {player['Height']}</h4>
-				<h4>Weight: {player['Weight']}</h4>
+				<h4>Weight: {player['Weight']} lbs</h4>
 				<h4>Years in NBA: {player['Years in NBA']}</h4>
 			</div>
 		);
 	}
 }
+
+/*
 class TeamNews extends React.Component {
 	render() {
 		return (
@@ -207,3 +205,4 @@ class TeamNews extends React.Component {
 		);
 	}
 }
+*/

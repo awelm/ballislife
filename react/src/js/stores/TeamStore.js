@@ -72,7 +72,9 @@ class TeamStore extends EventEmitter {
             'Position': roster[i][5],
             'Height': roster[i][6],
             'Weight': roster[i][7],
-            'Years in NBA': roster[i][10]
+            'Age': roster[i][9],
+            'Years in NBA': roster[i][10],
+            "Picture": roster[i][13]
           }
           this.team_roster.push(tmp);  
         }
