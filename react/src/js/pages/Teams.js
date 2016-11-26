@@ -8,11 +8,11 @@ export default class Teams extends React.Component {
 		this.handleUserInput = this.handleUserInput.bind(this); 
 		this.getNewTeam = this.getNewTeam.bind(this);
 		this.state = {
-			team: "hawks",
+			team: "",
 			team_info: {},
 			team_roster: {},
 			team_news: {},
-			team_picture: "http://stats.nba.com/media/img/teams/logos/ATL_logo.svg",
+			team_picture: "http://i.ytimg.com/vi/uzPgP3XXDhg/maxresdefault.jpg",
 			roster_pictures: {}
 		}
 
@@ -47,7 +47,7 @@ export default class Teams extends React.Component {
 			<div class="row">
 				<SearchBar pic={this.state.team_picture} onUserInput={this.handleUserInput} team={this.state.team} /> 
 				<TeamDetails info={this.state.team_info} />
-				<Roster />
+				<Roster roster={this.state.team_roster} />
 				<TeamNews /> 
 			</div> 
 		);
@@ -64,10 +64,11 @@ class SearchBar extends React.Component {
 		this.props.onUserInput(event.target.value);
 		TeamActions.getTeamInfo(event.target.value);
 		TeamActions.getTeamPicture(event.target.value);
+		TeamActions.getTeamRoster(event.target.value);
 	}
 
 	render() {
-		console.log(this.props.pic);
+		// console.log(this.props.pic);
 		// TeamActions.getTeamInfo("hawks");
 		/*
 		TeamActions.getTeamInfo();
@@ -84,6 +85,7 @@ class SearchBar extends React.Component {
 			  	<legend> Choose a team: </legend>
 				    <label>
 					    <select value={this.props.team} onChange={this.handleChange} class="form-control" id="team-select">
+					    	<option value =""></option>
 					    	<option value ="hawks">Atlanta Hawks</option>
 							<option value ="celtics">Boston Celtics</option>
 							<option value ="nets">Brooklyn Nets</option> 
@@ -108,7 +110,7 @@ class SearchBar extends React.Component {
 							<option value ="magic">Orlando Magic</option>
 							<option value ="76ers">Philadelphia 76ers</option>
 							<option value ="suns">Phoenix Suns</option>
-							<option value ="trail blazers">Portland Trail Blazers</option>
+							<option value ="blazers">Portland Trail Blazers</option>
 							<option value ="kings">Sacramento Kings</option>
 							<option value ="spurs">San Antonio Spurs</option>
 							<option value ="raptors">Toronto Raptors</option>
@@ -158,16 +160,45 @@ class TeamDetails extends React.Component {
 }
 
 class Roster extends React.Component {
+	constructor(props) {
+		super(props); 
+	}
+	
 	render() {
+		const roster = this.props.roster; 
+		const profiles = []; 
+		for(var i = 0; i < roster.length; i++) {
+			let tmp = (<PlayerProfile key={i} player={roster[i]} />); 
+			profiles.push(tmp); 
+		}
 		return (
 			<div class="col-md-9">
 				<h1>Team Roster</h1> 
+				{profiles}
 			</div>
 		);
 
 	}
 }
 
+class PlayerProfile extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		const player = this.props.player; 
+		return (
+			<div class="col-md-4">
+				<h4>Name: {player['Name']}</h4>
+				<h4>Position: {player['Position']}</h4>
+				<h4>Height: {player['Height']}</h4>
+				<h4>Weight: {player['Weight']}</h4>
+				<h4>Years in NBA: {player['Years in NBA']}</h4>
+			</div>
+		);
+	}
+}
 class TeamNews extends React.Component {
 	render() {
 		return (

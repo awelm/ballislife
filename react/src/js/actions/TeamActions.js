@@ -24,7 +24,17 @@ export function getTeamRoster(team, season="2016-17") {
   fetch(myRequest)
     .then((response) => response.json())
     .then((responseJson) => {
-      dispatcher.dispatch({type: "RECEIVE_TEAM_ROSTER", team_roster: responseJson });
+      /*
+      let pics = []; 
+      let roster = responseJson['resultSets'][0]['rowSet'];
+      for (var i = 0; i < roster.length; i++) {
+        console.log(roster[i][3]);
+        let tmp = getPlayerPicture(roster[i][3]);
+        console.log(tmp);
+        pics.push(tmp['url']); 
+      }
+      */
+      dispatcher.dispatch({type: "RECEIVE_TEAM_ROSTER", team_roster: responseJson});
       //console.log(responseJson);
       //return(responseJson); 
     })

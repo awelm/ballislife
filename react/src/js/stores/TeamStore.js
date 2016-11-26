@@ -60,8 +60,22 @@ class TeamStore extends EventEmitter {
         this.emit("change");
         break;
       }
+      // Screw the coaches for now 
       case "RECEIVE_TEAM_ROSTER": {
-        this.team_roster = action.team_roster; 
+        // Reset roster; not sure if this will memory leak 
+        // console.log(action.player_pics);
+        this.team_roster = [];
+        let roster = action.team_roster['resultSets'][0]['rowSet'];
+        for (var i = 0; i < roster.length; i++) {
+          let tmp = {
+            'Name': roster[i][3],
+            'Position': roster[i][5],
+            'Height': roster[i][6],
+            'Weight': roster[i][7],
+            'Years in NBA': roster[i][10]
+          }
+          this.team_roster.push(tmp);  
+        }
         this.emit("change"); 
         break;
       }
