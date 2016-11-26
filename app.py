@@ -246,18 +246,29 @@ def get_team_news():
 @crossdomain(origin='*')
 def get_player_news():
     print request.args.get('Player')
-    player = str(request.args.get('Player')).lower().replace("_", " ")
     rss_link = "http://www.rotoworld.com/rss/feed.aspx?sport=nba&ftype=news&count=500&format=rss"
     all_news = feedparser.parse(rss_link)
     player_news = []
-    for item in all_news["items"]:
-        print item
-        if player in str(item["title"]).lower():
+
+    if request.args.get('Player'):
+        player = str(request.args.get('Player')).lower().replace("_", " ")
+        for item in all_news["items"]:
+            print item
+            if player in str(item["title"]).lower():
+                player_news.append({
+                    "title": item["title"],
+                    "summary": item["summary"],
+                    "link": item["link"]
+                    })
+    else:
+        for item in all_news["items"]:
+            print item
             player_news.append({
                 "title": item["title"],
                 "summary": item["summary"],
                 "link": item["link"]
                 })
+
     return jsonify({"news": player_news})
 
 

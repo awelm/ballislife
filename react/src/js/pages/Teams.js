@@ -5,7 +5,7 @@ import TeamStore from '../stores/TeamStore';
 export default class Teams extends React.Component {
 	constructor(props) {
 		super(props);
-		this.handleUserInput = this.handleUserInput.bind(this); 
+		this.handleUserInput = this.handleUserInput.bind(this);
 		this.getNewTeam = this.getNewTeam.bind(this);
 		this.state = {
 			team: "",
@@ -15,7 +15,6 @@ export default class Teams extends React.Component {
 			team_picture: "http://i.ytimg.com/vi/uzPgP3XXDhg/maxresdefault.jpg",
 			roster_pictures: {}
 		}
-
 	}
 
 	componentWillMount() {
@@ -23,7 +22,7 @@ export default class Teams extends React.Component {
 	}
 
 	componentWillUnmount() {
-		TeamStore.removeListener("change", this.getNewTeam); 
+		TeamStore.removeListener("change", this.getNewTeam);
 	}
 
 	handleUserInput(new_team) {
@@ -39,17 +38,17 @@ export default class Teams extends React.Component {
 			team_news: TeamStore.getTeamNews(),
 			team_picture: TeamStore.getTeamPicture(),
 			roster_pictures: TeamStore.getRosterPictures()
-		}); 
+		});
 	}
 
 	render() {
 		return (
 			<div class="row">
-				<SearchBar pic={this.state.team_picture} onUserInput={this.handleUserInput} team={this.state.team} /> 
+				<SearchBar pic={this.state.team_picture} onUserInput={this.handleUserInput} team={this.state.team} />
 				<TeamDetails info={this.state.team_info} />
 				<Roster roster={this.state.team_roster} />
-				<TeamNews /> 
-			</div> 
+				<TeamNews />
+			</div>
 		);
 	}
 }
@@ -80,15 +79,15 @@ class SearchBar extends React.Component {
 		*/
 		return (
 			<div className="col-md-3">
-			  <form> 
-			  <fieldset class="fieldset"> 
+			  <form>
+			  <fieldset class="fieldset">
 			  	<legend> Choose a team: </legend>
 				    <label>
 					    <select value={this.props.team} onChange={this.handleChange} class="form-control" id="team-select">
 					    	<option value =""></option>
 					    	<option value ="hawks">Atlanta Hawks</option>
 							<option value ="celtics">Boston Celtics</option>
-							<option value ="nets">Brooklyn Nets</option> 
+							<option value ="nets">Brooklyn Nets</option>
 							<option value ="hornets">Charlotte Hornets</option>
 							<option value ="bulls">Chicago Bulls</option>
 							<option value ="cavaliers">Cleveland Cavaliers</option>
@@ -116,10 +115,10 @@ class SearchBar extends React.Component {
 							<option value ="raptors">Toronto Raptors</option>
 							<option value ="jazz">Utah Jazz</option>
 				    	</select>
-				    </label> 
+				    </label>
 				    <img class="img-responsive" src={this.props.pic} />
-			  </fieldset> 
-			  </form> 
+			  </fieldset>
+			  </form>
         	</div>
 		);
 	}
@@ -127,21 +126,21 @@ class SearchBar extends React.Component {
 
 class TeamDetails extends React.Component {
 	constructor(props) {
-		super(props); 
+		super(props);
 	}
 
 	render() {
 		const info = this.props.info;
-		// console.log(info); 
-		var headers = []; 
-		var data = []; 
+		// console.log(info);
+		var headers = [];
+		var data = [];
 		for (var stat in info) {
 			headers.push(<th key={stat} >{stat}</th>);
-			data.push(<th key={stat} >{info[stat]}</th>);  
-		} 
+			data.push(<th key={stat} >{info[stat]}</th>);
+		}
 		return (
 			<div class="col-md-9">
-				<h1>Team Statistics Breakdown</h1> 
+				<h1>Team Statistics Breakdown</h1>
 				<table className="table table-striped">
 					<thead>
 						<tr>
@@ -151,9 +150,9 @@ class TeamDetails extends React.Component {
 					<tbody>
 						<tr>
 							{data}
-						</tr> 
+						</tr>
 					</tbody>
-				</table> 
+				</table>
 			</div>
 		);
 	}
@@ -161,19 +160,19 @@ class TeamDetails extends React.Component {
 
 class Roster extends React.Component {
 	constructor(props) {
-		super(props); 
+		super(props);
 	}
-	
+
 	render() {
-		const roster = this.props.roster; 
-		const profiles = []; 
+		const roster = this.props.roster;
+		const profiles = [];
 		for(var i = 0; i < roster.length; i++) {
-			let tmp = (<PlayerProfile key={i} player={roster[i]} />); 
-			profiles.push(tmp); 
+			let tmp = (<PlayerProfile key={i} player={roster[i]} />);
+			profiles.push(tmp);
 		}
 		return (
 			<div class="col-md-9">
-				<h1>Team Roster</h1> 
+				<h1>Team Roster</h1>
 				{profiles}
 			</div>
 		);
@@ -187,7 +186,7 @@ class PlayerProfile extends React.Component {
 	}
 
 	render() {
-		const player = this.props.player; 
+		const player = this.props.player;
 		return (
 			<div class="col-md-4">
 				<h4>Name: {player['Name']}</h4>
@@ -203,7 +202,7 @@ class TeamNews extends React.Component {
 	render() {
 		return (
 			<div class="col-md-9">
-				<h1>Team News</h1> 
+				<h1>Team News</h1>
 			</div>
 		);
 	}
