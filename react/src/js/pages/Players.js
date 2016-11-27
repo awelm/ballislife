@@ -52,6 +52,18 @@ const graphOptions = [
     "Hexagon", "Radar", "Heatmap"
 ]
 
+const shotZoneOptions = [
+    "All", "Above the Break 3", "Restricted Area", "Mid-Range", "In The Paint (Non-RA)", "Left Corner 3", "Right Corner 3"
+]
+
+const shotAreaOptions = [
+    "All", "Center(C)", "Left Side(L)", "Right Side Center(RC)", "Right Side(R)", "Back Court(BC)", "Left Side Center(LC)",
+]
+
+const madeMissOptions = [
+    "All", "Made", "Missed"
+]
+
 const titleDiv = {
   marginTop: '0px',
 }
@@ -106,6 +118,10 @@ export default class Players extends React.Component {
   constructor() {
     super();
     this.changePlayer = this.changePlayer.bind(this);
+    this.changeSeason = this.changeSeason.bind(this);
+    this.changeShotZone = this.changeShotZone.bind(this);
+    this.changeShotArea = this.changeShotArea.bind(this);
+    this.changeMadeMiss = this.changeMadeMiss.bind(this);
     this.state = {
       players: PlayerStore.getAll(),
       curPlayer: PlayerStore.getCurPlayer(),
@@ -117,11 +133,12 @@ export default class Players extends React.Component {
       curGraph: graphOptions[0],
       curSeason: '2016-17',
       curPlayerImgUrl: 'http://stats.nba.com/media/players/230x185/1627773.png',
+      curShotZone: 'All',
+      curShotArea: 'All',
+      curMadeMiss: 'All',
     };
     PlayerActions.getPlayersSeason(this.state.curSeason);
-    PlayerActions.getShotChart(this.state.curPlayer);
-    PlayerActions.getRadar(this.state.curPlayer);
-    PlayerActions.getImg(this.state.curPlayer);
+    PlayerActions.getShotChart(this.state.curPlayer, this.state.curSeason, this.state.curShotZone, this.state.curShotArea, this.state.curMadeMiss);
   }
 
   setGraphOptions(option) {
@@ -146,15 +163,18 @@ export default class Players extends React.Component {
   };
 
   changeSeason(event) {
-    curSeason = event.target.value;
     PlayerActions.getPlayersSeason(event.target.value); 
+    this.setState({
+      curSeason: event.target.value,
+      players: PlayerStore.getAll(),
+    });
   };
 
   changePlayer(event) {
     console.log(event.target.value);
     PlayerActions.getPlayerInfo(event.target.value);
     PlayerActions.getImg(event.target.value);
-    PlayerActions.getShotChart(event.target.value, this.state.curSeason);
+    PlayerActions.getShotChart(event.target.value, this.state.curSeason, this.state.curShotZone, this.state.curShotArea, this.state.curMadeMiss);
     PlayerActions.getRadar(event.target.value, this.state.curSeason);
     this.setState({
       curPlayer: event.target.value,
@@ -167,13 +187,41 @@ export default class Players extends React.Component {
       });
   }
 
+  changeShotZone(event) {
+    PlayerActions.getShotChart(this.state.curPlayer, this.state.curSeason, event.target.value, this.state.curShotArea, this.state.curMadeMiss);
+    this.setState({
+      curShotZone: event.target.value,
+      curPlayerShotChart:PlayerStore.getCurPlayerShotChart(),
+      curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
+    });
+  }
+  
+  changeShotArea(event) {
+    PlayerActions.getShotChart(this.state.curPlayer, this.state.curSeason, this.state.curShotZone, event.target.value, this.state.curMadeMiss);
+    this.setState({
+      curShotArea: event.target.value,
+      curPlayerShotChart:PlayerStore.getCurPlayerShotChart(),
+      curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
+    });
+  }
+  changeMadeMiss(event) {
+    console.log(event.target.value);
+    PlayerActions.getShotChart(this.state.curPlayer, this.state.curSeason, this.state.curShotZone, this.state.curShotArea, event.target.value);
+    this.setState({
+      curMadeMiss: event.target.value,
+      curPlayerShotChart:PlayerStore.getCurPlayerShotChart(),
+      curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
+    });
+  }
   render() {
     const { params } = this.props;
     const { players, curPlayer, curPlayerInfo, curPlayerShotChart, curPlayerRadar, curGraph, curPlayerCareerStats, curPlayerImgUrl } = this.state;
 
     var scatterData = this.state.curPlayerScatterChart;
     var shotData = this.state.curPlayerShotChart;    
+    var curInfo = this.state.curPlayerInfo;    
 
+    console.log(curInfo);
     const radarInput = curPlayerRadar.map((num) => {
       return 10*num;
     });
@@ -199,7 +247,19 @@ export default class Players extends React.Component {
       return <option key={player}>{ player }</option>;
     });
 
-    
+   
+    const shotZoneOptionsList = shotZoneOptions.map((player) => {
+      return <option key={player}>{ player }</option>;
+    });
+
+    const shotAreaOptionsList = shotAreaOptions.map((player) => {
+      return <option key={player}>{ player }</option>;
+    });
+
+    const madeMissOptionsList = madeMissOptions.map((player) => {
+      return <option key={player}>{ player }</option>;
+    });
+
     return (
       <div className="row">
         <div className="col-sm-12">
@@ -229,7 +289,7 @@ export default class Players extends React.Component {
                  <label className="control-label" htmlFor="chartType">Chart Type</label>
                  <div className="radio">
                     <label>
-                       <input type="radio" name="optionsRadios" id="hexagonal" value="hexagonal" checked="" onClick={() => this.setGraphOptions(0)}/>
+                       <input type="radio" name="optionsRadios" id="hexagonal" value="hexagonal" onClick={() => this.setGraphOptions(0)}/>
                        Hexagonal
                     </label>
                  </div>
@@ -249,63 +309,41 @@ export default class Players extends React.Component {
               <legend>Filters</legend>
               <div className="form-group">
                 <label className="control-label" htmlFor="shotZone">Shot Zone</label>
-                <select className="form-control" id="shotZone">
-                   <option>1</option>
-                   <option>2</option>
-                   <option>3</option>
-                   <option>4</option>
-                   <option>5</option>
+                <select className="form-control" id="shotZone" onChange={this.changeShotZone}>
+                    {shotZoneOptionsList}
                 </select>
               </div>
               <div className="form-group">
-                <label className="control-label" htmlFor="shotAngles">Shot Angles</label>
-                <select className="form-control" id="shotAngles">
-                   <option>1</option>
-                   <option>2</option>
-                   <option>3</option>
-                   <option>4</option>
-                   <option>5</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label className="control-label" htmlFor="shotDistance">Shot Distance</label>
-                <select className="form-control" id="shotDistance">
-                   <option>1</option>
-                   <option>2</option>
-                   <option>3</option>
-                   <option>4</option>
-                   <option>5</option>
+                <label className="control-label" htmlFor="shotAngles">Shot Area</label>
+                <select className="form-control" id="shotArea" onChange={this.changeShotArea}>
+                  {shotAreaOptionsList}
                 </select>
               </div>
               <div className="form-group">
                 <label className="control-label" htmlFor="fg">FG Made/Missed</label>
-                <select className="form-control" id="fg">
-                   <option>1</option>
-                   <option>2</option>
-                   <option>3</option>
-                   <option>4</option>
-                   <option>5</option>
+                <select className="form-control" id="fg" onChange={this.changeMadeMiss}>
+                  {madeMissOptionsList}
                 </select>
               </div>
            </div>
         </div>
       <div className="col-md-9">
-        <h3 style={titleDiv}>Career Average</h3>
+        <h3 style={titleDiv}>Career Averages</h3>
         <table className="table table-striped">
           <thead>
             <tr className="info">
               <th>Points</th>
               <th>Assists</th>
               <th>Rebounds</th>
-              <th>All Star Appearances</th>
+              <th>Seasons</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{ curPlayerCareerStats[0] }</td>
-              <td>{ curPlayerCareerStats[1] }</td>
-              <td>{ curPlayerCareerStats[2] }</td>
-              <td>{ curPlayerCareerStats[3] }</td>
+              <td>{ curInfo['resultSets'][1]['rowSet'][0][3] }</td>
+              <td>{ curInfo['resultSets'][1]['rowSet'][0][4] }</td>
+              <td>{ curInfo['resultSets'][1]['rowSet'][0][5] }</td>
+              <td>{ curInfo['resultSets'][0]['rowSet'][0][12] }</td>
             </tr>
           </tbody>
         </table>

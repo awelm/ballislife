@@ -395,7 +395,44 @@ def get_playerpic(player):
 def get_teampic(team):
   return NBA_MEDIA_URL + 'img/teams/logos/' + team_abrev[team] + '_logo.svg'
 
+def supplement_teamroster(teamroster):
+  teamroster["resultSets"][0]["headers"].append("PLAYER_PIC_URL")
+  player_name_index = teamroster["resultSets"][0]["headers"].index("PLAYER")
+  for player in teamroster["resultSets"][0]["rowSet"]:
+    player.append(get_playerpic(player[player_name_index]))
+  return teamroster
+
 def get_games_for_day(date):
     if date in dateToGame:
         return dateToGame[date]
     return None
+
+# season is in 19xx-xy or 20xx-xy format
+# seasontype is 'Regular Season' or 'Playoffs'
+# player or team is either 'Player' or 'Team'
+# ^specifies if you want player rankings or aggregate team rankings
+# permode is 'PerGame' or 'Per36'
+# stat is (w/o paranthesis): (PTS)|(REB)|(AST)|(FG_PCT)|(FT_PCT)|(FG3_PCT)|(STL)|(BLK)
+# playerscope is 'All Players' or 'Rookies'
+def get_stats_leaders(season, seasontype, stat, playerscope='All Players', playerorteam='Player', permode='PerGame'):
+  params = {
+    'LeagueID': '00',
+    'Season': season,
+    'SeasonType': seasontype,
+    'PlayerOrTeam': playerorteam,
+    'PerMode': permode,
+    'Stat': stat,
+    'PlayerScope': playerscope,
+    'Scope': 'RS',
+    'GameScope': 'Season'
+  }
+
+  return use_json_endpoint('leaderstiles', params)
+
+def get_all_leaders(season, seasontype, playerscope='All Players', playerorteam='Player', permode='PerGame'):
+  result = []
+  for stat in ['PTS', 'REB', 'AST', 'FG_PCT', 'FT_PCT', 'FG3_PCT', 'STL', 'BLK']:
+    result.append(get_stats_leaders(season, seasontype, stat, playerscope, playerorteam, permode))
+
+  return result
+>>>>>>> 0c37fd9d6cb4d9b484fbaf753eea71dae6ed73f0

@@ -50,20 +50,34 @@ export function getPlayerInfo(id) {
     });
 }
 
-export function getShotChart(player, season) {
+export function getShotChart(player, season, shotZone, shotArea, madeMiss) {
   dispatcher.dispatch({type: "FETCH_SHOT_CHART"});
-  var myRequest = new Request('http://localhost:5000/shotchartdetail?Player=' + player + '&Season=' + season);
+  var url = 'http://localhost:5000/shotchartdetail?Player=' + player + '&Season=' + season;
+  if (shotZone != 'All') {
+    url = url + '&ShotZone=' + shotZone;
+  }
+  if (shotArea != 'All') {
+    url = url + '&ShotArea=' + shotArea;
+  }
+  var myRequest = new Request(url);
   console.log(myRequest);
   fetch(myRequest)
     .then((response) => response.json())
     .then((responseJson) => {
       var newScatterChart = responseJson.map((obj) => { 
+        var x = obj.x;
+        if (obj.made == 0 && madeMiss == 'Made') {
+          x = 10000;
+        }
+        if (obj.made == 1 && madeMiss == 'Missed') {
+          x = 10000;
+        } 
         var curType = 'made';
         if (obj.made == 0) {
           curType = 'missed';
         }
         return {
-          x: obj.x,
+          x: x,
           y: obj.y,
           type: curType  
         }

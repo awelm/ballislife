@@ -132,6 +132,11 @@ class testTeamPic(unittest.TestCase):
         match = re.match(pattern, res)
         assert match is not None, "Incorrectly formatted url returned"
 
+class testTeamLeaders(unittest.TestCase):
+    def testOne(self):
+        res = nba_api.get_stats_leaders("2015-16", "BLK")
+
+
 if __name__ == "__main__":
     #nba_api.initialize_id_map()
     unittest.main()
