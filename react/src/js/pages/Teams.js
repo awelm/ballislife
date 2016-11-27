@@ -73,9 +73,9 @@ class SearchBar extends React.Component {
 
 	handleTeamChange(event) {
 		this.props.onTeamInput(event.target.value);
-		TeamActions.getTeamInfo(event.target.value);
+		TeamActions.getTeamInfo(event.target.value, this.props.year);
 		TeamActions.getTeamPicture(event.target.value);
-		TeamActions.getTeamRoster(event.target.value);
+		TeamActions.getTeamRoster(event.target.value, this.props.year);
 	}
 
 	handleYearChange(event) {
