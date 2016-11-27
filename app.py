@@ -188,9 +188,7 @@ def get_team_info():
 def get_team_roster():
     season = request.args.get("Season")
     team = request.args.get("Team")
-    team_roster = nba_api.get_teamroster(season, team)
-    team_roster_withpics = nba_api.supplement_teamroster(team_roster)
-    return jsonify(team_roster_withpics)
+    return jsonify(nba_api.get_teamroster(season, team))
 
 # return all players for a season
 @app.route('/playersseason', methods=['GET'])
@@ -248,29 +246,18 @@ def get_team_news():
 @crossdomain(origin='*')
 def get_player_news():
     print request.args.get('Player')
+    player = str(request.args.get('Player')).lower().replace("_", " ")
     rss_link = "http://www.rotoworld.com/rss/feed.aspx?sport=nba&ftype=news&count=500&format=rss"
     all_news = feedparser.parse(rss_link)
     player_news = []
-
-    if request.args.get('Player'):
-        player = str(request.args.get('Player')).lower().replace("_", " ")
-        for item in all_news["items"]:
-            print item
-            if player in str(item["title"]).lower():
-                player_news.append({
-                    "title": item["title"],
-                    "summary": item["summary"],
-                    "link": item["link"]
-                    })
-    else:
-        for item in all_news["items"]:
-            print item
+    for item in all_news["items"]:
+        print item
+        if player in str(item["title"]).lower():
             player_news.append({
                 "title": item["title"],
                 "summary": item["summary"],
                 "link": item["link"]
                 })
-
     return jsonify({"news": player_news})
 
 
@@ -300,6 +287,12 @@ def get_box_score():
     teamOne = request.args.get("TeamOne") or None
     teamTwo = request.args.get("TeamTwo") or None
     return jsonify(nba_api.get_boxscore_summary(date, teamOne, teamTwo))
+
+@app.route('/getgamesforday', methods=['GET'])
+@crossdomain(origin='*')
+def get_games_for_day():
+    date = request.args.get("Date") or None
+    return jsonify(nba_api.get_games_for_day(date))
 
 if __name__ == '__main__':
     app.run(debug=True)
