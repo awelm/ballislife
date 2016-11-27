@@ -1,4 +1,5 @@
 import requests
+import goldsberry
 
 NBA_STATS_URL = 'http://stats.nba.com/stats/{endpoint}'
 NBA_MEDIA_URL = 'http://stats.nba.com/media/'
@@ -96,9 +97,21 @@ def get_player_career_stats(player, leagueID="00", perMode="PerGame"):
         }
     return use_json_endpoint("playercareerstats", params)
 
-def get_boxscore_summary(gameid):
+def get_game_key(date, teamOne, teamTwo):
+    abbrOne = team_abrev[teamOne.lower()]
+    abbrTwo = team_abrev[teamTwo.lower()]
+    first_option = date + abbrOne + " vs. " + abbrTwo
+    second_option = date + abbrTwo + " vs. " + abbrOne
+    if first_option in dateToGame:
+        return dateToGame[first_option]
+    elif second_option in dateToGame:
+        return dateToGame[second_option]
+    else:
+        return "GAME WITH THIS KEY DOESN'T EXIST"
+
+def get_boxscore_summary(date, teamOne, teamTwo):
   params = {
-      "GameID":gameid
+      "GameID": get_game_key(date, teamOne, teamTwo)
       }
   return use_json_endpoint("boxscoresummaryv2", params)
 
@@ -198,7 +211,7 @@ def get_shotchart(player, season, shottype=None, shotzone=None, shotarea=None, s
   # action_type = meta_data.index('ACTION_TYPE')
 
   shot_info = []
-  
+
   if shotdist is not None:
     shotdist = int(shotdist)
 
@@ -263,6 +276,11 @@ def initialize_id_map():
   player_profiles = data['resultSets'][0]['rowSet']
   global player_name2id
   player_name2id = {row[2]: row[0] for row in player_profiles}
+  game_info = goldsberry.GameIDs().game_list()
+  global dateToGame
+  dateToGame = {}
+  for game in game_info:
+    dateToGame[game["GAME_DATE"] + game["MATCHUP"]] = game["GAME_ID"]
 
 # return all players that ever played in the NBA
 # specifcally returns mapping of name to id

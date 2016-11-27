@@ -6,9 +6,9 @@ Jinja2==2.8
 MarkupSafe==0.23
 MySQL-python==1.2.5
 psycopg2==2.6.2
+py-goldsberry==1.0.1
 pymongo==3.3.1
 pytz==2016.7
 requests==2.11.1
 six==1.10.0
 Werkzeug==0.11.11
-wsgiref==0.1.2

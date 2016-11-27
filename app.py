@@ -279,5 +279,14 @@ def get_league_shotavg():
     season = request.args.get("Season") or None
     return jsonify(nba_api.get_league_shotavg(season))
 
+
+@app.route('/getboxscore', methods=['GET'])
+@crossdomain(origin='*')
+def get_box_score():
+    date = request.args.get("Date") or None
+    teamOne = request.args.get("TeamOne") or None
+    teamTwo = request.args.get("TeamTwo") or None
+    return jsonify(nba_api.get_boxscore_summary(date, teamOne, teamTwo))
+
 if __name__ == '__main__':
     app.run(debug=True)
