@@ -24,8 +24,8 @@ const requireAuth = (nextState, replace) => {
 
 ReactDOM.render(
   <Router history={hashHistory}>
-    <Route path="/" auth={auth} component={Layout}>
-      <IndexRoute component={Home} />
+    <Route path="/" auth={auth} component={Container}>
+      <IndexRedirect to="/home" />
       <Route path="home" name="home" component={Home} onEnter={requireAuth} />
       <Route path="login" name="login" component={Login} />
       <Route path="games" name="games" component={Games}></Route>
