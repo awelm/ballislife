@@ -5,10 +5,12 @@ import TeamStore from '../stores/TeamStore';
 export default class Teams extends React.Component {
 	constructor(props) {
 		super(props);
-		this.handleUserInput = this.handleUserInput.bind(this);
+		this.handleTeamInput = this.handleTeamInput.bind(this);
+		this.handleYearInput = this.handleYearInput.bind(this); 
 		this.getNewTeam = this.getNewTeam.bind(this);
 		this.state = {
 			team: "hawks",
+			year: "2016-17",
 			team_info: {},
 			team_roster: [],
 			team_news: {},
@@ -28,9 +30,15 @@ export default class Teams extends React.Component {
 		TeamStore.removeListener("change", this.getNewTeam);
 	}
 
-	handleUserInput(new_team) {
+	handleTeamInput(new_team) {
 		this.setState({
 			team: new_team
+		});
+	}
+
+	handleYearInput(new_year) {
+		this.setState({
+			year: new_year
 		});
 	}
 
@@ -47,7 +55,8 @@ export default class Teams extends React.Component {
 	render() {
 		return (
 			<div class="row">
-				<SearchBar pic={this.state.team_picture} onUserInput={this.handleUserInput} team={this.state.team} />
+				<SearchBar pic={this.state.team_picture} onTeamInput={this.handleTeamInput} 
+				onYearInput={this.handleYearInput} team={this.state.team} year={this.state.year} />
 				<TeamDetails info={this.state.team_info} />
 				<Roster roster={this.state.team_roster} />
 			</div>
@@ -58,14 +67,21 @@ export default class Teams extends React.Component {
 class SearchBar extends React.Component {
 	constructor(props) {
 		super(props);
-		this.handleChange = this.handleChange.bind(this);
+		this.handleTeamChange = this.handleTeamChange.bind(this);
+		this.handleYearChange = this.handleYearChange.bind(this);
 	}
 
-	handleChange(event) {
-		this.props.onUserInput(event.target.value);
+	handleTeamChange(event) {
+		this.props.onTeamInput(event.target.value);
 		TeamActions.getTeamInfo(event.target.value);
 		TeamActions.getTeamPicture(event.target.value);
 		TeamActions.getTeamRoster(event.target.value);
+	}
+
+	handleYearChange(event) {
+		this.props.onYearInput(event.target.value);
+		TeamActions.getTeamInfo(this.props.team, event.target.value);
+		TeamActions.getTeamRoster(this.props.team, event.target.value);
 	}
 
 	render() {
@@ -75,7 +91,7 @@ class SearchBar extends React.Component {
 			  <fieldset class="fieldset">
 			  	<legend> Choose a team: </legend>
 				    <label>
-					    <select value={this.props.team} onChange={this.handleChange} class="form-control" id="team-select">
+					    <select value={this.props.team} onChange={this.handleTeamChange} class="form-control" id="team-select">
 					    	<option value ="hawks">Atlanta Hawks</option>
 							<option value ="celtics">Boston Celtics</option>
 							<option value ="nets">Brooklyn Nets</option>
@@ -108,6 +124,52 @@ class SearchBar extends React.Component {
 				    	</select>
 				    </label>
 				    <img class="img-responsive" src={this.props.pic} />
+			  </fieldset>
+			  </form>
+			  <form>
+			  <fieldset class="fieldset">
+			  	<legend> Choose a year: </legend>
+				    <label>
+					    <select value={this.props.year} onChange={this.handleYearChange} class="form-control" id="year-select">
+					    	<option value ="2016-17">2016-17</option>
+							<option value ="2015-16">2015-16</option>
+							<option value ="2014-15">2014-15</option>
+							<option value ="2013-14">2013-14</option>
+							<option value ="2012-13">2012-13</option>
+							<option value ="2011-12">2011-12</option>
+							<option value ="2010-11">2010-11</option>
+							<option value ="2009-10">2009-10</option>
+							<option value ="2008-09">2008-09</option>
+							<option value ="2007-08">2007-08</option>
+							<option value ="2006-07">2006-07</option>
+							<option value ="2005-06">2005-06</option>
+							<option value ="2004-05">2004-05</option>
+							<option value ="2003-04">2003-04</option>
+							<option value ="2002-03">2002-03</option>
+							<option value ="2001-02">2001-02</option>
+							<option value ="2000-01">2000-01</option>
+							<option value ="1999-00">1999-00</option>
+							<option value ="1998-99">1998-99</option>
+							<option value ="1997-98">1997-98</option>
+							<option value ="1996-97">1996-97</option>
+							<option value ="1995-96">1995-96</option>
+							<option value ="1994-95">1994-95</option>
+							<option value ="1993-94">1993-94</option>
+							<option value ="1992-93">1992-93</option>
+							<option value ="1991-92">1991-92</option>
+							<option value ="1990-91">1990-91</option>
+							<option value ="1989-90">1989-90</option>
+							<option value ="1988-89">1988-89</option>
+							<option value ="1987-88">1987-88</option>
+							<option value ="1986-87">1986-87</option>
+							<option value ="1985-86">1985-86</option>
+							<option value ="1984-85">1984-85</option>
+							<option value ="1983-84">1983-84</option>
+							<option value ="1982-83">1982-83</option>
+							<option value ="1981-82">1981-82</option>
+							<option value ="1980-81">1980-81</option>
+				    	</select>
+				    </label>
 			  </fieldset>
 			  </form>
         	</div>
