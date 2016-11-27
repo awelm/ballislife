@@ -25,6 +25,7 @@ export class Home extends React.Component {
     return (
       <div>
         <h2>Home</h2>
+        <img src="https://cdn.auth0.com/styleguide/1.0.0/img/badge.svg" />
         <p>Welcome!</p>
         <Button onClick={this.logout.bind(this)}>Logout</Button>
       </div>
