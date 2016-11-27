@@ -13,7 +13,109 @@ class PlayerStore extends EventEmitter {
         "Tariq"
     ];
     this.curPlayer = "AJ Hammons",
-    this.curPlayerInfo = [],
+    this.curPlayerInfo = {
+  "parameters": [
+    {
+      "PlayerID": 1627773
+    }, 
+    {
+      "LeagueID": null
+    }
+  ], 
+  "resource": "commonplayerinfo", 
+  "resultSets": [
+    {
+      "headers": [
+        "PERSON_ID", 
+        "FIRST_NAME", 
+        "LAST_NAME", 
+        "DISPLAY_FIRST_LAST", 
+        "DISPLAY_LAST_COMMA_FIRST", 
+        "DISPLAY_FI_LAST", 
+        "BIRTHDATE", 
+        "SCHOOL", 
+        "COUNTRY", 
+        "LAST_AFFILIATION", 
+        "HEIGHT", 
+        "WEIGHT", 
+        "SEASON_EXP", 
+        "JERSEY", 
+        "POSITION", 
+        "ROSTERSTATUS", 
+        "TEAM_ID", 
+        "TEAM_NAME", 
+        "TEAM_ABBREVIATION", 
+        "TEAM_CODE", 
+        "TEAM_CITY", 
+        "PLAYERCODE", 
+        "FROM_YEAR", 
+        "TO_YEAR", 
+        "DLEAGUE_FLAG", 
+        "GAMES_PLAYED_FLAG", 
+        "DRAFT_YEAR", 
+        "DRAFT_ROUND", 
+        "DRAFT_NUMBER"
+      ], 
+      "name": "CommonPlayerInfo", 
+      "rowSet": [
+        [
+          1627773, 
+          "AJ", 
+          "Hammons", 
+          "AJ Hammons", 
+          "Hammons, AJ", 
+          "A. Hammons", 
+          "1992-08-27T00:00:00", 
+          "Purdue", 
+          "United States", 
+          "Purdue/US", 
+          "7-0", 
+          "260", 
+          0, 
+          "20", 
+          "Center", 
+          "Active", 
+          1610612742, 
+          "Mavericks", 
+          "DAL", 
+          "mavericks", 
+          "Dallas", 
+          "aj_hammons", 
+          2016, 
+          2016, 
+          "Y", 
+          "Y", 
+          "2016", 
+          "2", 
+          "46"
+        ]
+      ]
+    }, 
+    {
+      "headers": [
+        "PLAYER_ID", 
+        "PLAYER_NAME", 
+        "TimeFrame", 
+        "PTS", 
+        "AST", 
+        "REB", 
+        "PIE"
+      ], 
+      "name": "PlayerHeadlineStats", 
+      "rowSet": [
+        [
+          1627773, 
+          "AJ Hammons", 
+          "2016-17", 
+          1.3, 
+          0.3, 
+          1.1, 
+          0.098
+        ]
+      ]
+    }
+  ]
+},
     this.curPlayerShotChart = [],
     this.curPlayerScatterChart = [],
     this.curPlayerRadar = [],
@@ -69,7 +171,7 @@ class PlayerStore extends EventEmitter {
     case "RECIEVE_SHOT_CHART": {
       this.curPlayerShotChart = action.shotChart;
       this.curPlayerScatterChart = action.scatterChart;
-   //   this.emit("change");
+      this.emit("change");
       break;
     }
     case "RECIEVE_RADAR": {

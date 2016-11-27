@@ -138,6 +138,7 @@ export default class Players extends React.Component {
       curMadeMiss: 'All',
     };
     PlayerActions.getPlayersSeason(this.state.curSeason);
+    PlayerActions.getShotChart(this.state.curPlayer, this.state.curSeason, this.state.curShotZone, this.state.curShotArea, this.state.curMadeMiss);
   }
 
   setGraphOptions(option) {
@@ -218,7 +219,9 @@ export default class Players extends React.Component {
 
     var scatterData = this.state.curPlayerScatterChart;
     var shotData = this.state.curPlayerShotChart;    
+    var curInfo = this.state.curPlayerInfo;    
 
+    console.log(curInfo);
     const radarInput = curPlayerRadar.map((num) => {
       return 10*num;
     });
@@ -325,22 +328,22 @@ export default class Players extends React.Component {
            </div>
         </div>
       <div className="col-md-9">
-        <h3 style={titleDiv}>Career Average</h3>
+        <h3 style={titleDiv}>Career Averages</h3>
         <table className="table table-striped">
           <thead>
             <tr className="info">
               <th>Points</th>
               <th>Assists</th>
               <th>Rebounds</th>
-              <th>All Star Appearances</th>
+              <th>Seasons</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{ curPlayerCareerStats[0] }</td>
-              <td>{ curPlayerCareerStats[1] }</td>
-              <td>{ curPlayerCareerStats[2] }</td>
-              <td>{ curPlayerCareerStats[3] }</td>
+              <td>{ curInfo['resultSets'][1]['rowSet'][0][3] }</td>
+              <td>{ curInfo['resultSets'][1]['rowSet'][0][4] }</td>
+              <td>{ curInfo['resultSets'][1]['rowSet'][0][5] }</td>
+              <td>{ curInfo['resultSets'][0]['rowSet'][0][12] }</td>
             </tr>
           </tbody>
         </table>
