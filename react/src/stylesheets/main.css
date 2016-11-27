@@ -8,6 +8,7 @@ body {
 }
 .navbar {
    margin-bottom: 60px;
+   border-radius: 0px;
 }
 .player-name {
    margin-bottom: 1em;
@@ -32,4 +33,32 @@ body {
 .footer p {
    margin: 20px 0;
    color: #777;
+}
+
+.row.stories {
+   text-align: center;
+}
+
+.article {
+   width: 30%;
+   padding: .25em;
+   margin: .5em;
+   display: inline-block;
+   vertical-align: top;
+   text-align: left;
+}
+
+.header {
+   background-color: #2c3e50;
+   width: 100%;
+   text-align: center;
+   padding: 10em 0;
+   margin-bottom: 2em;
+   color: #fff;
+}
+
+@media(max-width: 767px) {
+   .article {
+      width: 40%;
+   }
 }
