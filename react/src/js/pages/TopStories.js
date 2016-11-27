@@ -7,6 +7,7 @@ import TopStoriesStore from '../stores/TopStoriesStore';
 export default class TopStories extends React.Component {
 	constructor(props) {
 		super(props);
+		this.getNews = this.getNews.bind(this);
 		this.state = {
 			team_stories: [],
 			player_stories: TopStoriesStore.getStories()
@@ -14,20 +15,21 @@ export default class TopStories extends React.Component {
 	}
 
 	componentWillMount() {
-    TopStoriesStore.on("change", () => {
-      this.setState({
-				team_stories: [],
-				player_stories: TopStoriesStore.getStories()
-			})
-    });
+    TopStoriesStore.on("change", this.getNews);
 		TopStoriesActions.getPlayerStories();
   };
 
-
-	componentDidMount() {
-		// console.log('mounted...')
+	componentWillUnmount() {
+		TopStoriesStore.removeListener("change", this.getNews);
 	}
 
+	getNews() {
+		this.setState({
+			team_stories: [],
+			player_stories: TopStoriesStore.getStories()
+		});
+	}
+	
 	render() {
 	    const { query } = this.props.location;
 	    const { params } = this.props;
@@ -41,10 +43,16 @@ export default class TopStories extends React.Component {
 			});
 
 	    return (
-	      <div>
-	        <h1>Top Stories</h1>
-	        <div class="row">{ playerStoryList }</div>
-	      </div>
+				<div>
+					<div class="header">
+						<h1>Top Stories</h1>
+					</div>
+		      <div class="container">
+		        <div class="row stories">
+							{ playerStoryList }
+						</div>
+		      </div>
+				</div>
 	    );
   	}
 }
