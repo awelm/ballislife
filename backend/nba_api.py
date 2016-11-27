@@ -100,14 +100,14 @@ def get_player_career_stats(player, leagueID="00", perMode="PerGame"):
 def get_game_key(date, teamOne, teamTwo):
     abbrOne = team_abrev[teamOne.lower()]
     abbrTwo = team_abrev[teamTwo.lower()]
-    first_option = date + abbrOne + " vs. " + abbrTwo
-    second_option = date + abbrTwo + " vs. " + abbrOne
-    if first_option in dateToGame:
-        return dateToGame[first_option]
-    elif second_option in dateToGame:
-        return dateToGame[second_option]
+    first_option = abbrOne + " vs. " + abbrTwo
+    second_option = abbrTwo + " vs. " + abbrOne
+    if date in dateToGame and first_option in dateToGame[date]:
+        return dateToGame[date][first_option]
+    elif date in dateToGame and second_option in dateToGame[date]:
+        return dateToGame[date][second_option]
     else:
-        return "GAME WITH THIS KEY DOESN'T EXIST"
+        return "GAME_WITH_THIS_KEY_DOESNT_EXIST"
 
 def get_boxscore_summary(date, teamOne, teamTwo):
   params = {
@@ -276,17 +276,17 @@ def initialize_id_map():
   player_profiles = data['resultSets'][0]['rowSet']
   global player_name2id
   player_name2id = {row[2]: row[0] for row in player_profiles}
-  game_info = goldsberry.GameIDs().game_list()
   global dateToGame
   dateToGame = {}
-  global gamesOnDate
-  gamesOnDate = {}
-  for game in game_info:
-    date = game["GAME_DATE"]
-    dateToGame[date + game["MATCHUP"]] = game["GAME_ID"]
-    if date not in gamesOnDate:
-        gamesOnDate[date] = []
-    gamesOnDate[date].append(game)
+  for year in xrange(2013, 2017):
+      year_string = str(year) + "-" + str(year+1)[2:]
+      print year_string
+      game_info = goldsberry.GameIDs(Season=year_string).game_list()
+      for game in game_info:
+        date = game["GAME_DATE"]
+        if date not in dateToGame:
+            dateToGame[date] = {}
+        dateToGame[date][game["MATCHUP"]] = game["GAME_ID"]
 
 # return all players that ever played in the NBA
 # specifcally returns mapping of name to id
@@ -396,4 +396,6 @@ def get_teampic(team):
   return NBA_MEDIA_URL + 'img/teams/logos/' + team_abrev[team] + '_logo.svg'
 
 def get_games_for_day(date):
-    return gamesOnDate[date]
+    if date in dateToGame:
+        return dateToGame[date]
+    return None
