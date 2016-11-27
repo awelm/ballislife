@@ -294,5 +294,29 @@ def get_games_for_day():
     date = request.args.get("Date") or None
     return jsonify(nba_api.get_games_for_day(date))
 
+@app.route('/leaderstiles', methods=['GET'])
+@crossdomain(origin='*')
+def get_leaders():
+    season = request.args.get("Season") or "2016-17"
+    stat = request.args.get("Stat")
+    seasontype = request.args.get("SeasonType") or "Regular Season"
+    playerscope = request.args.get("PlayerScope") or "All Players"
+    playerorteam = request.args.get("PlayerOrTeam") or "Player"
+    permode = request.args.get("PerMode") or "PerGame"
+
+    return jsonify(nba_api.get_stats_leaders(season, seasontype, stat, playerscope, playerorteam, permode))
+
+@app.route('/allleaders', methods=['GET'])
+@crossdomain(origin='*')
+def get_all_leaders():
+    season = request.args.get("Season") or "2016-17"
+    seasontype = request.args.get("SeasonType") or "Regular Season"
+    playerscope = request.args.get("PlayerScope") or "All Players"
+    playerorteam = request.args.get("PlayerOrTeam") or "Player"
+    permode = request.args.get("PerMode") or "PerGame"
+
+    return jsonify(nba_api.get_all_leaders(season, seasontype, playerscope, playerorteam, permode))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
