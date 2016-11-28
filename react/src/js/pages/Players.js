@@ -41,12 +41,12 @@ const radarOptions = {
       }],
                 reverse: false,
                 ticks: {
-                    beginAtZero: false
+                    beginAtZero: true
                 },
             },
     scaleShowLabels : false,
     showTooltips: false,
-    scaleStartValue: 0
+    scaleStartValue: 0,
 }
 
 const graphOptions = [
