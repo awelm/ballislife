@@ -255,7 +255,7 @@ def initialize_id_map():
         date = game["GAME_DATE"]
         if date not in dateToGame:
             dateToGame[date] = {}
-        dateToGame[date][game["MATCHUP"]] = game["GAME_ID"]
+        dateToGame[date][game["GAME_ID"]] = game["MATCHUP"]
 
 # return all players that ever played in the NBA
 # specifcally returns mapping of name to id
@@ -422,7 +422,7 @@ def get_games_for_day(date):
 
     res.append(game_info)
 
-  print res
+  return res
 
 
 # season is in 19xx-xy or 20xx-xy format
