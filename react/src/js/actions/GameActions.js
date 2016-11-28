@@ -1,6 +1,7 @@
 import dispatcher from "../dispatcher";
 
 // TODO: Get rid of console logs and comments  
+/*
 export function getBoxScore(date, first_team, second_team) {
   // dispatcher.dispatch({type: "FETCH_TEAM_INFO"});
   var myRequest = new Request(`http://localhost:5000/getboxscore?Date=${date}&TeamOne=${first_team}&TeamTwo=${second_team}`);
@@ -15,6 +16,7 @@ export function getBoxScore(date, first_team, second_team) {
       console.error(error);
     });
 }
+*/
 
 export function getGames(date) {
   // dispatcher.dispatch({type: "FETCH_TEAM_INFO"});
@@ -31,6 +33,7 @@ export function getGames(date) {
     });
 }
 
+/*
 export function getTeamPicture(team) {
   // dispatcher.dispatch({type: "FETCH_TEAM_PICTURE"});
   var myRequest = new Request(`http://localhost:5000/teampic?Team=${team}`);
@@ -46,4 +49,4 @@ export function getTeamPicture(team) {
       console.error(error);
     });
 }
-
+*/

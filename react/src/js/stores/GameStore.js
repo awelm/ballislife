@@ -38,25 +38,30 @@ const abbr_to_team = {
 class GameStore extends EventEmitter {
   constructor() {
     super();
-    this.box_scores = [];
-    this.games_for_day = {};
-    this.team_pics = [];
+    //this.box_scores = [];
+    this.games_for_day = [];
+    //this.team_pics = [];
   }
 
+  /*
   getBoxScores() {
     return this.box_scores;
   }
+  */
 
   getGamesForDay() {
     return this.games_for_day; 
   }
 
+  /*
   getTeamPics() {
     return this.team_pics; 
   }
+  */
 
   handleActions(action) {
     switch(action.type) {
+      /*
       case "RECEIVE_BOX_SCORE": {
         let team_one_pts = action.box_score.resultSets[5]['rowSet'][0][22];
         let team_two_pts = action.box_score.resultSets[5]['rowSet'][1][22];
@@ -68,13 +73,16 @@ class GameStore extends EventEmitter {
         this.emit("change");
         break;
       }
-
+      */
       case "RECEIVE_GAMES_FOR_DAY": {
         // reset games as we are receiving new games 
         // Reset box scores 
-        this.games_for_day = {};
+        this.games_for_day = action.games;
+        /*
         this.box_scores = [];
         this.team_pics = [];
+        */
+        /*
         let games = action.games;
         for (let matchup in games) {
           if (!(games[matchup] in this.games_for_day)) {
@@ -88,16 +96,18 @@ class GameStore extends EventEmitter {
           }
           //console.log(this.games_for_day);
         }
-
+        */
         this.emit("change");
         break;
       }
 
+      /*
       case "RECEIVE_TEAM_PICTURE": {
         this.team_pics.push(action.team_picture["url"]); 
         this.emit("change");
         break;
       }
+      */
     }
   }
 

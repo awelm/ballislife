@@ -1,6 +1,7 @@
 import React from 'react';
 import * as GameActions from '../actions/GameActions';
 import GameStore from '../stores/GameStore';
+import Loader from 'react-loader'
 
 export default class Games extends React.Component {
 	constructor() {
@@ -8,20 +9,22 @@ export default class Games extends React.Component {
 		this.handleMonthInput = this.handleMonthInput.bind(this);
 		this.handleDayInput = this.handleDayInput.bind(this);
 		this.handleYearInput = this.handleYearInput.bind(this);
+		this.handleLoading = this.handleLoading.bind(this); 
 		this.getNewGames = this.getNewGames.bind(this);
 		this.state = {
 			loaded: true,
-			month: "1",
-			day: "1",
-			year: "2014",
-			games: {},
-			scores: [],
-			team_pics: []
+			month: "11",
+			day: "26",
+			year: "2016",
+			games: [],
+			//scores: [],
+			//team_pics: []
 		}
 	}
 
 	componentWillMount() {
-		GameStore.on("change", this.getNewGames);
+		GameStore.on("change", this.getNewGames); 
+		GameActions.getGames(`${this.props.year}-${this.props.month}-${this.props.day}`);
 	}
 
 	componentWillUnmount() {
@@ -46,11 +49,16 @@ export default class Games extends React.Component {
 		})
 	}
 
+	handleLoading(value) {
+		this.setState({
+			loaded: value
+		});
+	}
+
 	getNewGames() {
 		this.setState({
 			games: GameStore.getGamesForDay(),
-			scores: GameStore.getBoxScores(),
-			team_pics: GameStore.getTeamPics()
+			loaded: true
 		});
 	}
 
@@ -68,13 +76,13 @@ export default class Games extends React.Component {
 					<SearchBar month={this.state.month}
 							   day={this.state.day}
 							   year={this.state.year}
-							   games={this.state.games}
 							   onMonthInput={this.handleMonthInput}
 							   onDayInput={this.handleDayInput}
-							   onYearInput={this.handleYearInput} />
-					<GameDisplay games={this.state.games}
-								 scores={this.state.scores}
-								 team_pics={this.state.team_pics} />
+							   onYearInput={this.handleYearInput} 
+							   onLoading={this.handleLoading} />
+					<Loader loaded={this.state.loaded}>
+						<GameDisplay games={this.state.games} />
+					</Loader> 
 				</div>
 			</div>
 		);
@@ -95,27 +103,31 @@ class SearchBar extends React.Component {
 
 	handleMonthChange(event) {
 		this.props.onMonthInput(event.target.value);
-		GameActions.getGames(`${this.props.year}-${event.target.value}-${this.props.day}`);
+		//GameActions.getGames(`${this.props.year}-${event.target.value}-${this.props.day}`);
 	}
 
 	handleDayChange(event) {
 		this.props.onDayInput(event.target.value);
-		GameActions.getGames(`${this.props.year}-${this.props.month}-${event.target.value}`);
+		//GameActions.getGames(`${this.props.year}-${this.props.month}-${event.target.value}`);
 	}
 
 	handleYearChange(event) {
 		this.props.onYearInput(event.target.value);
-		GameActions.getGames(`${event.target.value}-${this.props.month}-${this.props.day}`);
+		//GameActions.getGames(`${event.target.value}-${this.props.month}-${this.props.day}`);
 	}
 
 	handleSubmit(event) {
 		// Get all box scores for the specified day
-		const games = this.props.games;
+		// const games = this.props.games;
+		this.props.onLoading(false); 
+		GameActions.getGames(`${this.props.year}-${this.props.month}-${this.props.day}`);
+		/*
 		for(var matchup in games) {
 			GameActions.getBoxScore(`${this.props.year}-${this.props.month}-${this.props.day}`, games[matchup]['team_one'], games[matchup]['team_two']);
 			GameActions.getTeamPicture(games[matchup]['team_one']);
 			GameActions.getTeamPicture(games[matchup]['team_two']);
 		}
+		*/
 		// console.log(games);
 	}
 	render() {
@@ -182,9 +194,10 @@ class GameDisplay extends React.Component {
 
 	render() {
 		const matchups = []
-		const {games, scores, team_pics} = this.props;
+		const {games} = this.props;
 		//console.log(games);
 		//console.log(team_pics);
+		/*
 		var i = 0;
 		for (let matchup in games) {
 			// Type check here
@@ -198,6 +211,13 @@ class GameDisplay extends React.Component {
 			i++;
 			// console.log(games[matchup]['team_one']);
 			// console.log(games[matchup]['team_two']);
+		}
+		*/
+		for (let i = 0; i < games.length; i++) {
+			matchups.push(<Matchup key={i} 
+							firstpic={games[i]['logo1']} 
+							secondpic={games[i]['logo2']} 
+							score={games[i]['score']} /> )
 		}
 		return (
 			<div className="col-md-9">
@@ -219,6 +239,8 @@ class Matchup extends React.Component {
 		const headerStyle = {
 			"text-align": "center"
 		}
+		const {score} = this.props; 
+		let tmp = score.split("-");
 		return(
 			<div>
 				<div className="matchup">
@@ -235,13 +257,13 @@ class Matchup extends React.Component {
 					</div>
 					<div className="row">
 						<div className="col-md-3">
-							<h1 style={headerStyle}>{this.props.score['team_one']}</h1>
+							<h1 style={headerStyle}>{tmp[0]}</h1>
 						</div>
 						<div className="col-md-3">
 
 						</div>
 						<div className="col-md-3">
-							<h1 style={headerStyle}>{this.props.score['team_two']}</h1>
+							<h1 style={headerStyle}>{tmp[1]}</h1>
 						</div>
 					</div>
 				</div>
