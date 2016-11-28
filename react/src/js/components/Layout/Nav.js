@@ -23,6 +23,7 @@ export default class Nav extends React.Component {
               <li><Link to="stats" activeClassName="active">Stats</Link></li>
               <li><Link to="players" activeClassName="active">Players</Link></li>
               <li><Link to="teams" activeClassName="active">Teams</Link></li>
+              <li><Link to="login" activeClassNAme="active">Login</Link></li>
             </ul>
           </div>
       </div>

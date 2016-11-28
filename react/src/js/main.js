@@ -10,6 +10,8 @@ import Players from './pages/Players';
 import Stats from './pages/Stats';
 import Teams from './pages/Teams';
 import TopStories from './pages/TopStories';
+import Login from './pages/Login';
+import Logout from './pages/Logout';
 
 const app = document.getElementById('app');
 
@@ -22,6 +24,8 @@ ReactDOM.render(
       <Route path="stats" name="stats" component={Stats}></Route>
       <Route path="teams" name="teams" component={Teams}></Route>
       <Route path="top-stories" name="topStories" component={TopStories}></Route>
+      <Route path="login" name="login" component={Login}></Route>
+      <Route path="logout" name="logout" component={Logout}></Route>
     </Route>
   </Router>,
   app
