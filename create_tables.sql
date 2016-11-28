@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 CREATE TABLE boxscore(
   game_id varchar(20) NOT NULL,
   team_id varchar(20) NOT NULL,
@@ -38,3 +39,6 @@ CREATE TABLE followings(
   type integer,
   name varchar(40)
 );
+=======
+Ctrl-C -- exit!
+>>>>>>> ae7abbfb787b09f7a75d9dfc01036ce0c0ad000d

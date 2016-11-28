@@ -41,12 +41,12 @@ const radarOptions = {
       }],
                 reverse: false,
                 ticks: {
-                    beginAtZero: false
+                    beginAtZero: true
                 },
             },
     scaleShowLabels : false,
     showTooltips: false,
-    scaleStartValue: 0
+    scaleStartValue: 0,
 }
 
 const graphOptions = [
@@ -90,7 +90,7 @@ var GraphComponent = React.createClass({
   if (curGraph == graphOptions[0]) {
     return (
       <div className="col-md-9" style={heatMapDiv}>
-        <ScatterplotChart data={this.props.scatterData} height={521} width={808} config={scatterConfig} xDomainRange={[-215, 245]} yDomainRange={[-26,260]}/>
+        <ScatterplotChart data={this.props.scatterData} height={521} width={808} config={scatterConfig} xDomainRange={[-235, 245]} yDomainRange={[-26,260]}/>
       </div>
     );
 
@@ -123,11 +123,17 @@ export default class Players extends React.Component {
     this.changeShotZone = this.changeShotZone.bind(this);
     this.changeShotArea = this.changeShotArea.bind(this);
     this.changeMadeMiss = this.changeMadeMiss.bind(this);
+    this.followPlayer = this.followPlayer.bind(this);
+
+    var cur = PlayerStore.getCurPlayer();
+    if (this.props) {
+      cur = this.props.params.player;
+    }
     this.state = {
       loaded: false,
       dataLoaded: true,
       players: PlayerStore.getAll(),
-      curPlayer: PlayerStore.getCurPlayer(),
+      curPlayer: cur,
       curPlayerInfo: PlayerStore.getCurPlayerInfo(),
       curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
       curPlayerRadar: PlayerStore.getCurPlayerRadar(),
@@ -140,6 +146,7 @@ export default class Players extends React.Component {
       curShotArea: 'All',
       curMadeMiss: 'All',
     };
+    console.log(this.state.curPlayer);
     PlayerActions.getPlayersSeason(this.state.curSeason);
     PlayerActions.getShotChart(this.state.curPlayer, this.state.curSeason, this.state.curShotZone, this.state.curShotArea, this.state.curMadeMiss);
   }
@@ -165,6 +172,25 @@ export default class Players extends React.Component {
       })
     })
     PlayerActions.getPlayersSeason(this.state.curSeason);
+  };
+
+  componentWillReceiveProps(props) {
+    var player = props.params.player;
+    
+    PlayerActions.getPlayerInfo(player);
+    PlayerActions.getImg(player);
+    PlayerActions.getShotChart(player, this.state.curSeason, this.state.curShotZone, this.state.curShotArea, this.state.curMadeMiss);
+    PlayerActions.getRadar(player, this.state.curSeason);
+    this.setState({
+      curPlayer: player,
+      curPlayerInfo: PlayerStore.getCurPlayerInfo(),
+      curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
+      curPlayerRadar: PlayerStore.getCurPlayerRadar(),
+      curPlayerCareerStats: PlayerStore.getCurPlayerCareerStats(),
+      curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
+      curPlayerImgUrl: PlayerStore.getCurPlayerImgUrl(),
+      });
+
   };
 
   componentWillUnmount() {
@@ -235,6 +261,12 @@ export default class Players extends React.Component {
       curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
     });
   }
+
+  followPlayer(event) {
+    console.log(this.state.curPlayer);
+    PlayerActions.followPlayer(this.state.curPlayer);
+  }
+
   render() {
     const { params } = this.props;
     const { players, curPlayer, curPlayerInfo, curPlayerShotChart, curPlayerRadar, curGraph, curPlayerCareerStats, curPlayerImgUrl } = this.state;
@@ -314,7 +346,7 @@ export default class Players extends React.Component {
                      <div className="radio">
                         <label>
                            <input type="radio" name="optionsRadios" id="hexagonal" value="hexagonal" onClick={() => this.setGraphOptions(0)}/>
-                           Hexagonal
+                           Scatter
                         </label>
                      </div>
                      <div className="radio">
@@ -349,6 +381,9 @@ export default class Players extends React.Component {
                       {madeMissOptionsList}
                     </select>
                   </div>
+                  <form onSubmit={this.followPlayer}>
+                    <input class="btn btn-primary" type="submit" value="Follow" />
+                  </form>
                </div>
             </div>
           <Loader loaded={this.state.dataLoaded}>

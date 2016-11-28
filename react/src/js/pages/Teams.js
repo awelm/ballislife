@@ -1,6 +1,9 @@
 import React from 'react';
 import * as TeamActions from '../actions/TeamActions';
 import TeamStore from '../stores/TeamStore';
+import { Link } from 'react-router';
+import * as PlayerActions from "../actions/PlayerActions";
+import PlayerStore from "../stores/PlayerStore";
 
 var Loader = require('react-loader');
 
@@ -83,6 +86,7 @@ class SearchBar extends React.Component {
 		super(props);
 		this.handleTeamChange = this.handleTeamChange.bind(this);
 		this.handleYearChange = this.handleYearChange.bind(this);
+        this.followTeam = this.followTeam.bind(this);
 	}
 
 	handleTeamChange(event) {
@@ -97,6 +101,10 @@ class SearchBar extends React.Component {
 		TeamActions.getTeamInfo(this.props.team, event.target.value);
 		TeamActions.getTeamRoster(this.props.team, event.target.value);
 	}
+
+    followTeam(event) {
+        TeamActions.followTeam(this.props.team);
+    }
 
 	render() {
 		return (
@@ -186,7 +194,10 @@ class SearchBar extends React.Component {
 				    </label>
 			  </fieldset>
 			  </form>
-        	</div>
+              <form onSubmit={this.followTeam}>
+                    <input class="btn btn-primary" type="submit" value="Follow" />
+              </form>
+       	</div>
 		);
 	}
 }
@@ -265,7 +276,7 @@ class PlayerProfile extends React.Component {
 				<div style={imgStyle}>
 					<img src={player['Picture']} />
 				</div>
-				<h4>Name: {player['Name']}</h4>
+				<Link to={`/players/${player['Name']}`} ><h4>{player['Name']}</h4></Link>
 				<h4>Age: {player['Age']}</h4>
 				<h4>Position: {player['Position']}</h4>
 				<h4>Height: {player['Height']}</h4>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router';
 
 export default class LeaderList extends React.Component {
   render() {
@@ -17,7 +18,7 @@ export default class LeaderList extends React.Component {
     let title = abbrv[stat];
 
     const curLeaders = leaderList.map((player, i) => {
-      return <li key={player}>{ player[2] } <span class="pull-right"><strong>{ player[6] }</strong></span></li>
+      return <li key={player}> <Link to={`/players/${player[2]}`}>{ player[2] } </Link> <span class="pull-right"><strong>{ player[6] }</strong></span></li>
     });
 
     return (

@@ -108,3 +108,9 @@ export function getPlayerPicture(player) {
     });
 }
 
+
+export function followTeam(team) {
+  // dispatcher.dispatch({type: "FETCH_PLAYER_PICTURE"});
+  var myRequest = new Request('http://localhost:5000/follow_new_entity?type=2&name=' + team);
+  fetch(myRequest)
+}
