@@ -74,6 +74,18 @@ h2.list-title {
    color: #fff;
 }
 
+.season-legend {
+   margin-bottom: 5px;
+}
+
+select#season-select {
+   min-width: 200px;
+}
+
+hr.spacer {
+   margin: 3em 0;
+}
+
 @media(max-width: 767px) {
    .article {
       width: 40%;
