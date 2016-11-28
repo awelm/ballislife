@@ -200,24 +200,26 @@ def get_players_season():
     season = request.args.get("Season") or "2016-17"
     return jsonify(nba_api.get_playersseason(season))
 
-@app.route('/follow_new_entity', methods=['POST'])
+@app.route('/follow_new_entity', methods=['GET'])
 @crossdomain(origin='*')
 def follow_new_entity():
-    u_id = request.form["u_id"]
-    follow_type = request.form["type"]
-    follow_name = request.form["name"]
+    follow_type = request.args.get("type")
+    follow_name = request.args.get("name")
+    
     cursor = con.cursor()
-    query = "INSERT INTO followings ( u_id, type, name) \
-            VALUES ('%s', '%d', '%s')" % \
-            (u_id, int(follow_type), follow_name)
+    query = "INSERT INTO followings ( type, name) \
+            VALUES ('%d', '%s')" % \
+            (int(follow_type), follow_name)
+
+    print query 
     try:
         cursor.execute(query)
         con.commit()
-        return jsonify("{status: success}")
+        return "success"
     except:
         con.rollback()
         print "Error inserting new following into database"
-    return jsonify("{status: failed}")
+    return "fail"
 
 @app.route('/get_followings', methods=['GET'])
 @crossdomain(origin='*')
