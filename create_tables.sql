@@ -33,3 +33,8 @@ CREATE TABLE gamesummary(
   home_points integer,
   away_points integer
 );
+
+CREATE TABLE followings(
+  type integer,
+  name varchar(40)
+);

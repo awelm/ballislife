@@ -17,6 +17,9 @@ app = Flask(__name__)
 con = MySQLdb.connect('localhost', 'root', '', 'nba')
 nba_api.initialize_id_map()
 
+PLAYER_TYPE = 1
+TEAM_TYPE = 2
+
 # For Cors
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
@@ -203,13 +206,12 @@ def get_players_season():
 @app.route('/follow_new_entity', methods=['POST'])
 @crossdomain(origin='*')
 def follow_new_entity():
-    u_id = request.form["u_id"]
     follow_type = request.form["type"]
     follow_name = request.form["name"]
     cursor = con.cursor()
-    query = "INSERT INTO followings ( u_id, type, name) \
+    query = "INSERT INTO followings (type, name) \
             VALUES ('%s', '%d', '%s')" % \
-            (u_id, int(follow_type), follow_name)
+            (int(follow_type), follow_name)
     try:
         cursor.execute(query)
         con.commit()
@@ -222,11 +224,8 @@ def follow_new_entity():
 @app.route('/get_followings', methods=['GET'])
 @crossdomain(origin='*')
 def get_followings():
-    u_id = request.args.get('u_id')
     cursor = con.cursor()
-    query = "SELECT * FROM followings WHERE \
-            u_id = ('%s')" % \
-            (u_id)
+    query = "SELECT * FROM followings"
     try:
         cursor.execute(query)
         results = cursor.fetchall()
@@ -236,24 +235,60 @@ def get_followings():
         print "Error querying the followings data"
         return jsonify("{status: failed}")
 
+@app.route('/get_user_news', methods=['GET'])
+@crossdomain(origin='*')
+def get_user_news():
+    cursor = con.cursor()
+    query = "SELECT * FROM followings"
+    news = []
+    try:
+        cursor.execute(query)
+        results = cursor.fetchall()
+    except:
+        print "Error querying"
+        return jsonify("{status: failed}")
+    for follow in results:
+      if follow[0] == PLAYER_TYPE:
+        follow_news = get_player_news_helper(follow[1])["news"]
+        print get_player_news_helper(follow[1])
+      if follow[0] == TEAM_TYPE:
+        follow_news = get_team_news_helper(follow[1])["news"]
+      news = news + follow_news
+    return jsonify({"news":news})
+
 @app.route('/get_team_news', methods=['GET'])
 @crossdomain(origin='*')
 def get_team_news():
     team = request.args.get('Team')
+    return jsonify(get_team_news_helper(team))
+
+def get_team_news_helper(team):
     rss_link = 'http://www.nba.com/' + team.lower() + '/rss.xml'
     team_news = feedparser.parse(rss_link)
-    team_news_string = str(team_news)
-    return jsonify(team_news_string)
+    newslist = []
+    for newsitem in team_news["entries"]:
+      print newsitem
+      news = {}
+      news["title"] = newsitem["title"]
+      news["link"] = newsitem["link"]
+      if 'summary' in newsitem:
+        news["summary"] = newsitem["summary"]
+      else:
+        news["summary"] = ""
+      newslist.append(news)
+    return {"news":newslist}
 
 @app.route('/get_player_news', methods=['GET'])
 @crossdomain(origin='*')
 def get_player_news():
-    print request.args.get('Player')
+    return jsonify(get_player_news_helper(request.args.get('Player')))
+
+def get_player_news_helper(m_player):
     rss_link = "http://www.rotoworld.com/rss/feed.aspx?sport=nba&ftype=news&count=500&format=rss"
     all_news = feedparser.parse(rss_link)
     player_news = []
-    if request.args.get('Player'):
-        player = str(request.args.get('Player')).lower().replace("_", " ")
+    if m_player:
+        player = m_player.lower().replace("_", " ")
         for item in all_news["items"]:
             print item
             if player in str(item["title"]).lower():
@@ -271,7 +306,7 @@ def get_player_news():
                 "link": item["link"]
             })
             
-    return jsonify({"news": player_news})
+    return {"news": player_news}
 
 
 @app.route('/playerpic', methods=['GET'])
