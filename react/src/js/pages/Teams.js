@@ -2,13 +2,17 @@ import React from 'react';
 import * as TeamActions from '../actions/TeamActions';
 import TeamStore from '../stores/TeamStore';
 
+var Loader = require('react-loader');
+
 export default class Teams extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleTeamInput = this.handleTeamInput.bind(this);
-		this.handleYearInput = this.handleYearInput.bind(this); 
+		this.handleYearInput = this.handleYearInput.bind(this);
 		this.getNewTeam = this.getNewTeam.bind(this);
 		this.state = {
+			loaded: false,
+			teamLoaded: false,
 			team: "hawks",
 			year: "2016-17",
 			team_info: {},
@@ -32,18 +36,22 @@ export default class Teams extends React.Component {
 
 	handleTeamInput(new_team) {
 		this.setState({
+			teamLoaded: false,
 			team: new_team
 		});
 	}
 
 	handleYearInput(new_year) {
 		this.setState({
+			teamLoaded: false,
 			year: new_year
 		});
 	}
 
 	getNewTeam() {
 		this.setState({
+			loaded: true,
+			teamLoaded: true,
 			team_info: TeamStore.getTeamInfo(),
 			team_roster: TeamStore.getTeamRoster(),
 			team_news: TeamStore.getTeamNews(),
@@ -54,12 +62,18 @@ export default class Teams extends React.Component {
 
 	render() {
 		return (
-			<div class="row">
-				<SearchBar pic={this.state.team_picture} onTeamInput={this.handleTeamInput} 
-				onYearInput={this.handleYearInput} team={this.state.team} year={this.state.year} />
-				<TeamDetails info={this.state.team_info} />
-				<Roster roster={this.state.team_roster} />
-			</div>
+			<Loader loaded={this.state.loaded}>
+				<div class="container">
+					<div class="row">
+						<SearchBar pic={this.state.team_picture} onTeamInput={this.handleTeamInput}
+						onYearInput={this.handleYearInput} team={this.state.team} year={this.state.year} />
+						<Loader loaded={this.state.teamLoaded}>
+							<TeamDetails info={this.state.team_info} />
+							<Roster roster={this.state.team_roster} />
+						</Loader>
+					</div>
+				</div>
+			</Loader>
 		);
 	}
 }
@@ -248,11 +262,11 @@ class PlayerProfile extends React.Component {
 		};
 		return (
 			<div style={profileStyle} class="col-md-4">
-				<div style={imgStyle}> 
-					<img src={player['Picture']} /> 
+				<div style={imgStyle}>
+					<img src={player['Picture']} />
 				</div>
 				<h4>Name: {player['Name']}</h4>
-				<h4>Age: {player['Age']}</h4> 
+				<h4>Age: {player['Age']}</h4>
 				<h4>Position: {player['Position']}</h4>
 				<h4>Height: {player['Height']}</h4>
 				<h4>Weight: {player['Weight']} lbs</h4>

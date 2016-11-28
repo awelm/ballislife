@@ -34,7 +34,8 @@ class StatsStore extends EventEmitter {
       'fg3p': [],
       'stl': [],
       'blk': []
-    }
+    };
+    this.curLeadersPics = []
   }
 
   getCurLeaders() {
@@ -49,6 +50,10 @@ class StatsStore extends EventEmitter {
     return this.seasonLeaders;
   }
 
+  getCurLeadersPics() {
+    return this.curLeadersPics;
+  }
+
   handleActions(action) {
     switch(action.type) {
       case "RECEIVE_ALL_LEADERS": {
@@ -57,7 +62,7 @@ class StatsStore extends EventEmitter {
         let allTimeLeaders = {}
         const ptsLeaders = action.leaders[0]['resultSet'];
         curLeaders.pts = ptsLeaders[0]['rowSet'];
-        console.log(this.curLeaders['pts']); 
+        console.log(this.curLeaders['pts']);
         allTimeLeaders.pts = ptsLeaders[1]['rowSet'];
         // console.log(ptsLeaders)
 

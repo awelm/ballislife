@@ -4,11 +4,14 @@ import Article from "../components/Article";
 import * as TopStoriesActions from '../actions/TopStoriesActions';
 import TopStoriesStore from '../stores/TopStoriesStore';
 
+var Loader = require('react-loader');
+
 export default class TopStories extends React.Component {
 	constructor(props) {
 		super(props);
 		this.getNews = this.getNews.bind(this);
 		this.state = {
+			loaded: false,
 			team_stories: [],
 			player_stories: TopStoriesStore.getStories()
 		}
@@ -26,10 +29,11 @@ export default class TopStories extends React.Component {
 	getNews() {
 		this.setState({
 			team_stories: [],
-			player_stories: TopStoriesStore.getStories()
+			player_stories: TopStoriesStore.getStories(),
+			loaded: true
 		});
 	}
-	
+
 	render() {
 	    const { query } = this.props.location;
 	    const { params } = this.props;
@@ -43,16 +47,17 @@ export default class TopStories extends React.Component {
 			});
 
 	    return (
-				<div>
+				<Loader loaded={this.state.loaded}>
 					<div class="header">
 						<h1>Top Stories</h1>
 					</div>
 		      <div class="container">
-		        <div class="row stories">
-							{ playerStoryList }
-						</div>
+
+			        <div class="row stories">
+								{ playerStoryList }
+							</div>		
 		      </div>
-				</div>
+				</Loader>
 	    );
   	}
 }
