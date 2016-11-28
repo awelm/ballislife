@@ -135,7 +135,7 @@ class SearchBar extends React.Component {
 				<form>
 				<fieldset class="fieldset">
 						<label>
-							<select class="form-control game-select" onChange={this.handleMonthChange} value={this.props.month}>
+							<select class="form-control game-select" onChange={this.handleMonthChange} value={this.props.month} id="month">
 								{months}
 							</select>
 						</label>
@@ -146,7 +146,7 @@ class SearchBar extends React.Component {
 				<form>
 				<fieldset class="fieldset">
 					<label>
-						<select class="form-control game-select" onChange={this.handleDayChange} value={this.props.day}>
+						<select class="form-control game-select" onChange={this.handleDayChange} value={this.props.day} id="day">
 							{days}
 						</select>
 					</label>
@@ -157,7 +157,7 @@ class SearchBar extends React.Component {
 				<form>
 				<fieldset class="fieldset">
 					<label>
-						<select class="form-control game-select" onChange={this.handleYearChange} value={this.props.year}>
+						<select class="form-control game-select" onChange={this.handleYearChange} value={this.props.year} id="year">
 							<option value="2014">2014</option>
 							<option value="2015">2015</option>
 							<option value="2016">2016</option>
@@ -167,7 +167,7 @@ class SearchBar extends React.Component {
 				</form>
 				<br></br>
 				<form onSubmit={this.handleSubmit}>
-					<input class="btn btn-primary" type="submit" value="Go!" />
+					<input class="btn btn-primary" type="submit" id="submit" value="Go!" />
 				</form>
 			</div>
 		);
