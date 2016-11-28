@@ -20,6 +20,7 @@ export default class Stats extends React.Component {
   componentWillMount() {
     StatsStore.on("change", this.getLeaders);
     StatsActions.getAllLeaders();
+
   }
 
   componentWillUnmount() {
