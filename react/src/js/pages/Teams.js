@@ -86,6 +86,7 @@ class SearchBar extends React.Component {
 		super(props);
 		this.handleTeamChange = this.handleTeamChange.bind(this);
 		this.handleYearChange = this.handleYearChange.bind(this);
+        this.followTeam = this.followTeam.bind(this);
 	}
 
 	handleTeamChange(event) {
@@ -100,6 +101,10 @@ class SearchBar extends React.Component {
 		TeamActions.getTeamInfo(this.props.team, event.target.value);
 		TeamActions.getTeamRoster(this.props.team, event.target.value);
 	}
+
+    followTeam(event) {
+        TeamActions.followTeam(this.props.team);
+    }
 
 	render() {
 		return (
@@ -189,7 +194,10 @@ class SearchBar extends React.Component {
 				    </label>
 			  </fieldset>
 			  </form>
-        	</div>
+              <form onSubmit={this.followTeam}>
+                    <input class="btn btn-primary" type="submit" value="Follow" />
+              </form>
+       	</div>
 		);
 	}
 }
