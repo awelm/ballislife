@@ -338,7 +338,7 @@ export default class Players extends React.Component {
                      <div className="radio">
                         <label>
                            <input type="radio" name="optionsRadios" id="hexagonal" value="hexagonal" onClick={() => this.setGraphOptions(0)}/>
-                           Hexagonal
+                           Scatter
                         </label>
                      </div>
                      <div className="radio">
