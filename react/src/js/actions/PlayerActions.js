@@ -134,3 +134,12 @@ export function getImg(id) {
       console.error(error);
     });
 }
+
+export function followPlayer(player) {
+  dispatcher.dispatch({type: "FOLLOW_PLAYER"});
+  
+  var myRequest = new Request('http://localhost:5000/follow_new_entity?type=1&name=' + player);
+  fetch(myRequest);
+  console.log(myRequest);
+
+}

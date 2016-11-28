@@ -123,6 +123,7 @@ export default class Players extends React.Component {
     this.changeShotZone = this.changeShotZone.bind(this);
     this.changeShotArea = this.changeShotArea.bind(this);
     this.changeMadeMiss = this.changeMadeMiss.bind(this);
+    this.followPlayer = this.followPlayer.bind(this);
 
     var cur = PlayerStore.getCurPlayer();
     if (this.props) {
@@ -145,6 +146,7 @@ export default class Players extends React.Component {
       curShotArea: 'All',
       curMadeMiss: 'All',
     };
+    console.log(this.state.curPlayer);
     PlayerActions.getPlayersSeason(this.state.curSeason);
     PlayerActions.getShotChart(this.state.curPlayer, this.state.curSeason, this.state.curShotZone, this.state.curShotArea, this.state.curMadeMiss);
   }
@@ -259,6 +261,12 @@ export default class Players extends React.Component {
       curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
     });
   }
+
+  followPlayer(event) {
+    console.log(this.state.curPlayer);
+    PlayerActions.followPlayer(this.state.curPlayer);
+  }
+
   render() {
     const { params } = this.props;
     const { players, curPlayer, curPlayerInfo, curPlayerShotChart, curPlayerRadar, curGraph, curPlayerCareerStats, curPlayerImgUrl } = this.state;
@@ -373,6 +381,9 @@ export default class Players extends React.Component {
                       {madeMissOptionsList}
                     </select>
                   </div>
+                  <form onSubmit={this.followPlayer}>
+                    <input class="btn btn-primary" type="submit" value="Follow" />
+                  </form>
                </div>
             </div>
           <Loader loaded={this.state.dataLoaded}>
