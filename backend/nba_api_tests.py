@@ -134,7 +134,8 @@ class testTeamPic(unittest.TestCase):
 
 class testTeamLeaders(unittest.TestCase):
     def testOne(self):
-        res = nba_api.get_stats_leaders("2015-16", "BLK")
+        res = nba_api.get_stats_leaders("2015-16", "Regular Season", "BLK")
+        assert bool(res['resultSet']), "No data returned"
 
 
 if __name__ == "__main__":
