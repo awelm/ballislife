@@ -435,4 +435,3 @@ def get_all_leaders(season, seasontype, playerscope='All Players', playerorteam=
     result.append(get_stats_leaders(season, seasontype, stat, playerscope, playerorteam, permode))
 
   return result
->>>>>>> 0c37fd9d6cb4d9b484fbaf753eea71dae6ed73f0

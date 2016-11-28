@@ -13,18 +13,6 @@ export default class Footer extends React.Component {
 		<footer className="footer">
 		  <div className="container">
 		    <div class="row">
-		    	<div class="col-md-4">
-			    </div> 
-			    <div class="col-md-4">
-				    <FacebookLogin
-				        appId="1088597931155576"
-				        autoLoad
-				        callback={responseFacebook}
-				        icon="fa-facebook"
-				    />
-			    </div> 
-			    <div class="col-md-4">
-			    </div> 
 			</div>
 		  </div>
 		</footer>

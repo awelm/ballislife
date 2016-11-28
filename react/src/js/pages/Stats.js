@@ -44,52 +44,68 @@ export default class Stats extends React.Component {
     const { curLeaders, allTimeLeaders } = this.state;
 
     const curLeadersPts = curLeaders['pts'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
+      return <li key={i}>{player[2]} - {player[6]}</li>
     });
     const curLeadersReb = curLeaders['reb'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
+      return <li key={i}>{player[2]} - {player[6]}</li>
     });
     const curLeadersAst = curLeaders['ast'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
+      return <li key={i}>{player[2]} - {player[6]}</li>
     });
     const curLeadersFgp = curLeaders['fgp'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
+      return <li key={i}>{player[2]} - {player[6]}</li>
     });
     const curLeadersFtp = curLeaders['ftp'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
+      return <li key={i}>{player[2]} - {player[6]}</li>
     });
     const curLeadersFg3p = curLeaders['fg3p'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
+      return <li key={i}>{player[2]} - {player[6]}</li>
     });
     const curLeadersStl = curLeaders['stl'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
+      return <li key={i}>{player[2]} - {player[6]}</li>
     });
     const curLeadersBlk = curLeaders['blk'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
+      return <li key={i}>{player[2]} - {player[6]}</li>
     });
 
     return (
       <div>
-        <h1>Leaders</h1>
+        <h1>2016 Statistics Leaders</h1>
           <div class="row">
             {Images}
           </div>
-          <h2>PTS</h2>
-          {curLeadersPts}
-          <h2>REB</h2>
-          {curLeadersReb}
-          <h2>AST</h2>
-          {curLeadersAst}
-          <h2>FGP</h2>
-          {curLeadersFgp}
-          <h2>FTP</h2>
-          {curLeadersFtp}
-          <h2>FG3P</h2>
-          {curLeadersFg3p}
-          <h2>STL</h2>
-          {curLeadersStl}
-          <h2>BLK</h2>
-          {curLeadersBlk}
+          <h2>Points</h2>
+          <ol> 
+            {curLeadersPts}
+          </ol>
+          <h2>Rebounds</h2>
+          <ol> 
+            {curLeadersReb}
+          </ol> 
+          <h2>Assists</h2>
+          <ol> 
+            {curLeadersAst}
+          </ol>  
+          <h2>Field Goal Percentage</h2>
+          <ol> 
+            {curLeadersFgp}
+          </ol> 
+          <h2>Free Throw Percentage</h2>
+          <ol> 
+            {curLeadersFtp}
+          </ol> 
+          <h2>3-Point Percentage</h2>
+          <ol> 
+            {curLeadersFg3p}
+          </ol> 
+          <h2>Steals</h2>
+          <ol> 
+            {curLeadersStl}
+          </ol> 
+          <h2>Blocks</h2>
+          <ol> 
+            {curLeadersBlk}
+          </ol>   
       </div>
       );
   }
