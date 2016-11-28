@@ -401,7 +401,7 @@ def get_games_for_day(date):
     'logo1': None,
     'logo2': None
   }
-  for gid, teams in games.iteritems():
+  for gid in games:
     boxscore = get_boxscore_summary_gid(gid)
     scores = boxscore['resultSets'][5]
     meta_data = scores['headers']
@@ -414,11 +414,13 @@ def get_games_for_day(date):
     score1 = scores['rowSet'][0][pts_idx]
     score2 = scores['rowSet'][1][pts_idx]
 
-    game_info['team1'] = team1
-    game_info['team2'] = team2
-    game_info['score'] = str(score1) + '-' + str(score2)
-    game_info['logo1'] = get_teampic(team1, team1)
-    game_info['logo2'] = get_teampic(team2, team2)
+    game_info = {
+      'team1': team1,
+      'team2': team2,
+      'score': str(score1) + '-' + str(score2),
+      'logo1': get_teampic(team1, team1),
+      'logo2': get_teampic(team2, team2)
+    }
 
     res.append(game_info)
 
