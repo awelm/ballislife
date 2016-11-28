@@ -90,7 +90,7 @@ var GraphComponent = React.createClass({
   if (curGraph == graphOptions[0]) {
     return (
       <div className="col-md-9" style={heatMapDiv}>
-        <ScatterplotChart data={this.props.scatterData} height={521} width={808} config={scatterConfig} xDomainRange={[-215, 245]} yDomainRange={[-26,260]}/>
+        <ScatterplotChart data={this.props.scatterData} height={521} width={808} config={scatterConfig} xDomainRange={[-235, 245]} yDomainRange={[-26,260]}/>
       </div>
     );
 
