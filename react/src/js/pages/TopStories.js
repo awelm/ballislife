@@ -52,7 +52,6 @@ export default class TopStories extends React.Component {
 						<h1>Top Stories</h1>
 					</div>
 		      <div class="container">
-
 			        <div class="row stories">
 								{ playerStoryList }
 							</div>		
