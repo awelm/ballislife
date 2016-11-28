@@ -63,25 +63,6 @@ export default class Stats extends React.Component {
 
     const { curLeaders, seasonInfo } = this.state;
 
-    const curLeadersPts = curLeaders['pts'];
-    const curLeadersReb = curLeaders['reb'];
-    const curLeadersAst = curLeaders['ast'];
-    const curLeadersFgp = curLeaders['fgp'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
-    });
-    const curLeadersFtp = curLeaders['ftp'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
-    });
-    const curLeadersFg3p = curLeaders['fg3p'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
-    });
-    const curLeadersStl = curLeaders['stl'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
-    });
-    const curLeadersBlk = curLeaders['blk'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
-    });
-
     return (
       <div class="container">
         <h1>Current Leaders</h1>

@@ -57,6 +57,7 @@ class StatsStore extends EventEmitter {
         let allTimeLeaders = {}
         const ptsLeaders = action.leaders[0]['resultSet'];
         curLeaders.pts = ptsLeaders[0]['rowSet'];
+        console.log(this.curLeaders['pts']); 
         allTimeLeaders.pts = ptsLeaders[1]['rowSet'];
         // console.log(ptsLeaders)
 

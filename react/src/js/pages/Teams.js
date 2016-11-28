@@ -241,7 +241,7 @@ class PlayerProfile extends React.Component {
 	render() {
 		const player = this.props.player;
 		const profileStyle= {
-			height: "400"
+			height: "400px"
 		}
 		const imgStyle = {
 			borderStyle: "solid",
