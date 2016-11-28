@@ -115,6 +115,12 @@ def get_boxscore_summary(date, teamOne, teamTwo):
       }
   return use_json_endpoint("boxscoresummaryv2", params)
 
+def get_boxscore_summary_gid(gameid):
+  params = {
+      "GameID": gameid
+      }
+  return use_json_endpoint("boxscoresummaryv2", params)
+
 def get_boxscore(gameid, endperiod=10, endrange=28800, rangetype=0, season="2016-17", seasontype="Regular+Season", startperiod=1, startrange=0):
   params = {
       "EndPeriod":endperiod,
@@ -254,14 +260,6 @@ def initialize_id_map():
 # return all players that ever played in the NBA
 # specifcally returns mapping of name to id
 def get_allplayers():
-  # params = {
-  #   'LeagueID' : '00',
-  #   'Season' : season,
-  #   'IsOnlyCurrentSeason' : 1 # only current season
-  # }
-  # data = use_json_endpoint('commonallplayers', params)
-  # player_profiles = data['resultSets'][0]['rowSet']
-  # return [row[2] for row in player_profiles]
   return player_name2id
 
 # returns player averages for each season
@@ -376,8 +374,11 @@ def get_playerpic(player):
   endpoint = str(playerid) + '.png'
   return NBA_MEDIA_URL + 'players/230x185/' + endpoint
 
-def get_teampic(team):
-  return NBA_MEDIA_URL + 'img/teams/logos/' + team_abrev[team] + '_logo.svg'
+def get_teampic(team, abrev=None):
+  if abrev is None:
+    return NBA_MEDIA_URL + 'img/teams/logos/' + team_abrev[team] + '_logo.svg'
+  else:
+    return NBA_MEDIA_URL + 'img/teams/logos/' + abrev + '_logo.svg'
 
 def supplement_teamroster(teamroster):
   teamroster["resultSets"][0]["headers"].append("PLAYER_PIC_URL")
@@ -387,9 +388,42 @@ def supplement_teamroster(teamroster):
   return teamroster
 
 def get_games_for_day(date):
-    if date in dateToGame:
-        return dateToGame[date]
-    return None
+  # all games for one day + teams that played in each game + ending score of game + 
+  # team logos of teams that played
+  if date not in dateToGame:
+      return None
+  games = dateToGame[date]
+  res = []
+  game_info = {
+    'team1': None,
+    'team2': None,
+    'score': None,
+    'logo1': None,
+    'logo2': None
+  }
+  for gid, teams in games.iteritems():
+    boxscore = get_boxscore_summary_gid(gid)
+    scores = boxscore['resultSets'][5]
+    meta_data = scores['headers']
+
+    abrev_idx = meta_data.index('TEAM_ABBREVIATION')
+    pts_idx = meta_data.index('PTS')
+
+    team1 = scores['rowSet'][0][abrev_idx]
+    team2 = scores['rowSet'][1][abrev_idx]
+    score1 = scores['rowSet'][0][pts_idx]
+    score2 = scores['rowSet'][1][pts_idx]
+
+    game_info['team1'] = team1
+    game_info['team2'] = team2
+    game_info['score'] = str(score1) + '-' + str(score2)
+    game_info['logo1'] = get_teampic(team1, team1)
+    game_info['logo2'] = get_teampic(team2, team2)
+
+    res.append(game_info)
+
+  print res
+
 
 # season is in 19xx-xy or 20xx-xy format
 # seasontype is 'Regular Season' or 'Playoffs'
