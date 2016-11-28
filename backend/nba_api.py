@@ -228,43 +228,6 @@ def get_shotchart(player, season, shottype=None, shotzone=None, shotarea=None, s
 
   return shot_info
 
-  # actions = set()
-  # shottypes = set()
-  # shotzoneb = set()
-  # shotzonea = set()
-  # shotzoner = set()
-  # shotdist = set()
-  # for row in player_shots:
-  #   actions.add(row[action_type])
-  #   shottypes.add(row[shot_type])
-  #   shotzoneb.add(row[shot_zone_b])
-  #   shotzonea.add(row[shot_zone_a])
-  #   shotzoner.add(row[shot_zone_r])
-  #   shotdist.add(row[shot_dist])
-
-  # print "actions"
-  # print actions
-  # print "\nshot types"
-  # print shottypes
-  # print "\nshot zone basic"
-  # print shotzoneb
-  # print "\nshot zone area"
-  # print shotzonea
-  # print "\nshot zone range"
-  # print shotzoner
-  # print "\nshot distance"
-  # print shotdist
-
-
-
-  # [u'GRID_TYPE', u'GAME_ID', u'GAME_EVENT_ID', u'PLAYER_ID', u'PLAYER_NAME', u'TEAM_ID',
-  #  u'TEAM_NAME', u'PERIOD', u'MINUTES_REMAINING', u'SECONDS_REMAINING', u'EVENT_TYPE',
-  #  u'ACTION_TYPE', u'SHOT_TYPE', u'SHOT_ZONE_BASIC', u'SHOT_ZONE_AREA', u'SHOT_ZONE_RANGE',
-  #  u'SHOT_DISTANCE', u'LOC_X', u'LOC_Y', u'SHOT_ATTEMPTED_FLAG', u'SHOT_MADE_FLAG', u'GAME_DATE',
-  #  u'HTM', u'VTM']
-
-  # return [{'x':row[loc_x], 'y':row[loc_y], 'made':row[shot_made]} for row in player_shots]
-
 # intialize mapping of player name to id
 def initialize_id_map():
   params = {
@@ -321,26 +284,47 @@ def get_playerinfo(player):
 
 # returns radar for player for a particular season
 def get_playerradar(player, season):
-  raw_data = get_playerprofile(player)
-  data = raw_data['resultSets'][8]
-  rows = data['rowSet']
+  query = get_playerprofile(player)
+  raw_data = query['resultSets']
+  meta_data = raw_data[0]['headers']
+  season_idx = meta_data.index('SEASON_ID')
+  rows = raw_data[0]['rowSet']
 
   s_row=[]
   for row in rows:
-    if row[1] == season:
+    if row[season_idx] == season:
       s_row = row
       break
 
-  # out of 10
+  ppg_idx = meta_data.index('PTS')
+  pm3_idx = meta_data.index('FG3M')
+  fgp_idx = meta_data.index('FG_PCT')
+  bpg_idx = meta_data.index('BLK')
+  spg_idx = meta_data.index('STL')
+  ast_idx = meta_data.index('AST')
+  to_idx = meta_data.index('TOV')
+  reb_idx = meta_data.index('REB')
+  min_idx = meta_data.index('MIN')
+
+  # Category: Stat
+  # Interior Scoring: PPG: what percentage of 30
+  # Outside Scoring: 3Pts: what percentage of 5 made per game
+  # Efficiency: FG%: what percentage of 55
+  # Interior D: Blocks: what percentage of 3 bpg
+  # Perimeter D: Steals: what percentage of 2.5 spg
+  # BBALL IQ: Assists to turnovers: avg(ast/to percentage of 3, st/to percentage of .85)
+  # Rebounds: Rebounds: percentage of 10
+  # Stamina: Minutes/ avg(minutes)
+
   radar = [
-    max(2, 3+(150-s_row[25])/22),
-    max(2, 3+(150-s_row[12])/22),
-    max(2, 3+(150-s_row[26])/22),
-    max(2, 3+(150-s_row[23])/22),
-    max(2, 3+(150-s_row[22])/22),
-    max(2, 3+(150-s_row[21] + 150-s_row[24])/45),
-    max(2, 3+(150-s_row[20])/22),
-    max(2, 3+(150-s_row[8])/22)
+    min(10.0, 10*(s_row[ppg_idx]/30)),
+    min(10.0, 10*(s_row[pm3_idx]/3)),
+    min(10.0, 10*(s_row[fgp_idx]/0.55)),
+    min(10.0, 10*(s_row[bpg_idx]/1.3)),
+    min(10.0, 10*(s_row[spg_idx]/2.5)),
+    min(10.0, 10*((s_row[ast_idx]/s_row[to_idx])/2.5)),
+    min(10.0, 10*(s_row[reb_idx]/10)),
+    min(10.0, 10*(s_row[min_idx]/40))
   ]
 
   return radar
@@ -348,7 +332,7 @@ def get_playerradar(player, season):
 # returns general team info
 # WL record, division, division/conf rank, stats per game
 # points score against teams, points scored on team <- on average
-def get_teaminfo(season, team, seasontype, leagueid="00"):
+def get_teaminfo(season, team, seasontype="Regular Season", leagueid="00"):
   teamid = team_name2id[team]
   params = {
     'Season': season,
