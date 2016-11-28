@@ -25,6 +25,17 @@ class StatsStore extends EventEmitter {
       'stl': [],
       'blk': []
     };
+    this.seasonLeaders = {
+      'pts': [],
+      'reb': [],
+      'ast': [],
+      'fgp': [],
+      'ftp': [],
+      'fg3p': [],
+      'stl': [],
+      'blk': []
+    };
+    this.curLeadersPics = []
   }
 
   getCurLeaders() {
@@ -35,6 +46,14 @@ class StatsStore extends EventEmitter {
     return this.allTimeLeaders;
   }
 
+  getSeasonLeaders() {
+    return this.seasonLeaders;
+  }
+
+  getCurLeadersPics() {
+    return this.curLeadersPics;
+  }
+
   handleActions(action) {
     switch(action.type) {
       case "RECEIVE_ALL_LEADERS": {
@@ -43,6 +62,7 @@ class StatsStore extends EventEmitter {
         let allTimeLeaders = {}
         const ptsLeaders = action.leaders[0]['resultSet'];
         curLeaders.pts = ptsLeaders[0]['rowSet'];
+        console.log(this.curLeaders['pts']);
         allTimeLeaders.pts = ptsLeaders[1]['rowSet'];
         // console.log(ptsLeaders)
 
@@ -87,6 +107,47 @@ class StatsStore extends EventEmitter {
         console.log(allTimeLeaders);
 
         this.emit("change");
+        break;
+      }
+      case "RECEIVE_SEASON_LEADERS": {
+        // console.log(action.leaders);
+        let seasonLeaders = {};
+
+        const ptsLeaders = action.leaders[0]['resultSet'];
+        seasonLeaders.pts = ptsLeaders[0]['rowSet'];
+        // console.log(ptsLeaders)
+
+        const rebLeaders = action.leaders[1]['resultSet'];
+        seasonLeaders.reb = rebLeaders[0]['rowSet'];
+        // console.log(rebLeaders);
+
+        const astLeaders = action.leaders[2]['resultSet'];
+        seasonLeaders.ast = astLeaders[0]['rowSet'];
+        // console.log(astLeaders);
+
+        const fgpLeaders = action.leaders[3]['resultSet'];
+        seasonLeaders.fgp = fgpLeaders[0]['rowSet'];
+        // console.log(fgpLeaders);
+
+        const ftpLeaders = action.leaders[4]['resultSet'];
+        seasonLeaders.ftp = ftpLeaders[0]['rowSet'];
+        // console.log(ftpLeaders);
+
+        const fg3pLeaders = action.leaders[5]['resultSet'];
+        seasonLeaders.fg3p = fg3pLeaders[0]['rowSet'];
+        // console.log(fg3pLeaders);
+
+        const stlLeaders = action.leaders[6]['resultSet'];
+        seasonLeaders.stl = stlLeaders[0]['rowSet'];
+        // console.log(stlLeaders);
+
+        const blkLeaders = action.leaders[7]['resultSet'];
+        seasonLeaders.blk = blkLeaders[0]['rowSet'];
+        // console.log(blkLeaders);
+
+        this.seasonLeaders = seasonLeaders;
+        console.log(seasonLeaders);
+        this.emit("changeSeason");
         break;
       }
     }
