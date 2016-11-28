@@ -5,6 +5,7 @@ import * as StatsActions from '../actions/StatsActions';
 import StatsStore from '../stores/StatsStore';
 
 import Image from "../components/Image";
+import LeaderList from "../components/LeaderList"
 
 
 export default class Stats extends React.Component {
@@ -43,15 +44,9 @@ export default class Stats extends React.Component {
 
     const { curLeaders, allTimeLeaders } = this.state;
 
-    const curLeadersPts = curLeaders['pts'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
-    });
-    const curLeadersReb = curLeaders['reb'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
-    });
-    const curLeadersAst = curLeaders['ast'].map((player, i) => {
-      return <p key={i}>{player[2]} - {player[6]}</p>
-    });
+    const curLeadersPts = curLeaders['pts'];
+    const curLeadersReb = curLeaders['reb'];
+    const curLeadersAst = curLeaders['ast'];
     const curLeadersFgp = curLeaders['fgp'].map((player, i) => {
       return <p key={i}>{player[2]} - {player[6]}</p>
     });
@@ -69,27 +64,22 @@ export default class Stats extends React.Component {
     });
 
     return (
-      <div>
-        <h1>Leaders</h1>
+      <div class="container">
+        <h1>Current Leaders</h1>
           <div class="row">
             {Images}
           </div>
-          <h2>PTS</h2>
-          {curLeadersPts}
-          <h2>REB</h2>
-          {curLeadersReb}
-          <h2>AST</h2>
-          {curLeadersAst}
-          <h2>FGP</h2>
-          {curLeadersFgp}
-          <h2>FTP</h2>
-          {curLeadersFtp}
-          <h2>FG3P</h2>
-          {curLeadersFg3p}
-          <h2>STL</h2>
-          {curLeadersStl}
-          <h2>BLK</h2>
-          {curLeadersBlk}
+          <div class="row">
+            <LeaderList leaderList={curLeaders['pts']} stat='pts' />
+            <LeaderList leaderList={curLeaders['reb']} stat='reb' />
+            <LeaderList leaderList={curLeaders['ast']} stat='ast' />
+            <LeaderList leaderList={curLeaders['fgp']} stat='fgp' />
+            <LeaderList leaderList={curLeaders['ftp']} stat='ftp' />
+            <LeaderList leaderList={curLeaders['fg3p']} stat='fg3p' />
+            <LeaderList leaderList={curLeaders['stl']} stat='stl' />
+            <LeaderList leaderList={curLeaders['blk']} stat='blk' />
+
+          </div>
       </div>
       );
   }
