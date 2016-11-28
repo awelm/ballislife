@@ -10,9 +10,9 @@ export default class Games extends React.Component {
 		this.handleYearInput = this.handleYearInput.bind(this); 
 		this.getNewGames = this.getNewGames.bind(this); 
 		this.state = {
-			month: "1",
-			day: "1",
-			year: "2014",
+			month: "11",
+			day: "27",
+			year: "2016",
 			games: {},
 			scores: [],
 			team_pics: []

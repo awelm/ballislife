@@ -1,6 +1,9 @@
 import React from 'react';
 import * as TeamActions from '../actions/TeamActions';
 import TeamStore from '../stores/TeamStore';
+import { Link } from 'react-router';
+import * as PlayerActions from "../actions/PlayerActions";
+import PlayerStore from "../stores/PlayerStore";
 
 export default class Teams extends React.Component {
 	constructor(props) {
@@ -251,7 +254,7 @@ class PlayerProfile extends React.Component {
 				<div style={imgStyle}> 
 					<img src={player['Picture']} /> 
 				</div>
-				<h4>Name: {player['Name']}</h4>
+				<Link to={`/players/${player['Name']}`} ><h4>{player['Name']}</h4></Link>
 				<h4>Age: {player['Age']}</h4> 
 				<h4>Position: {player['Position']}</h4>
 				<h4>Height: {player['Height']}</h4>

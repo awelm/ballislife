@@ -122,9 +122,14 @@ export default class Players extends React.Component {
     this.changeShotZone = this.changeShotZone.bind(this);
     this.changeShotArea = this.changeShotArea.bind(this);
     this.changeMadeMiss = this.changeMadeMiss.bind(this);
+
+    var cur = PlayerStore.getCurPlayer();
+    if (this.props) {
+      cur = this.props.params.player;
+    }
     this.state = {
       players: PlayerStore.getAll(),
-      curPlayer: PlayerStore.getCurPlayer(),
+      curPlayer: cur,
       curPlayerInfo: PlayerStore.getCurPlayerInfo(),
       curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
       curPlayerRadar: PlayerStore.getCurPlayerRadar(),
@@ -160,6 +165,24 @@ export default class Players extends React.Component {
       })
     })
     PlayerActions.getPlayersSeason(this.state.curSeason);
+  };
+
+  componentWillReceiveProps(props) {
+    var player = props.params.player;
+    
+    PlayerActions.getPlayerInfo(player);
+    PlayerActions.getImg(player);
+    PlayerActions.getShotChart(player, this.state.curSeason, this.state.curShotZone, this.state.curShotArea, this.state.curMadeMiss);
+    PlayerActions.getRadar(player, this.state.curSeason);
+    this.setState({
+      curPlayer: player,
+      curPlayerInfo: PlayerStore.getCurPlayerInfo(),
+      curPlayerShotChart: PlayerStore.getCurPlayerShotChart(),
+      curPlayerRadar: PlayerStore.getCurPlayerRadar(),
+      curPlayerCareerStats: PlayerStore.getCurPlayerCareerStats(),
+      curPlayerScatterChart: PlayerStore.getCurPlayerScatterChart(),
+      curPlayerImgUrl: PlayerStore.getCurPlayerImgUrl(),
+      });
   };
 
   changeSeason(event) {

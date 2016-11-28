@@ -29,7 +29,8 @@ ReactDOM.render(
       <Route path="home" name="home" component={Home} onEnter={requireAuth} />
       <Route path="login" name="login" component={Login} />
       <Route path="games" name="games" component={Games}></Route>
-      <Route path="players" name="players" component={Players}></Route>
+      <Route path="players" name="players" component={Players}/>
+      <Route path="players/:player" component={Players}/>
       <Route path="stats" name="stats" component={Stats}></Route>
       <Route path="teams" name="teams" component={Teams}></Route>
       <Route path="top-stories" name="topStories" component={TopStories}></Route>
